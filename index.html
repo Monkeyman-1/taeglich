@@ -20,6 +20,7 @@ html,body{margin:0;padding:0;background:var(--ink);-webkit-text-size-adjust:100%
 body{overscroll-behavior-y:none}
 button{font:inherit;background:none;border:none;cursor:pointer;color:inherit}
 button:focus-visible,input:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+@keyframes toastPop{from{opacity:0;transform:translate(-50%,12px)}to{opacity:1;transform:translate(-50%,0)}}
 input{font:inherit}
 .flex{display:flex}.flex-col{flex-direction:column}.flex-1{flex:1 1 0%}
 .items-center{align-items:center}.items-end{align-items:flex-end}.items-baseline{align-items:baseline}
@@ -1465,7 +1466,14 @@ const DEFAULT_SAVE = {
     dailyTime: "18:00",
     streakOn: false,
     lastNotified: null
-  }
+  },
+  xp: 0,
+  badges: [],
+  perfectSessions: 0,
+  nightOwl: false,
+  earlyBird: false,
+  modesPlayed: {},
+  dailyChallenge: null
 };
 async function loadSave() {
   try {
@@ -1483,6 +1491,178 @@ async function persist(save) {
   try {
     localStorage.setItem(KEY, JSON.stringify(save));
   } catch (e) {}
+}
+
+/* ---------- XP, levels, badges, daily challenge ---------- */
+const XP_BY_GRADE = {
+  0: 1,
+  1: 4,
+  2: 10,
+  3: 14
+};
+const LEVELS = [{
+  lvl: 1,
+  need: 0,
+  title: "Anfänger"
+}, {
+  lvl: 2,
+  need: 80,
+  title: "Lernender"
+}, {
+  lvl: 3,
+  need: 200,
+  title: "Entdecker"
+}, {
+  lvl: 4,
+  need: 400,
+  title: "Übender"
+}, {
+  lvl: 5,
+  need: 700,
+  title: "Sprecher"
+}, {
+  lvl: 6,
+  need: 1100,
+  title: "Könner"
+}, {
+  lvl: 7,
+  need: 1700,
+  title: "Fortgeschrittene"
+}, {
+  lvl: 8,
+  need: 2500,
+  title: "Experte"
+}, {
+  lvl: 9,
+  need: 3600,
+  title: "Meister"
+}, {
+  lvl: 10,
+  need: 5000,
+  title: "Profi"
+}];
+function levelInfo(xp) {
+  let cur = LEVELS[0];
+  let next = null;
+  for (let i = 0; i < LEVELS.length; i++) {
+    if (xp >= LEVELS[i].need) cur = LEVELS[i];else {
+      next = LEVELS[i];
+      break;
+    }
+  }
+  const span = next ? next.need - cur.need : 1;
+  const into = xp - cur.need;
+  return {
+    level: cur.lvl,
+    title: cur.title,
+    xp,
+    into,
+    span,
+    next,
+    pct: next ? Math.max(0, Math.min(1, into / span)) : 1
+  };
+}
+const BADGES = [{
+  id: "first",
+  name: "Erste Schritte",
+  desc: "Deine erste Übung abgeschlossen.",
+  test: (s, c) => s.seen >= 1
+}, {
+  id: "streak3",
+  name: "Drei Tage",
+  desc: "3 Tage Streak.",
+  test: (s, c) => s.streak >= 3
+}, {
+  id: "streak7",
+  name: "Eine Woche",
+  desc: "7 Tage Streak.",
+  test: (s, c) => s.streak >= 7
+}, {
+  id: "streak30",
+  name: "Ein Monat",
+  desc: "30 Tage Streak.",
+  test: (s, c) => s.streak >= 30
+}, {
+  id: "streak100",
+  name: "Hundert Tage",
+  desc: "100 Tage Streak.",
+  test: (s, c) => s.streak >= 100
+}, {
+  id: "words25",
+  name: "25 Karten",
+  desc: "25 Karten im Umlauf.",
+  test: (s, c) => c.started >= 25
+}, {
+  id: "words50",
+  name: "50 Karten",
+  desc: "50 Karten im Umlauf.",
+  test: (s, c) => c.started >= 50
+}, {
+  id: "wordsAll",
+  name: "Alles gesehen",
+  desc: "Jede Karte mindestens einmal gesehen.",
+  test: (s, c) => c.started >= CARDS.length
+}, {
+  id: "perfect",
+  name: "Fehlerfrei",
+  desc: "Eine Übung ohne einen einzigen Fehler.",
+  test: (s, c) => s.perfectSessions >= 1
+}, {
+  id: "night",
+  name: "Nachteule",
+  desc: "Nach 22 Uhr geübt.",
+  test: (s, c) => s.nightOwl
+}, {
+  id: "early",
+  name: "Frühaufsteher",
+  desc: "Vor 7 Uhr geübt.",
+  test: (s, c) => s.earlyBird
+}, {
+  id: "allmodes",
+  name: "Allrounder",
+  desc: "Alle vier Übungsmodi ausprobiert.",
+  test: (s, c) => s.modesPlayed && Object.keys(s.modesPlayed).length >= 4
+}, {
+  id: "level5",
+  name: "Level 5",
+  desc: "Level 5 erreicht.",
+  test: (s, c) => levelInfo(s.xp).level >= 5
+}, {
+  id: "level10",
+  name: "Level 10",
+  desc: "Höchstes Level erreicht.",
+  test: (s, c) => levelInfo(s.xp).level >= 10
+}];
+const CHALLENGES = [{
+  id: "accuracy",
+  title: "Genauigkeits-Ziel",
+  desc: "Schließe eine Übung mit mindestens 90% Genauigkeit ab.",
+  xp: 20
+}, {
+  id: "cards15",
+  title: "Ausdauer",
+  desc: "Übe mindestens 15 Karten in einer Runde.",
+  xp: 20
+}, {
+  id: "newwords5",
+  title: "Neuland",
+  desc: "Lerne heute 5 neue Wörter.",
+  xp: 20
+}, {
+  id: "mode",
+  title: "Abwechslung",
+  desc: "Spiele eine Runde in Mehr Üben.",
+  xp: 15
+}, {
+  id: "perfect",
+  title: "Fehlerfrei",
+  desc: "Schließe eine Übung ganz ohne Fehler ab.",
+  xp: 25
+}];
+function challengeFor(day) {
+  let h = 0;
+  for (let i = 0; i < day.length; i++) h = h * 31 + day.charCodeAt(i) | 0;
+  return CHALLENGES[Math.abs(h) % CHALLENGES.length];
 }
 
 /* ---------- notification state mirror (readable from the service worker) ---------- */
@@ -1656,6 +1836,11 @@ function App() {
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);
+  const [toast, setToast] = useState(null);
+  const showToast = useCallback(t => {
+    setToast(t);
+    setTimeout(() => setToast(cur => cur === t ? null : cur), 3600);
+  }, []);
   const [queue, setQueue] = useState([]);
   const [pos, setPos] = useState(0);
   const [tally, setTally] = useState({
@@ -1765,6 +1950,9 @@ function App() {
     const prev = saveRef.current.prog[card.id] || blankState();
     const next = schedule(prev, grade, now);
     const day = todayKey();
+    const xpGain = XP_BY_GRADE[grade] || 0;
+    const beforeXp = saveRef.current.xp;
+    const hour = new Date().getHours();
     commit(s => {
       const hist = {
         ...s.hist
@@ -1786,9 +1974,22 @@ function App() {
         lastDay: day,
         seen: s.seen + 1,
         introDay: isNew ? day : s.introDay === day ? day : s.introDay,
-        introCount: isNew ? s.introDay === day ? s.introCount + 1 : 1 : s.introCount
+        introCount: isNew ? s.introDay === day ? s.introCount + 1 : 1 : s.introCount,
+        xp: s.xp + xpGain,
+        nightOwl: s.nightOwl || hour >= 22,
+        earlyBird: s.earlyBird || hour < 7
       };
     });
+    const beforeLevel = levelInfo(beforeXp).level;
+    const afterLevel = levelInfo(beforeXp + xpGain).level;
+    if (afterLevel > beforeLevel) {
+      const lvl = LEVELS.filter(l => l.lvl === afterLevel)[0];
+      showToast({
+        kind: "level",
+        title: "Level " + afterLevel,
+        sub: lvl ? lvl.title : ""
+      });
+    }
     setTally(t => ({
       right: t.right + (grade >= 2 ? 1 : 0),
       total: t.total + 1,
@@ -1809,9 +2010,93 @@ function App() {
       return nextPos;
     });
   }
+  function onModeComplete(modeKey, score, total) {
+    const xpGain = score * 4;
+    const beforeXp = saveRef.current.xp;
+    commit(s => {
+      const today = todayKey();
+      const chal = s.dailyChallenge && s.dailyChallenge.day === today ? s.dailyChallenge : null;
+      const chalDone = chal ? chal.done || chal.id === "mode" : false;
+      return {
+        ...s,
+        xp: s.xp + xpGain,
+        modesPlayed: {
+          ...s.modesPlayed,
+          [modeKey]: true
+        },
+        dailyChallenge: chal ? {
+          ...chal,
+          done: chalDone
+        } : s.dailyChallenge
+      };
+    });
+    const beforeLevel = levelInfo(beforeXp).level;
+    const afterLevel = levelInfo(beforeXp + xpGain).level;
+    if (afterLevel > beforeLevel) {
+      const lvl = LEVELS.filter(l => l.lvl === afterLevel)[0];
+      showToast({
+        kind: "level",
+        title: "Level " + afterLevel,
+        sub: lvl ? lvl.title : ""
+      });
+    }
+  }
   useEffect(() => {
-    if (screen === "study" && queue.length && pos >= queue.length) navReplace("done");
+    if (screen === "study" && queue.length && pos >= queue.length) {
+      navReplace("done");
+      const isPerfect = tally.total > 0 && tally.right === tally.total;
+      commit(s => {
+        const today = todayKey();
+        const chal = s.dailyChallenge && s.dailyChallenge.day === today ? s.dailyChallenge : null;
+        let chalDone = chal ? chal.done : false;
+        if (chal && !chal.done) {
+          const acc = tally.total ? tally.right / tally.total : 0;
+          if (chal.id === "accuracy" && tally.total >= 5 && acc >= 0.9) chalDone = true;
+          if (chal.id === "cards15" && tally.total >= 15) chalDone = true;
+          if (chal.id === "newwords5" && tally.learned >= 5) chalDone = true;
+          if (chal.id === "perfect" && isPerfect) chalDone = true;
+        }
+        return {
+          ...s,
+          perfectSessions: isPerfect ? s.perfectSessions + 1 : s.perfectSessions,
+          dailyChallenge: chal ? {
+            ...chal,
+            done: chalDone
+          } : s.dailyChallenge
+        };
+      });
+    }
   }, [pos, queue.length, screen]);
+  useEffect(() => {
+    if (!save) return;
+    const today = todayKey();
+    if (!save.dailyChallenge || save.dailyChallenge.day !== today) {
+      const c = challengeFor(today);
+      commit(s => s.dailyChallenge && s.dailyChallenge.day === today ? s : {
+        ...s,
+        dailyChallenge: {
+          day: today,
+          id: c.id,
+          done: false
+        }
+      });
+    }
+  }, [!!save, screen]);
+  useEffect(() => {
+    if (!save) return;
+    const newly = BADGES.filter(b => save.badges.indexOf(b.id) === -1 && b.test(save, counts));
+    if (newly.length) {
+      commit(s => ({
+        ...s,
+        badges: s.badges.concat(newly.map(b => b.id).filter(id => s.badges.indexOf(id) === -1))
+      }));
+      showToast({
+        kind: "badge",
+        title: "Erfolg freigeschaltet",
+        sub: newly[0].name
+      });
+    }
+  }, [save, counts]);
   useEffect(() => {
     if (!save) return;
     document.documentElement.setAttribute("data-theme", save.theme);
@@ -1819,28 +2104,39 @@ function App() {
   }, [save && save.theme, save && save.accent]);
   useEffect(() => {
     if (!save) return;
-    if (typeof Notification === "undefined" || Notification.permission !== "granted") return;
-    if (!save.notif.dailyOn && !save.notif.streakOn) return;
-    const today = todayKey();
-    if (save.notif.lastNotified === today || save.lastDay === today) return;
-    const now = new Date();
-    const hhmm = String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
-    const streakLate = save.notif.streakOn && now.getHours() >= 20;
-    const dailyDue = save.notif.dailyOn && hhmm >= save.notif.dailyTime;
-    if (!streakLate && !dailyDue) return;
-    navigator.serviceWorker && navigator.serviceWorker.ready.then(reg => reg.showNotification(streakLate ? "Dein Streak ist in Gefahr" : "Zeit für Täglich", {
-      body: streakLate ? save.streak + " Tage Streak — heute noch nicht geübt." : "Ein paar Minuten Deutsch üben?",
-      icon: "icon-192.png",
-      tag: "taeglich-reminder"
-    })).catch(() => {});
-    commit(s => ({
-      ...s,
-      notif: {
-        ...s.notif,
-        lastNotified: today
-      }
-    }));
-  }, [save && save.lastDay, screen]);
+    function checkReminder() {
+      const s = saveRef.current;
+      if (!s) return;
+      if (typeof Notification === "undefined" || Notification.permission !== "granted") return;
+      if (!s.notif.dailyOn && !s.notif.streakOn) return;
+      const today = todayKey();
+      if (s.notif.lastNotified === today || s.lastDay === today) return;
+      const now = new Date();
+      const hhmm = String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
+      const streakLate = s.notif.streakOn && now.getHours() >= 20;
+      const dailyDue = s.notif.dailyOn && hhmm >= s.notif.dailyTime;
+      if (!streakLate && !dailyDue) return;
+      navigator.serviceWorker && navigator.serviceWorker.ready.then(reg => reg.showNotification(streakLate ? "Dein Streak ist in Gefahr" : "Zeit für Täglich", {
+        body: streakLate ? s.streak + " Tage Streak — heute noch nicht geübt." : "Ein paar Minuten Deutsch üben?",
+        icon: "icon-192.png",
+        tag: "taeglich-reminder"
+      })).catch(() => {});
+      commit(sv => ({
+        ...sv,
+        notif: {
+          ...sv.notif,
+          lastNotified: today
+        }
+      }));
+    }
+    checkReminder();
+    const id = setInterval(checkReminder, 60000);
+    document.addEventListener("visibilitychange", checkReminder);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", checkReminder);
+    };
+  }, [!!save]);
   if (!save) {
     return /*#__PURE__*/React.createElement("div", {
       className: "min-h-screen flex items-center justify-center",
@@ -1877,6 +2173,7 @@ function App() {
     onGrammar: () => nav("grammar"),
     onModes: () => nav("modes"),
     onSettings: () => nav("settings"),
+    onAchievements: () => nav("achievements"),
     onSetNew: n => commit(s => ({
       ...s,
       newPerDay: n
@@ -1917,15 +2214,25 @@ function App() {
     onBack: navBack,
     onSelect: key => nav("modes-" + key)
   }), screen === "modes-mc" && /*#__PURE__*/React.createElement(ModeMultipleChoice, {
-    onExit: navBack
+    onExit: navBack,
+    onComplete: (score, total) => onModeComplete("mc", score, total)
   }), screen === "modes-listen" && /*#__PURE__*/React.createElement(ModeListening, {
     onExit: navBack,
-    speak: speak
+    speak: speak,
+    onComplete: (score, total) => onModeComplete("listen", score, total)
   }), screen === "modes-order" && /*#__PURE__*/React.createElement(ModeOrder, {
-    onExit: navBack
+    onExit: navBack,
+    onComplete: (score, total) => onModeComplete("order", score, total)
   }), screen === "modes-match" && /*#__PURE__*/React.createElement(ModeMatch, {
-    onExit: navBack
-  })));
+    onExit: navBack,
+    onComplete: (score, total) => onModeComplete("match", score, total)
+  }), screen === "achievements" && /*#__PURE__*/React.createElement(Achievements, {
+    onBack: navBack,
+    save: save,
+    counts: counts
+  })), /*#__PURE__*/React.createElement(Toast, {
+    toast: toast
+  }));
 }
 
 /* ---------- home ---------- */
@@ -1938,9 +2245,13 @@ function Home({
   onGrammar,
   onModes,
   onSettings,
+  onAchievements,
   onSetNew,
   onReset
 }) {
+  const info = levelInfo(save.xp);
+  const chalDef = save.dailyChallenge && CHALLENGES.filter(c => c.id === save.dailyChallenge.id)[0];
+  const chalDone = !!(save.dailyChallenge && save.dailyChallenge.done);
   const days = [];
   for (let i = 13; i >= 0; i--) {
     const k = todayKey(Date.now() - i * DAY);
@@ -1979,7 +2290,72 @@ function Home({
       color: C.signal,
       lineHeight: 1
     }
-  }, save.streak), /*#__PURE__*/React.createElement(Eyebrow, null, "Tage · streak"))), /*#__PURE__*/React.createElement("div", {
+  }, save.streak), /*#__PURE__*/React.createElement(Eyebrow, null, "Tage · streak"))), /*#__PURE__*/React.createElement("button", {
+    onClick: onAchievements,
+    className: "mt-5 w-full rounded-xl p-4 text-left",
+    style: {
+      background: C.panel,
+      border: "1px solid " + C.edge
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-baseline justify-between"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 15,
+      fontWeight: 700
+    }
+  }, "Level ", info.level, " · ", info.title), /*#__PURE__*/React.createElement(Eyebrow, null, save.badges.length, "/", BADGES.length, " Erfolge ›")), /*#__PURE__*/React.createElement(Eyebrow, {
+    color: C.signal
+  }, info.xp, " XP")), /*#__PURE__*/React.createElement("div", {
+    className: "mt-2 rounded-sm",
+    style: {
+      height: 6,
+      background: C.panel2,
+      overflow: "hidden"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: "100%",
+      width: Math.round(info.pct * 100) + "%",
+      background: C.signal
+    }
+  }))), chalDef && /*#__PURE__*/React.createElement("div", {
+    className: "mt-3 rounded-xl p-4",
+    style: {
+      background: C.panel,
+      border: "1px solid " + (chalDone ? C.ok : C.edge)
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-start justify-between gap-3"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Eyebrow, {
+    color: chalDone ? C.ok : C.muted
+  }, "Tagesaufgabe · daily challenge"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 15,
+      fontWeight: 600,
+      marginTop: 4
+    }
+  }, chalDef.title), /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: C.muted,
+      fontSize: 12,
+      marginTop: 2
+    }
+  }, chalDef.desc)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 26,
+      height: 26,
+      borderRadius: 99,
+      flexShrink: 0,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: 13,
+      background: chalDone ? C.ok : "transparent",
+      color: chalDone ? "#0F1013" : C.muted,
+      border: chalDone ? "none" : "1px solid " + C.edge
+    }
+  }, chalDone ? "✓" : "+" + chalDef.xp))), /*#__PURE__*/React.createElement("div", {
     className: "mt-7 rounded-xl p-4",
     style: {
       background: C.panel,
@@ -2999,6 +3375,20 @@ function Settings({
       }
     }));
   }
+  const [testSent, setTestSent] = useState(false);
+  async function sendTest() {
+    if (typeof Notification === "undefined" || perm !== "granted") return;
+    try {
+      const reg = await navigator.serviceWorker.ready;
+      await reg.showNotification("Täglich", {
+        body: "Testbenachrichtigung — wenn du das siehst, funktioniert es.",
+        icon: "icon-192.png",
+        tag: "taeglich-test"
+      });
+      setTestSent(true);
+      setTimeout(() => setTestSent(false), 4000);
+    } catch (e) {}
+  }
   return /*#__PURE__*/React.createElement("div", {
     className: "px-5 pt-8 pb-10"
   }, /*#__PURE__*/React.createElement("button", {
@@ -3063,12 +3453,28 @@ function Settings({
       marginTop: 8,
       lineHeight: 1.5
     }
-  }, "Local reminders, no server involved. Reliable on Android once the app is installed and used a few times; not supported on iOS Safari."), perm !== "granted" && /*#__PURE__*/React.createElement(Key, {
+  }, "Local reminders, no server involved. Reliable on Android once the app is installed and used a few times; not supported on iOS Safari."), /*#__PURE__*/React.createElement("div", {
+    className: "mt-3 flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 8,
+      height: 8,
+      borderRadius: 99,
+      background: perm === "granted" ? C.ok : perm === "denied" ? C.bad : C.muted
+    }
+  }), /*#__PURE__*/React.createElement(Eyebrow, null, "Status: ", perm === "granted" ? "aktiv" : perm === "denied" ? "blockiert" : perm === "unsupported" ? "nicht unterstützt" : "nicht angefragt")), perm !== "granted" && /*#__PURE__*/React.createElement("div", {
+    className: "mt-3"
+  }, /*#__PURE__*/React.createElement(Key, {
     tone: "solid",
     wide: true,
     onClick: enableNotifications,
     disabled: perm === "unsupported"
-  }, perm === "unsupported" ? "Nicht unterstützt · not supported" : perm === "denied" ? "Blockiert — in Browser-Einstellungen erlauben" : "Benachrichtigungen aktivieren"), /*#__PURE__*/React.createElement(SettingsRow, {
+  }, perm === "unsupported" ? "Nicht unterstützt · not supported" : perm === "denied" ? "Blockiert — in Browser-Einstellungen erlauben" : "Benachrichtigungen aktivieren")), perm === "granted" && /*#__PURE__*/React.createElement("div", {
+    className: "mt-3"
+  }, /*#__PURE__*/React.createElement(Key, {
+    wide: true,
+    onClick: sendTest
+  }, testSent ? "Gesendet · check your notifications" : "Testbenachrichtigung senden")), /*#__PURE__*/React.createElement(SettingsRow, {
     title: "Tägliche Erinnerung",
     sub: "Nudge once a day if you haven't practiced yet."
   }, /*#__PURE__*/React.createElement(Segmented, {
@@ -3203,12 +3609,20 @@ function buildMCRound(n) {
   });
 }
 function ModeMultipleChoice({
-  onExit
+  onExit,
+  onComplete
 }) {
   const [round] = useState(() => buildMCRound(10));
   const [pos, setPos] = useState(0);
   const [picked, setPicked] = useState(null);
   const [score, setScore] = useState(0);
+  const firedRef = useRef(false);
+  useEffect(() => {
+    if (pos >= round.length && !firedRef.current) {
+      firedRef.current = true;
+      if (onComplete) onComplete(score, round.length);
+    }
+  }, [pos]);
   if (pos >= round.length) {
     return /*#__PURE__*/React.createElement("div", {
       className: "px-5 pt-6 pb-8 flex flex-col",
@@ -3300,7 +3714,8 @@ function buildListenRound(n) {
 }
 function ModeListening({
   onExit,
-  speak
+  speak,
+  onComplete
 }) {
   const [round] = useState(() => buildListenRound(8));
   const [pos, setPos] = useState(0);
@@ -3308,6 +3723,7 @@ function ModeListening({
   const [result, setResult] = useState(null);
   const [score, setScore] = useState(0);
   const inputRef = useRef(null);
+  const firedRef = useRef(false);
   const it = round[pos];
   const sentence = it && sentenceOf(it);
   useEffect(() => {
@@ -3317,6 +3733,12 @@ function ModeListening({
     const t = setTimeout(() => speak(sentence[0]), 350);
     if (inputRef.current) inputRef.current.focus();
     return () => clearTimeout(t);
+  }, [pos]);
+  useEffect(() => {
+    if (pos >= round.length && !firedRef.current) {
+      firedRef.current = true;
+      if (onComplete) onComplete(score, round.length);
+    }
   }, [pos]);
   if (pos >= round.length) {
     return /*#__PURE__*/React.createElement("div", {
@@ -3437,7 +3859,8 @@ function buildOrderRound(n) {
   });
 }
 function ModeOrder({
-  onExit
+  onExit,
+  onComplete
 }) {
   const [round] = useState(() => buildOrderRound(6));
   const [pos, setPos] = useState(0);
@@ -3445,11 +3868,18 @@ function ModeOrder({
   const [left, setLeft] = useState([]);
   const [checked, setChecked] = useState(null); // null | "right" | "wrong"
   const [score, setScore] = useState(0);
+  const firedRef = useRef(false);
   useEffect(() => {
     if (pos >= round.length) return;
     setBuilt([]);
     setLeft(round[pos].pool);
     setChecked(null);
+  }, [pos]);
+  useEffect(() => {
+    if (pos >= round.length && !firedRef.current) {
+      firedRef.current = true;
+      if (onComplete) onComplete(score, round.length);
+    }
   }, [pos]);
   if (pos >= round.length) {
     return /*#__PURE__*/React.createElement("div", {
@@ -3564,7 +3994,8 @@ function buildMatchRound(n) {
   };
 }
 function ModeMatch({
-  onExit
+  onExit,
+  onComplete
 }) {
   const [round, setRound] = useState(() => buildMatchRound(6));
   const [matched, setMatched] = useState([]);
@@ -3572,6 +4003,7 @@ function ModeMatch({
   const [selEn, setSelEn] = useState(null);
   const [wrong, setWrong] = useState(null);
   const [misses, setMisses] = useState(0);
+  const firedRef = useRef(false);
   useEffect(() => {
     if (selDe === null || selEn === null) return;
     if (selDe === selEn) {
@@ -3590,6 +4022,12 @@ function ModeMatch({
     }
   }, [selDe, selEn]);
   const done = matched.length === round.pairs.length;
+  useEffect(() => {
+    if (done && !firedRef.current) {
+      firedRef.current = true;
+      if (onComplete) onComplete(Math.max(0, round.pairs.length - misses), round.pairs.length);
+    }
+  }, [done]);
   function tile(item, side) {
     const isMatched = matched.indexOf(item.id) >= 0;
     const isSel = side === "de" ? selDe === item.id : selEn === item.id;
@@ -3636,6 +4074,7 @@ function ModeMatch({
         setRound(buildMatchRound(6));
         setMatched([]);
         setMisses(0);
+        firedRef.current = false;
       },
       onExit: onExit
     }));
@@ -3725,6 +4164,144 @@ function Modes({
       marginTop: 4
     }
   }, m.sub)))));
+}
+
+/* ---------- toast ---------- */
+function Toast({
+  toast
+}) {
+  if (!toast) return null;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "fixed",
+      left: "50%",
+      bottom: 24,
+      transform: "translateX(-50%)",
+      zIndex: 50,
+      maxWidth: 360,
+      width: "calc(100% - 40px)",
+      animation: "toastPop 0.25s ease-out"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "rounded-xl p-4",
+    style: {
+      background: C.panel,
+      border: "1px solid " + C.signal,
+      boxShadow: "0 8px 24px rgba(0,0,0,0.35)"
+    }
+  }, /*#__PURE__*/React.createElement(Eyebrow, {
+    color: C.signal
+  }, toast.kind === "level" ? "Level-Aufstieg · level up" : "Erfolg freigeschaltet"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 17,
+      fontWeight: 700,
+      marginTop: 4
+    }
+  }, toast.title), toast.sub && /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: C.muted,
+      fontSize: 13,
+      marginTop: 2
+    }
+  }, toast.sub)));
+}
+
+/* ---------- achievements ---------- */
+function Achievements({
+  onBack,
+  save,
+  counts
+}) {
+  const info = levelInfo(save.xp);
+  const unlockedCount = save.badges.length;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "px-5 pt-8 pb-10"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onBack,
+    style: {
+      fontFamily: MONO,
+      fontSize: 11,
+      color: C.muted,
+      letterSpacing: "0.1em"
+    }
+  }, "← ZURÜCK"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: MONO,
+      fontSize: 22,
+      letterSpacing: "0.18em",
+      marginTop: 18
+    }
+  }, "ERFOLGE"), /*#__PURE__*/React.createElement("div", {
+    className: "mt-6 rounded-xl p-4",
+    style: {
+      background: C.panel,
+      border: "1px solid " + C.edge
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-baseline justify-between"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 20,
+      fontWeight: 700
+    }
+  }, "Level ", info.level, " · ", info.title), /*#__PURE__*/React.createElement(Eyebrow, null, info.xp, " XP")), info.next && /*#__PURE__*/React.createElement(Eyebrow, {
+    color: C.muted
+  }, info.next.need - info.xp, " XP bis Level ", info.next.lvl)), /*#__PURE__*/React.createElement("div", {
+    className: "mt-3 rounded-sm",
+    style: {
+      height: 8,
+      background: C.panel2,
+      overflow: "hidden"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: "100%",
+      width: Math.round(info.pct * 100) + "%",
+      background: C.signal
+    }
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: C.muted,
+      fontSize: 12,
+      marginTop: 10
+    }
+  }, unlockedCount, " / ", BADGES.length, " Erfolge freigeschaltet"), /*#__PURE__*/React.createElement("div", {
+    className: "mt-4 flex flex-col gap-2"
+  }, BADGES.map(b => {
+    const unlocked = save.badges.indexOf(b.id) >= 0;
+    return /*#__PURE__*/React.createElement("div", {
+      key: b.id,
+      className: "rounded-lg p-3 flex items-center gap-3",
+      style: {
+        background: C.panel,
+        border: "1px solid " + C.edge,
+        opacity: unlocked ? 1 : 0.5
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: 34,
+        height: 34,
+        borderRadius: 99,
+        flexShrink: 0,
+        background: unlocked ? C.signal : C.panel2,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: 15
+      }
+    }, unlocked ? "✓" : "?"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 14,
+        fontWeight: 600
+      }
+    }, b.name), /*#__PURE__*/React.createElement("div", {
+      style: {
+        color: C.muted,
+        fontSize: 12,
+        marginTop: 2
+      }
+    }, b.desc)));
+  })));
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
