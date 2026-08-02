@@ -6,7 +6,7 @@ A daily German practice app (spaced repetition, typed recall) built as a single-
 
 1. In this repo on GitHub: **Settings → Pages**.
 2. Under **Build and deployment → Source**, choose **GitHub Actions**.
-3. Merge/push this branch to `main` — the `Deploy to GitHub Pages` workflow (`.github/workflows/deploy.yml`) will publish the site automatically.
+3. Push to `main` (or this branch) — the `Deploy to GitHub Pages` workflow (`.github/workflows/deploy.yml`) will publish the site automatically.
 4. Your live URL will be `https://<username>.github.io/<repo>/` (shown in the Actions run and in Settings → Pages).
 
 ## Installing on your phone
