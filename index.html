@@ -1630,7 +1630,32 @@ function Key({
    ============================================================ */
 function App() {
   const [save, setSave] = useState(null);
-  const [screen, setScreen] = useState("home"); // home | study | done | why | learn | grammar | settings | modes
+  const [screen, setScreen] = useState("home"); // home | study | done | why | learn | grammar | settings | modes | modes-mc | modes-listen | modes-order | modes-match
+  const nav = useCallback(name => {
+    setScreen(name);
+    window.history.pushState({
+      screen: name
+    }, "");
+  }, []);
+  const navReplace = useCallback(name => {
+    setScreen(name);
+    window.history.replaceState({
+      screen: name
+    }, "");
+  }, []);
+  const navBack = useCallback(() => {
+    window.history.back();
+  }, []);
+  useEffect(() => {
+    window.history.replaceState({
+      screen: "home"
+    }, "");
+    function onPop(e) {
+      setScreen(e.state && e.state.screen || "home");
+    }
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
   const [queue, setQueue] = useState([]);
   const [pos, setPos] = useState(0);
   const [tally, setTally] = useState({
@@ -1723,7 +1748,7 @@ function App() {
   }
   function start() {
     const q = buildSession();
-    if (!q.length) return;
+    if (!q.length) return false;
     setQueue(q);
     setPos(0);
     setTally({
@@ -1732,6 +1757,7 @@ function App() {
       learned: 0
     });
     setScreen("study");
+    return true;
   }
   function answer(card, grade) {
     const now = Date.now();
@@ -1784,7 +1810,7 @@ function App() {
     });
   }
   useEffect(() => {
-    if (screen === "study" && queue.length && pos >= queue.length) setScreen("done");
+    if (screen === "study" && queue.length && pos >= queue.length) navReplace("done");
   }, [pos, queue.length, screen]);
   useEffect(() => {
     if (!save) return;
@@ -1841,12 +1867,16 @@ function App() {
   }, screen === "home" && /*#__PURE__*/React.createElement(Home, {
     save: save,
     counts: counts,
-    onStart: start,
-    onWhy: () => setScreen("why"),
-    onLearn: () => setScreen("learn"),
-    onGrammar: () => setScreen("grammar"),
-    onModes: () => setScreen("modes"),
-    onSettings: () => setScreen("settings"),
+    onStart: () => {
+      if (start()) window.history.pushState({
+        screen: "study"
+      }, "");
+    },
+    onWhy: () => nav("why"),
+    onLearn: () => nav("learn"),
+    onGrammar: () => nav("grammar"),
+    onModes: () => nav("modes"),
+    onSettings: () => nav("settings"),
     onSetNew: n => commit(s => ({
       ...s,
       newPerDay: n
@@ -1860,28 +1890,41 @@ function App() {
     total: queue.length,
     state: save.prog[queue[pos].id] || blankState(),
     onAnswer: answer,
-    onQuit: () => setScreen("home"),
+    onQuit: navBack,
     speak: speak
   }), screen === "done" && /*#__PURE__*/React.createElement(Done, {
     tally: tally,
     save: save,
-    onHome: () => setScreen("home"),
-    onMore: start
+    onHome: navBack,
+    onMore: () => {
+      if (start()) window.history.replaceState({
+        screen: "study"
+      }, "");
+    }
   }), screen === "why" && /*#__PURE__*/React.createElement(Why, {
-    onBack: () => setScreen("home")
+    onBack: navBack
   }), screen === "learn" && /*#__PURE__*/React.createElement(Learn, {
-    onBack: () => setScreen("home"),
+    onBack: navBack,
     speak: speak
   }), screen === "grammar" && /*#__PURE__*/React.createElement(Grammar, {
-    onBack: () => setScreen("home")
+    onBack: navBack
   }), screen === "settings" && /*#__PURE__*/React.createElement(Settings, {
-    onBack: () => setScreen("home"),
+    onBack: navBack,
     save: save,
     commit: commit,
     registerReminders: registerReminders
   }), screen === "modes" && /*#__PURE__*/React.createElement(Modes, {
-    onBack: () => setScreen("home"),
+    onBack: navBack,
+    onSelect: key => nav("modes-" + key)
+  }), screen === "modes-mc" && /*#__PURE__*/React.createElement(ModeMultipleChoice, {
+    onExit: navBack
+  }), screen === "modes-listen" && /*#__PURE__*/React.createElement(ModeListening, {
+    onExit: navBack,
     speak: speak
+  }), screen === "modes-order" && /*#__PURE__*/React.createElement(ModeOrder, {
+    onExit: navBack
+  }), screen === "modes-match" && /*#__PURE__*/React.createElement(ModeMatch, {
+    onExit: navBack
   })));
 }
 
@@ -3618,36 +3661,24 @@ function ModeMatch({
 const MODE_LIST = [{
   key: "mc",
   title: "Multiple Choice",
-  sub: "Recognition — pick the right translation.",
-  Component: ModeMultipleChoice
+  sub: "Recognition — pick the right translation."
 }, {
   key: "listen",
   title: "Hörverstehen",
-  sub: "Listen and type the sentence you hear.",
-  Component: ModeListening
+  sub: "Listen and type the sentence you hear."
 }, {
   key: "order",
   title: "Satzbau",
-  sub: "Drag words into the right order.",
-  Component: ModeOrder
+  sub: "Drag words into the right order."
 }, {
   key: "match",
   title: "Zuordnen",
-  sub: "Match German and English pairs.",
-  Component: ModeMatch
+  sub: "Match German and English pairs."
 }];
 function Modes({
   onBack,
-  speak
+  onSelect
 }) {
-  const [view, setView] = useState("hub");
-  if (view !== "hub") {
-    const active = MODE_LIST.filter(m => m.key === view)[0];
-    return /*#__PURE__*/React.createElement(active.Component, {
-      onExit: () => setView("hub"),
-      speak: speak
-    });
-  }
   return /*#__PURE__*/React.createElement("div", {
     className: "px-5 pt-8 pb-10"
   }, /*#__PURE__*/React.createElement("button", {
@@ -3676,7 +3707,7 @@ function Modes({
     className: "mt-6 flex flex-col gap-3"
   }, MODE_LIST.map(m => /*#__PURE__*/React.createElement("button", {
     key: m.key,
-    onClick: () => setView(m.key),
+    onClick: () => onSelect(m.key),
     className: "rounded-xl p-4 text-left",
     style: {
       background: C.panel,
