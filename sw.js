@@ -1,4 +1,4 @@
-const CACHE = "taeglich-v1";
+const CACHE = "taeglich-v2";
 const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./icon-512-maskable.png"];
 self.addEventListener("install", (e) => {
   self.skipWaiting();

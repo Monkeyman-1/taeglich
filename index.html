@@ -1562,7 +1562,7 @@ function Key({
    ============================================================ */
 function App() {
   const [save, setSave] = useState(null);
-  const [screen, setScreen] = useState("home"); // home | study | done | why
+  const [screen, setScreen] = useState("home"); // home | study | done | why | learn | grammar
   const [queue, setQueue] = useState([]);
   const [pos, setPos] = useState(0);
   const [tally, setTally] = useState({
@@ -1744,6 +1744,8 @@ function App() {
     counts: counts,
     onStart: start,
     onWhy: () => setScreen("why"),
+    onLearn: () => setScreen("learn"),
+    onGrammar: () => setScreen("grammar"),
     onSetNew: n => commit(s => ({
       ...s,
       newPerDay: n
@@ -1766,6 +1768,11 @@ function App() {
     onMore: start
   }), screen === "why" && /*#__PURE__*/React.createElement(Why, {
     onBack: () => setScreen("home")
+  }), screen === "learn" && /*#__PURE__*/React.createElement(Learn, {
+    onBack: () => setScreen("home"),
+    speak: speak
+  }), screen === "grammar" && /*#__PURE__*/React.createElement(Grammar, {
+    onBack: () => setScreen("home")
   })));
 }
 
@@ -1775,6 +1782,8 @@ function Home({
   counts,
   onStart,
   onWhy,
+  onLearn,
+  onGrammar,
   onSetNew,
   onReset
 }) {
@@ -1893,6 +1902,16 @@ function Home({
       lineHeight: 1.5
     }
   }, "Eight a day keeps the daily review load near ten minutes. Raising it raises tomorrow's workload, not today's.")), /*#__PURE__*/React.createElement("div", {
+    className: "mt-8 flex gap-2"
+  }, /*#__PURE__*/React.createElement(Key, {
+    tone: "quiet",
+    grow: true,
+    onClick: onLearn
+  }, "Wörter lernen"), /*#__PURE__*/React.createElement(Key, {
+    tone: "quiet",
+    grow: true,
+    onClick: onGrammar
+  }, "Grammatik")), /*#__PURE__*/React.createElement("div", {
     className: "mt-8 flex gap-2"
   }, /*#__PURE__*/React.createElement("button", {
     onClick: onWhy,
@@ -2339,6 +2358,399 @@ function Why({
     }
   }, "The one thing this app can't do is give you conversation. Once the reviews feel routine, add a weekly tandem partner or an italki hour — output with a human is what turns the deck into speech."));
 }
+/* ---------- learn (vocabulary browser) ---------- */
+const TYPE_LABEL = {
+  n: "Nomen",
+  v: "Verb",
+  a: "Adjektiv",
+  p: "Ausdruck",
+  k: "Bindewort"
+};
+const LEARN_ITEMS = ITEMS.filter(it => it.t !== "g");
+const LEARN_TOPICS = Array.from(new Set(LEARN_ITEMS.map(it => it.tp)));
+const LEVEL_ORDER = {
+  A1: 0,
+  A2: 1,
+  B1: 2
+};
+function Learn({
+  onBack,
+  speak
+}) {
+  const [level, setLevel] = useState("Alle");
+  const [topic, setTopic] = useState("Alle");
+  const [open, setOpen] = useState(null);
+  const rows = useMemo(() => {
+    return LEARN_ITEMS.filter(it => level === "Alle" || it.lv === level).filter(it => topic === "Alle" || it.tp === topic).sort((a, b) => LEVEL_ORDER[a.lv] - LEVEL_ORDER[b.lv] || a.tp.localeCompare(b.tp));
+  }, [level, topic]);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "px-5 pt-8 pb-10"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onBack,
+    style: {
+      fontFamily: MONO,
+      fontSize: 11,
+      color: C.muted,
+      letterSpacing: "0.1em"
+    }
+  }, "← ZURÜCK"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: MONO,
+      fontSize: 22,
+      letterSpacing: "0.18em",
+      marginTop: 18
+    }
+  }, "WÖRTER LERNEN"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: C.muted,
+      fontSize: 12,
+      marginTop: 8,
+      lineHeight: 1.5
+    }
+  }, "Browse before you drill. Tap a card to see it in a sentence, tap ▶ to hear it spoken."), /*#__PURE__*/React.createElement("div", {
+    className: "mt-6 flex gap-2"
+  }, ["Alle", "A1", "A2", "B1"].map(lv => /*#__PURE__*/React.createElement("button", {
+    key: lv,
+    onClick: () => setLevel(lv),
+    className: "flex-1 rounded-lg py-2",
+    style: {
+      fontFamily: MONO,
+      fontSize: 12,
+      background: level === lv ? C.paper : C.panel,
+      color: level === lv ? C.ink : C.muted,
+      border: "1px solid " + C.edge
+    }
+  }, lv))), /*#__PURE__*/React.createElement("div", {
+    className: "mt-3 flex gap-2",
+    style: {
+      flexWrap: "wrap"
+    }
+  }, ["Alle"].concat(LEARN_TOPICS).map(tp => /*#__PURE__*/React.createElement("button", {
+    key: tp,
+    onClick: () => setTopic(tp),
+    className: "rounded-lg py-1 px-3",
+    style: {
+      fontFamily: MONO,
+      fontSize: 11,
+      background: topic === tp ? C.signal : C.panel,
+      color: topic === tp ? "#0F1013" : C.muted,
+      border: "1px solid " + (topic === tp ? C.signal : C.edge),
+      marginBottom: 6
+    }
+  }, tp))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: C.muted,
+      fontSize: 11,
+      marginTop: 6,
+      fontFamily: MONO
+    }
+  }, rows.length + " Wörter"), /*#__PURE__*/React.createElement("div", {
+    className: "mt-3 flex flex-col gap-2"
+  }, rows.map(it => {
+    const isOpen = open === it.id;
+    const dot = it.t === "n" ? GCOL[it.art] : C.edge;
+    return /*#__PURE__*/React.createElement("div", {
+      key: it.id,
+      className: "rounded-lg p-3",
+      style: {
+        background: C.panel,
+        border: "1px solid " + C.edge,
+        cursor: "pointer"
+      },
+      onClick: () => setOpen(isOpen ? null : it.id)
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-3"
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: 8,
+        height: 8,
+        borderRadius: 99,
+        background: dot,
+        flexShrink: 0
+      }
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1 min-w-0"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-baseline gap-2"
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 15,
+        fontWeight: 600
+      }
+    }, fullDe(it)), /*#__PURE__*/React.createElement(Eyebrow, null, TYPE_LABEL[it.t])), /*#__PURE__*/React.createElement("div", {
+      style: {
+        color: C.muted,
+        fontSize: 12,
+        marginTop: 2
+      }
+    }, it.en)), /*#__PURE__*/React.createElement(Eyebrow, {
+      color: C.muted
+    }, it.lv), /*#__PURE__*/React.createElement("button", {
+      onClick: e => {
+        e.stopPropagation();
+        speak(fullDe(it));
+      },
+      style: {
+        fontFamily: MONO,
+        fontSize: 12,
+        color: C.signal,
+        background: C.panel2,
+        border: "1px solid " + C.edge,
+        borderRadius: 99,
+        width: 30,
+        height: 30,
+        flexShrink: 0
+      }
+    }, "▶")), isOpen && it.s && /*#__PURE__*/React.createElement("div", {
+      style: {
+        marginTop: 10,
+        paddingTop: 10,
+        borderTop: "1px solid " + C.edge
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 13,
+        lineHeight: 1.5
+      }
+    }, it.s[0]), /*#__PURE__*/React.createElement("div", {
+      style: {
+        color: C.muted,
+        fontSize: 12,
+        marginTop: 4,
+        lineHeight: 1.5
+      }
+    }, it.s[1]), /*#__PURE__*/React.createElement("button", {
+      onClick: e => {
+        e.stopPropagation();
+        speak(it.s[0]);
+      },
+      className: "uppercase underline",
+      style: {
+        fontFamily: MONO,
+        fontSize: 10,
+        color: C.muted,
+        letterSpacing: "0.08em",
+        marginTop: 8
+      }
+    }, "▶ Satz hören")));
+  })));
+}
+
+/* ---------- grammar ---------- */
+function Example({
+  de,
+  en
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "rounded-lg p-3 mt-2",
+    style: {
+      background: C.panel2,
+      border: "1px solid " + C.edge
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      lineHeight: 1.5
+    }
+  }, de), /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: C.muted,
+      fontSize: 12,
+      marginTop: 4,
+      lineHeight: 1.5
+    }
+  }, en));
+}
+function GTable({
+  head,
+  rows
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      overflowX: "auto",
+      marginTop: 10
+    }
+  }, /*#__PURE__*/React.createElement("table", {
+    style: {
+      width: "100%",
+      borderCollapse: "collapse",
+      fontSize: 12
+    }
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, head.map((h, i) => /*#__PURE__*/React.createElement("th", {
+    key: i,
+    style: {
+      textAlign: "left",
+      color: C.muted,
+      fontFamily: MONO,
+      fontSize: 10,
+      letterSpacing: "0.06em",
+      padding: "6px 8px",
+      borderBottom: "1px solid " + C.edge,
+      whiteSpace: "nowrap"
+    }
+  }, h)))), /*#__PURE__*/React.createElement("tbody", null, rows.map((r, i) => /*#__PURE__*/React.createElement("tr", {
+    key: i
+  }, r.map((cell, j) => /*#__PURE__*/React.createElement("td", {
+    key: j,
+    style: {
+      padding: "6px 8px",
+      borderBottom: "1px solid " + C.line,
+      color: j === 0 ? C.paper : C.muted
+    }
+  }, cell)))))));
+}
+function GSection({
+  n,
+  title,
+  sub,
+  children
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: MONO,
+      fontSize: 11,
+      color: C.signal,
+      paddingTop: 4,
+      minWidth: 22
+    }
+  }, String(n).padStart(2, "0")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: "1 1 0%",
+      minWidth: 0
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 16,
+      fontWeight: 600
+    }
+  }, title), /*#__PURE__*/React.createElement(Eyebrow, null, sub), /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: C.muted,
+      fontSize: 13,
+      marginTop: 8,
+      lineHeight: 1.6
+    }
+  }, children)));
+}
+function P({
+  children
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 12
+    }
+  }, children);
+}
+function Grammar({
+  onBack
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "px-5 pt-8 pb-10"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onBack,
+    style: {
+      fontFamily: MONO,
+      fontSize: 11,
+      color: C.muted,
+      letterSpacing: "0.1em"
+    }
+  }, "← ZURÜCK"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: MONO,
+      fontSize: 22,
+      letterSpacing: "0.18em",
+      marginTop: 18
+    }
+  }, "GRAMMATIK"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: C.muted,
+      fontSize: 12,
+      marginTop: 8,
+      lineHeight: 1.5
+    }
+  }, "Word order, cases and tenses — the rules behind the Struktur, Fälle, Präpositionen and Zeiten cards."), /*#__PURE__*/React.createElement("div", {
+    className: "mt-8 flex flex-col gap-9"
+  }, /*#__PURE__*/React.createElement(GSection, {
+    n: 1,
+    title: "Satzstellung",
+    sub: "word order"
+  }, /*#__PURE__*/React.createElement(P, null, "Position 2. The finite verb is always the second element of a main clause — the second slot, not necessarily the second word. Move a time, place or object to the front and the subject jumps after the verb:"), /*#__PURE__*/React.createElement(Example, {
+    de: "Am Montag habe ich einen Termin.",
+    en: "On Monday I have an appointment. (habe stays in slot 2, ich moves after it)"
+  }), /*#__PURE__*/React.createElement(P, null, "Verbklammer. With a modal verb, the conjugated modal holds position 2 and the infinitive it governs is pushed all the way to the end of the clause:"), /*#__PURE__*/React.createElement(Example, {
+    de: "Ich muss heute noch die Messung machen.",
+    en: "I still have to do the measurement today."
+  }), /*#__PURE__*/React.createElement(P, null, "Verb-final. These connectors send the finite verb to the very end of their own clause:"), /*#__PURE__*/React.createElement(Example, {
+    de: "Ich lerne Deutsch, weil ich nach Deutschland ziehe.",
+    en: "I'm learning German because I'm moving to Germany."
+  }), /*#__PURE__*/React.createElement(GTable, {
+    head: ["Wort", "Bedeutung"],
+    rows: [["weil", "because"], ["dass", "that"], ["ob", "whether"], ["wenn", "if / when"], ["obwohl", "although"], ["damit", "so that"], ["sobald", "as soon as"], ["während", "while, during"]]
+  }), /*#__PURE__*/React.createElement(P, null, "Position-1 adverbs. These aren't subordinators — they just occupy position 1 themselves, so the verb still follows right after in position 2 and the subject slides to position 3:"), /*#__PURE__*/React.createElement(Example, {
+    de: "Es regnet, deshalb bleiben wir zu Hause.",
+    en: "It's raining, therefore we're staying home."
+  }), /*#__PURE__*/React.createElement(GTable, {
+    head: ["Wort", "Bedeutung"],
+    rows: [["deshalb", "therefore"], ["trotzdem", "nevertheless"], ["außerdem", "besides, moreover"]]
+  }), /*#__PURE__*/React.createElement(P, null, "Coordinators — und, aber, oder, denn — don't take a slot at all. They just glue two main clauses together; word order carries on as normal on both sides.")), /*#__PURE__*/React.createElement(GSection, {
+    n: 2,
+    title: "Fälle",
+    sub: "cases"
+  }, /*#__PURE__*/React.createElement(P, null, "The definite article changes shape with case and gender:"), /*#__PURE__*/React.createElement(GTable, {
+    head: ["Fall", "der", "die", "das", "die (Pl.)"],
+    rows: [["Nominativ", "der", "die", "das", "die"], ["Akkusativ", "den", "die", "das", "die"], ["Dativ", "dem", "der", "dem", "den"], ["Genitiv", "des", "der", "des", "der"]]
+  }), /*#__PURE__*/React.createElement(P, null, "Some verbs always take a dative object — no preposition needed. helfen and danken are the two in your deck:"), /*#__PURE__*/React.createElement(GTable, {
+    head: ["ich", "du", "er/es", "sie", "wir", "ihr", "sie/Sie"],
+    rows: [["mir", "dir", "ihm", "ihr", "uns", "euch", "ihnen"]]
+  }), /*#__PURE__*/React.createElement(Example, {
+    de: "Kannst du mir bitte helfen? — Ich danke dir für die Hilfe.",
+    en: "Can you help me, please? — I thank you for the help."
+  }), /*#__PURE__*/React.createElement(P, null, "Two-way prepositions (Wechselpräpositionen) — an, auf, hinter, in, neben, über, unter, vor, zwischen — take the accusative for movement (wohin?) and the dative for a fixed position (wo?):"), /*#__PURE__*/React.createElement(Example, {
+    de: "Er geht in die Werkstatt.",
+    en: "He's going into the workshop. — movement, so Akkusativ."
+  }), /*#__PURE__*/React.createElement(Example, {
+    de: "Das Werkzeug liegt auf dem Tisch.",
+    en: "The tool is lying on the table. — fixed position, so Dativ."
+  }), /*#__PURE__*/React.createElement(P, null, "Always-dative prepositions: aus, bei, mit, nach, seit, von, zu. Always-accusative: durch, für, gegen, ohne, um."), /*#__PURE__*/React.createElement(Example, {
+    de: "Ich fahre mit dem Bus zur Arbeit.",
+    en: "I take the bus to work."
+  }), /*#__PURE__*/React.createElement(P, null, "Verbs with a fixed preposition-and-case pairing just have to be memorised as a set:"), /*#__PURE__*/React.createElement(GTable, {
+    head: ["Verb", "Präposition", "Fall"],
+    rows: [["warten", "auf", "Akkusativ"], ["sich interessieren", "für", "Akkusativ"], ["sich bewerben", "auf", "Akkusativ"], ["arbeiten", "bei", "Dativ"], ["bestehen", "aus", "Dativ"]]
+  })), /*#__PURE__*/React.createElement(GSection, {
+    n: 3,
+    title: "Zeiten",
+    sub: "tenses"
+  }, /*#__PURE__*/React.createElement(P, null, "The spoken past (Perfekt) is haben or sein conjugated in position 2, plus a past participle pushed to the end — the same Verbklammer pattern as modal verbs:"), /*#__PURE__*/React.createElement(Example, {
+    de: "Ich habe den Antrag gestellt.",
+    en: "I submitted the application."
+  }), /*#__PURE__*/React.createElement(P, null, "Most verbs take haben. sein is for verbs of movement (gehen, fahren, kommen …) and change of state (aufwachen, werden, sterben) — plus sein and bleiben themselves:"), /*#__PURE__*/React.createElement(Example, {
+    de: "Wir sind nach Berlin gefahren.",
+    en: "We drove to Berlin."
+  })), /*#__PURE__*/React.createElement(GSection, {
+    n: 4,
+    title: "Steigerung",
+    sub: "comparison"
+  }, /*#__PURE__*/React.createElement(P, null, "Comparative adds -er, superlative is am + -sten. Short vowels often pick up an umlaut, and a few are irregular:"), /*#__PURE__*/React.createElement(GTable, {
+    head: ["Positiv", "Komparativ", "Superlativ"],
+    rows: [["schnell", "schneller", "am schnellsten"], ["groß", "größer", "am größten"], ["gut", "besser", "am besten"], ["viel", "mehr", "am meisten"]]
+  }), /*#__PURE__*/React.createElement(Example, {
+    de: "Der Zug ist schneller als das Auto.",
+    en: "The train is faster than the car."
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "mt-10 rounded-xl p-4",
+    style: {
+      background: C.panel,
+      border: "1px solid " + C.edge,
+      color: C.muted,
+      fontSize: 13,
+      lineHeight: 1.6
+    }
+  }, "These rules are exactly what the Struktur, Fälle, Präpositionen and Zeiten cards drill. Read this once for the shape of the rule, then let spaced repetition do the memorising."));
+}
+
 ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function () {
