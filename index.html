@@ -1471,6 +1471,7 @@ const DEFAULT_SAVE = {
   seen: 0,
   theme: "light",
   accent: "orange",
+  soundOn: true,
   notif: {
     dailyOn: false,
     dailyTime: "18:00",
@@ -1736,6 +1737,49 @@ function useSpeech() {
   }, []);
 }
 
+/* ---------- sound effects ---------- */
+function useSound(enabled) {
+  const ctxRef = useRef(null);
+  const getCtx = useCallback(() => {
+    if (typeof window === "undefined") return null;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    if (!ctxRef.current) ctxRef.current = new AC();
+    if (ctxRef.current.state === "suspended") ctxRef.current.resume().catch(() => {});
+    return ctxRef.current;
+  }, []);
+  const tone = useCallback((freq, start, dur, peak) => {
+    const ctx = getCtx();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.value = freq;
+    const t0 = ctx.currentTime + start;
+    gain.gain.setValueAtTime(0.0001, t0);
+    gain.gain.linearRampToValueAtTime(peak, t0 + 0.014);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(t0);
+    osc.stop(t0 + dur + 0.02);
+  }, [getCtx]);
+  const playSuccess = useCallback(() => {
+    if (!enabled) return;
+    tone(659, 0, 0.11, 0.1);
+    tone(880, 0.08, 0.18, 0.1);
+  }, [enabled, tone]);
+  const playFail = useCallback(() => {
+    if (!enabled) return;
+    tone(196, 0, 0.16, 0.08);
+    tone(147, 0.1, 0.2, 0.07);
+  }, [enabled, tone]);
+  return {
+    playSuccess,
+    playFail
+  };
+}
+
 /* ---------- small UI pieces ---------- */
 function Eyebrow({
   children,
@@ -1860,6 +1904,7 @@ function App() {
   });
   const saveRef = useRef(null);
   const speak = useSpeech();
+  const sound = useSound(!!(save && save.soundOn));
   useEffect(() => {
     loadSave().then(s => {
       setSave(s);
@@ -2198,7 +2243,8 @@ function App() {
     state: save.prog[queue[pos].id] || blankState(),
     onAnswer: answer,
     onQuit: navBack,
-    speak: speak
+    speak: speak,
+    sound: sound
   }), screen === "done" && /*#__PURE__*/React.createElement(Done, {
     tally: tally,
     save: save,
@@ -2225,17 +2271,21 @@ function App() {
     onSelect: key => nav("modes-" + key)
   }), screen === "modes-mc" && /*#__PURE__*/React.createElement(ModeMultipleChoice, {
     onExit: navBack,
-    onComplete: (score, total) => onModeComplete("mc", score, total)
+    onComplete: (score, total) => onModeComplete("mc", score, total),
+    sound: sound
   }), screen === "modes-listen" && /*#__PURE__*/React.createElement(ModeListening, {
     onExit: navBack,
     speak: speak,
-    onComplete: (score, total) => onModeComplete("listen", score, total)
+    onComplete: (score, total) => onModeComplete("listen", score, total),
+    sound: sound
   }), screen === "modes-order" && /*#__PURE__*/React.createElement(ModeOrder, {
     onExit: navBack,
-    onComplete: (score, total) => onModeComplete("order", score, total)
+    onComplete: (score, total) => onModeComplete("order", score, total),
+    sound: sound
   }), screen === "modes-match" && /*#__PURE__*/React.createElement(ModeMatch, {
     onExit: navBack,
-    onComplete: (score, total) => onModeComplete("match", score, total)
+    onComplete: (score, total) => onModeComplete("match", score, total),
+    sound: sound
   }), screen === "achievements" && /*#__PURE__*/React.createElement(Achievements, {
     onBack: navBack,
     save: save,
@@ -2392,7 +2442,8 @@ function Study({
   state,
   onAnswer,
   onQuit,
-  speak
+  speak,
+  sound
 }) {
   const item = ITEM_BY_ID[card.itemId];
   const [input, setInput] = useState("");
@@ -2412,12 +2463,16 @@ function Study({
   }, [card.id]);
   function check() {
     if (!input.trim()) return;
-    setResult(judge(input, target));
+    const r = judge(input, target);
+    setResult(r);
+    if (r === "wrong") sound.playFail();else sound.playSuccess();
   }
   function pickGender(g) {
     if (picked) return;
     setPicked(g);
-    setResult(g === item.art ? "right" : "wrong");
+    const r = g === item.art ? "right" : "wrong";
+    setResult(r);
+    if (r === "wrong") sound.playFail();else sound.playSuccess();
   }
   const revealed = result !== null;
   const accent = item.t === "n" ? GCOL[item.art] : C.signal;
@@ -3321,7 +3376,23 @@ function Settings({
       background: a.hex,
       border: save.accent === a.key ? "3px solid " + C.paper : "3px solid transparent"
     }
-  })))), /*#__PURE__*/React.createElement("div", {
+  })))), /*#__PURE__*/React.createElement(SettingsRow, {
+    title: "Soundeffekte",
+    sub: "Short chimes on right/wrong answers, in flashcards and Mehr üben."
+  }, /*#__PURE__*/React.createElement(Segmented, {
+    value: save.soundOn ? "on" : "off",
+    onChange: v => commit(s => ({
+      ...s,
+      soundOn: v === "on"
+    })),
+    options: [{
+      value: "off",
+      label: "Aus"
+    }, {
+      value: "on",
+      label: "An"
+    }]
+  })), /*#__PURE__*/React.createElement("div", {
     className: "mt-10",
     style: {
       borderTop: "1px solid " + C.edge
@@ -3492,7 +3563,8 @@ function buildMCRound(n) {
 }
 function ModeMultipleChoice({
   onExit,
-  onComplete
+  onComplete,
+  sound
 }) {
   const [round] = useState(() => buildMCRound(10));
   const [pos, setPos] = useState(0);
@@ -3523,7 +3595,12 @@ function ModeMultipleChoice({
   function choose(opt) {
     if (revealed) return;
     setPicked(opt);
-    if (opt === q.it.en) setScore(s => s + 1);
+    if (opt === q.it.en) {
+      setScore(s => s + 1);
+      sound.playSuccess();
+    } else {
+      sound.playFail();
+    }
   }
   return /*#__PURE__*/React.createElement("div", {
     className: "px-5 pt-6 pb-8 flex flex-col",
@@ -3597,7 +3674,8 @@ function buildListenRound(n) {
 function ModeListening({
   onExit,
   speak,
-  onComplete
+  onComplete,
+  sound
 }) {
   const [round] = useState(() => buildListenRound(8));
   const [pos, setPos] = useState(0);
@@ -3640,6 +3718,7 @@ function ModeListening({
     const r = judge(input, sentence[0]);
     setResult(r);
     if (r === "right") setScore(s => s + 1);
+    if (r === "wrong") sound.playFail();else sound.playSuccess();
   }
   const revealed = result !== null;
   return /*#__PURE__*/React.createElement("div", {
@@ -3742,7 +3821,8 @@ function buildOrderRound(n) {
 }
 function ModeOrder({
   onExit,
-  onComplete
+  onComplete,
+  sound
 }) {
   const [round] = useState(() => buildOrderRound(6));
   const [pos, setPos] = useState(0);
@@ -3791,7 +3871,12 @@ function ModeOrder({
     const attempt = built.map(t => t.w).join(" ");
     const ok = attempt === r.de;
     setChecked(ok ? "right" : "wrong");
-    if (ok) setScore(s => s + 1);
+    if (ok) {
+      setScore(s => s + 1);
+      sound.playSuccess();
+    } else {
+      sound.playFail();
+    }
   }
   return /*#__PURE__*/React.createElement("div", {
     className: "px-5 pt-6 pb-8 flex flex-col",
@@ -3877,7 +3962,8 @@ function buildMatchRound(n) {
 }
 function ModeMatch({
   onExit,
-  onComplete
+  onComplete,
+  sound
 }) {
   const [round, setRound] = useState(() => buildMatchRound(6));
   const [matched, setMatched] = useState([]);
@@ -3892,9 +3978,11 @@ function ModeMatch({
       setMatched(m => m.concat(selDe));
       setSelDe(null);
       setSelEn(null);
+      sound.playSuccess();
     } else {
       setWrong([selDe, selEn]);
       setMisses(m => m + 1);
+      sound.playFail();
       const t = setTimeout(() => {
         setWrong(null);
         setSelDe(null);
