@@ -1740,31 +1740,47 @@ function useSpeech() {
 /* ---------- sound effects ---------- */
 function useSound(enabled) {
   const ctxRef = useRef(null);
+  const outRef = useRef(null);
   const getCtx = useCallback(() => {
     if (typeof window === "undefined") return null;
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return null;
-    if (!ctxRef.current) ctxRef.current = new AC();
+    if (!ctxRef.current) {
+      const ctx = new AC();
+      // brickwall-ish limiter on the output bus so individual tones can run hot without clipping/distorting
+      const comp = ctx.createDynamicsCompressor();
+      comp.threshold.value = -10;
+      comp.knee.value = 4;
+      comp.ratio.value = 12;
+      comp.attack.value = 0.002;
+      comp.release.value = 0.12;
+      const boost = ctx.createGain();
+      boost.gain.value = 2.2;
+      boost.connect(comp);
+      comp.connect(ctx.destination);
+      ctxRef.current = ctx;
+      outRef.current = boost;
+    }
     return ctxRef.current;
   }, []);
-  const scheduleTone = useCallback((ctx, freq, start, dur, peak) => {
+  const scheduleTone = useCallback((ctx, freq, start, dur, peak, type) => {
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
-    osc.type = "sine";
+    osc.type = type || "triangle";
     osc.frequency.value = freq;
     const t0 = ctx.currentTime + start;
     gain.gain.setValueAtTime(0.0001, t0);
-    gain.gain.linearRampToValueAtTime(peak, t0 + 0.014);
+    gain.gain.linearRampToValueAtTime(peak, t0 + 0.012);
     gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
     osc.connect(gain);
-    gain.connect(ctx.destination);
+    gain.connect(outRef.current);
     osc.start(t0);
     osc.stop(t0 + dur + 0.02);
   }, []);
   const tones = useCallback(specs => {
     const ctx = getCtx();
     if (!ctx) return;
-    const run = () => specs.forEach(s => scheduleTone(ctx, s[0], s[1], s[2], s[3]));
+    const run = () => specs.forEach(s => scheduleTone(ctx, s[0], s[1], s[2], s[3], s[4]));
     if (ctx.state === "suspended") ctx.resume().then(run).catch(() => {});else run();
   }, [getCtx, scheduleTone]);
   const buzz = useCallback(pattern => {
@@ -1776,13 +1792,13 @@ function useSound(enabled) {
   }, []);
   const playSuccess = useCallback(() => {
     if (!enabled) return;
-    tones([[659, 0, 0.13, 0.22], [880, 0.09, 0.2, 0.22]]);
-    buzz(15);
+    tones([[659, 0, 0.14, 0.75, "triangle"], [880, 0.09, 0.22, 0.75, "triangle"]]);
+    buzz(18);
   }, [enabled, tones, buzz]);
   const playFail = useCallback(() => {
     if (!enabled) return;
-    tones([[196, 0, 0.18, 0.18], [147, 0.11, 0.22, 0.16]]);
-    buzz([0, 25, 40, 25]);
+    tones([[196, 0, 0.2, 0.7, "square"], [147, 0.12, 0.24, 0.6, "square"]]);
+    buzz([0, 30, 45, 30]);
   }, [enabled, tones, buzz]);
   return {
     playSuccess,
