@@ -1800,64 +1800,53 @@ const CUES = {
       peak: 0.4
     }]
   },
+  // Deliberately maxed out: this is as loud as the hardware can be driven.
+  // Trim sits far past unity so the whole cue lies flat against the output
+  // ceiling — measured crest factor is about 0.4dB, i.e. very nearly a
+  // full-scale square wave, and +9.7dB over the cue this replaced in the band
+  // a phone actually radiates. There is no headroom left to find; anything
+  // louder has to come from the device volume. Turn drive/gain DOWN if it ever
+  // needs to be gentler — raising them further does nothing but square it off.
   fail: {
-    drive: 7,
-    gain: 1.5,
-    buzz: [80, 60, 80, 60, 200],
-    // Two-burst klaxon, meant to be unmissable. Each burst stacks two saws a
-    // semitone apart so they beat against each other ~55 times a second: that
-    // roughness is what the ear hears as "wrong" rather than merely "loud". The
-    // beat is amplitude modulation and survives the rumble filter below — it is
-    // the sub-bass difference tone the drive generates that gets removed, not
-    // this. The second burst sits lower and sags in pitch, since a falling tone
-    // reads as failure everywhere. The noise slap on the front adds a hard edge
-    // to the attack.
+    drive: 14,
+    gain: 3.2,
+    buzz: [140, 60, 140, 60, 300],
+    // A mechanical rasp: two squares a semitone apart, chopped 30 times a
+    // second by the gate. Three things do the work — the semitone pair beats
+    // against itself for roughness, the gate stops it ever settling into a tone
+    // you can tune out, and 1.2-1.3kHz is where a phone speaker is loudest.
+    // The bandpassed noise slap on the front gives it a hard edge on attack.
+    // A conventional low game-show buzzer was measured against this and lost
+    // badly (+2.1dB vs +9.7dB): its fundamentals are below what the speaker can
+    // move, so almost nothing of it survives the trip to your ear.
     layers: [{
-      wave: "sawtooth",
-      from: 932,
+      wave: "square",
+      from: 1244,
       at: 0,
-      dur: 0.2,
-      peak: 0.85
-    }, {
-      wave: "sawtooth",
-      from: 988,
-      at: 0,
-      dur: 0.2,
-      peak: 0.85
+      dur: 0.58,
+      peak: 1,
+      gate: 30
     }, {
       wave: "square",
-      from: 1976,
+      from: 1318,
       at: 0,
-      dur: 0.2,
-      peak: 0.5
+      dur: 0.58,
+      peak: 1,
+      gate: 30
+    }, {
+      wave: "sawtooth",
+      from: 880,
+      at: 0,
+      dur: 0.58,
+      peak: 0.8,
+      gate: 30
     }, {
       noise: true,
-      band: 3200,
-      q: 0.8,
+      band: 3000,
+      q: 0.7,
       at: 0,
-      dur: 0.09,
-      peak: 0.6
-    }, {
-      wave: "sawtooth",
-      from: 698,
-      to: 588,
-      at: 0.24,
-      dur: 0.36,
-      peak: 0.9
-    }, {
-      wave: "sawtooth",
-      from: 740,
-      to: 622,
-      at: 0.24,
-      dur: 0.36,
-      peak: 0.9
-    }, {
-      wave: "square",
-      from: 1480,
-      to: 1244,
-      at: 0.24,
-      dur: 0.36,
-      peak: 0.5
+      dur: 0.08,
+      peak: 0.7
     }]
   }
 };
@@ -1883,6 +1872,10 @@ function driveCurve(amount) {
 // overshoot full scale (peaks of 1.02-1.14 even with the trim pulled right
 // down), which is the crackle this is meant to prevent. A waveshaper is a hard
 // mathematical bound instead, and cheaper.
+// How far a gated layer's LFO pulls the level down on each chop. Full depth
+// (1) leaves silent gaps, which reads as stuttering and costs average level;
+// this keeps the tone present the whole time and just mauls it rhythmically.
+const GATE_DEPTH = 0.8;
 const CEIL_KNEE = 0.7;
 const CEIL_MAX = 0.98;
 // A waveshaper's input domain is fixed at ±1, so the bus pads the signal by
@@ -1981,7 +1974,26 @@ function useSound(enabled) {
       if (layer.to) src.frequency.exponentialRampToValueAtTime(layer.to, end);
       src.connect(gain);
     }
-    gain.connect(dest);
+    // Optional gate: a square LFO chopping the layer on and off. A steady tone
+    // is easy to tune out; one hacked into ~30 slices a second is mechanical
+    // and impossible to ignore, which is the whole job of the fail cue.
+    let tail = gain;
+    if (layer.gate) {
+      const chop = ctx.createGain();
+      chop.gain.value = 1 - GATE_DEPTH / 2;
+      const lfo = ctx.createOscillator();
+      lfo.type = "square";
+      lfo.frequency.value = layer.gate;
+      const depth = ctx.createGain();
+      depth.gain.value = GATE_DEPTH / 2;
+      lfo.connect(depth);
+      depth.connect(chop.gain);
+      lfo.start(start);
+      lfo.stop(end + 0.02);
+      gain.connect(chop);
+      tail = chop;
+    }
+    tail.connect(dest);
     src.start(start);
     src.stop(end + 0.02);
   }, [getNoise]);
