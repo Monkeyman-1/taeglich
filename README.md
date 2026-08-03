@@ -26,6 +26,19 @@ The app registers a service worker (`sw.js`) that caches its files for offline u
 
 If you make a change and it doesn't show up after reopening twice, bump the cache name in `sw.js` (e.g. `taeglich-v1` → `taeglich-v2`) in the same commit — this forces the service worker to treat it as a new version and refresh the cache immediately.
 
+## Sound
+
+Every cue the app plays is defined in one place: the `CUES` table in the
+`sound effects` section of `index.html`, played through the single `useSound`
+hook that all five practice modes share. To retune a sound, change its entry in
+`CUES` — don't schedule oscillators at the call site, or modes will drift apart.
+
+Cues are mixed for a phone speaker rather than headphones: everything sits above
+~590Hz (a small speaker can barely move air below that), layers are summed hot
+and driven into a soft-clip curve to raise average level, and a rumble filter
+plus a waveshaper output ceiling keep the result bounded to 0.98 with no
+clipping. The comments in that section record what was measured and why.
+
 ## Local development
 
 Just open `index.html` in a browser, or serve the folder locally (`python3 -m http.server`) since service workers require `http(s)://`, not `file://`.

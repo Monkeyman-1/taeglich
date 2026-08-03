@@ -1732,77 +1732,313 @@ function useSpeech() {
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "de-DE";
     u.rate = rate || 0.92;
+    u.volume = 1;
     if (voice.current) u.voice = voice.current;
     window.speechSynthesis.speak(u);
   }, []);
 }
 
-/* ---------- sound effects ---------- */
+/* ---------- sound effects ----------
+   Every audible cue in the app is defined in CUES and played through this one
+   hook — study, multiple choice, listening, word order and matching all share
+   it, so tuning a cue here changes it everywhere at once. To add a cue, add an
+   entry to CUES; never schedule oscillators at a call site.
+
+   Why the cues are shaped the way they are (phone speakers, learned the hard way):
+   - A phone speaker is a few millimetres across and falls off a cliff below
+     ~500Hz, so "low and menacing" just reads as "quiet". Roughly 700Hz-4kHz is
+     both the speaker's efficient band and where human hearing is most
+     sensitive, so every cue lives up there.
+   - Once peak gain is already near 1.0, the only headroom left is harmonic
+     content and average level, not peak level. Layers are summed deliberately
+     hot and run into a soft-clip curve: saturation raises RMS (and, for the
+     fail cue, roughness) without the crackle of hard digital clipping.
+   - Loudness integrates over roughly 200ms, so a cue held flat for a moment
+     reads much louder than the same peak decaying immediately.
+*/
+
+// A cue layer is one oscillator, or one band-passed noise burst:
+//   at / dur   seconds, relative to the start of the cue
+//   peak       amplitude before drive — layers sum, the shaper catches the excess
+//   from / to  Hz; `to` sweeps the pitch over the layer (falling = failure)
+//   band / q   noise layers only: bandpass centre frequency and resonance
+// drive = soft-clip amount, buzz = navigator.vibrate pattern, and gain = trim
+// after the drive. Gains above 1 are intentional: the output ceiling below is a
+// hard bound, so pushing past unity trades crest factor for average level
+// rather than clipping. Measured against the phone-speaker band, the return
+// flattens out past ~1.4 — beyond that it only squares the waveform off.
+const CUES = {
+  success: {
+    drive: 2.5,
+    gain: 1.2,
+    buzz: [30],
+    // rising fifth with an octave doubled on top: the doubling is what carries
+    // on a small speaker, the fundamental alone sounds thin
+    layers: [{
+      wave: "triangle",
+      from: 659,
+      at: 0,
+      dur: 0.15,
+      peak: 0.7
+    }, {
+      wave: "sine",
+      from: 1318,
+      at: 0,
+      dur: 0.15,
+      peak: 0.35
+    }, {
+      wave: "triangle",
+      from: 988,
+      at: 0.11,
+      dur: 0.26,
+      peak: 0.8
+    }, {
+      wave: "sine",
+      from: 1976,
+      at: 0.11,
+      dur: 0.26,
+      peak: 0.4
+    }]
+  },
+  fail: {
+    drive: 7,
+    gain: 1.5,
+    buzz: [80, 60, 80, 60, 200],
+    // Two-burst klaxon, meant to be unmissable. Each burst stacks two saws a
+    // semitone apart so they beat against each other ~55 times a second: that
+    // roughness is what the ear hears as "wrong" rather than merely "loud". The
+    // beat is amplitude modulation and survives the rumble filter below — it is
+    // the sub-bass difference tone the drive generates that gets removed, not
+    // this. The second burst sits lower and sags in pitch, since a falling tone
+    // reads as failure everywhere. The noise slap on the front adds a hard edge
+    // to the attack.
+    layers: [{
+      wave: "sawtooth",
+      from: 932,
+      at: 0,
+      dur: 0.2,
+      peak: 0.85
+    }, {
+      wave: "sawtooth",
+      from: 988,
+      at: 0,
+      dur: 0.2,
+      peak: 0.85
+    }, {
+      wave: "square",
+      from: 1976,
+      at: 0,
+      dur: 0.2,
+      peak: 0.5
+    }, {
+      noise: true,
+      band: 3200,
+      q: 0.8,
+      at: 0,
+      dur: 0.09,
+      peak: 0.6
+    }, {
+      wave: "sawtooth",
+      from: 698,
+      to: 588,
+      at: 0.24,
+      dur: 0.36,
+      peak: 0.9
+    }, {
+      wave: "sawtooth",
+      from: 740,
+      to: 622,
+      at: 0.24,
+      dur: 0.36,
+      peak: 0.9
+    }, {
+      wave: "square",
+      from: 1480,
+      to: 1244,
+      at: 0.24,
+      dur: 0.36,
+      peak: 0.5
+    }]
+  }
+};
+// Drive curve: tanh soft-clip normalised to still span ±1. Adds harmonics —
+// louder, and at high drive grittier — where hard clipping would only crackle.
+const DRIVE_CURVES = {};
+function driveCurve(amount) {
+  if (!DRIVE_CURVES[amount]) {
+    const n = 1024;
+    const curve = new Float32Array(n);
+    for (let i = 0; i < n; i++) {
+      const x = i * 2 / (n - 1) - 1;
+      curve[i] = Math.tanh(x * amount) / Math.tanh(amount);
+    }
+    DRIVE_CURVES[amount] = curve;
+  }
+  return DRIVE_CURVES[amount];
+}
+
+// Output ceiling: unity below CEIL_KNEE, then a soft knee that can never reach
+// past CEIL_MAX no matter what is fed in. A DynamicsCompressor was tried here
+// first and measured badly — its detector lets the attack of a driven cue
+// overshoot full scale (peaks of 1.02-1.14 even with the trim pulled right
+// down), which is the crackle this is meant to prevent. A waveshaper is a hard
+// mathematical bound instead, and cheaper.
+const CEIL_KNEE = 0.7;
+const CEIL_MAX = 0.98;
+// A waveshaper's input domain is fixed at ±1, so the bus pads the signal by
+// PAD_IN and this curve is stretched by the same factor to compensate. That
+// keeps peaks up to ±2.0 on the curve instead of flat-topping everything above
+// unity — cues are summed deliberately hot and do land above 1.0.
+const PAD_IN = 0.5;
+let CEILING_CURVE = null;
+function ceilingCurve() {
+  if (!CEILING_CURVE) {
+    const n = 2048;
+    const curve = new Float32Array(n);
+    for (let i = 0; i < n; i++) {
+      const x = (i * 2 / (n - 1) - 1) / PAD_IN;
+      const a = Math.abs(x);
+      const y = a <= CEIL_KNEE ? a : CEIL_KNEE + (CEIL_MAX - CEIL_KNEE) * Math.tanh((a - CEIL_KNEE) / (CEIL_MAX - CEIL_KNEE));
+      curve[i] = x < 0 ? -y : y;
+    }
+    CEILING_CURVE = curve;
+  }
+  return CEILING_CURVE;
+}
 function useSound(enabled) {
   const ctxRef = useRef(null);
-  const outRef = useRef(null);
+  const busRef = useRef(null);
+  const noiseRef = useRef(null);
   const getCtx = useCallback(() => {
     if (typeof window === "undefined") return null;
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return null;
     if (!ctxRef.current) {
       const ctx = new AC();
-      // light safety net only — must not squash normal peaks back down, or it defeats the point
-      const comp = ctx.createDynamicsCompressor();
-      comp.threshold.value = -1;
-      comp.knee.value = 0;
-      comp.ratio.value = 20;
-      comp.attack.value = 0.001;
-      comp.release.value = 0.05;
-      comp.connect(ctx.destination);
+      const ceiling = ctx.createWaveShaper();
+      ceiling.curve = ceilingCurve();
+      // Must stay "none". Oversampling filters the signal on the way back down
+      // and that filter rings past the curve's bound — measured at peaks of
+      // 1.13-1.18 on the fail cue, i.e. the ceiling stops being a ceiling.
+      // Sample-by-sample is the only setting that actually holds the line.
+      ceiling.oversample = "none";
+      ceiling.connect(ctx.destination);
+      const pad = ctx.createGain();
+      pad.gain.value = PAD_IN;
+      pad.connect(ceiling);
+      // Rumble filter ahead of the ceiling. Driving two close tones into a
+      // soft-clip curve generates difference tones an octave or more below
+      // either of them — measured at 48% of the fail cue's total energy before
+      // this was added. A phone speaker cannot reproduce any of it, but it
+      // still eats headroom and drags the ceiling down, so the audible band
+      // ends up quieter. No cue has a fundamental below 588Hz, so this only
+      // removes what was never going to be heard anyway.
+      const rumble = ctx.createBiquadFilter();
+      rumble.type = "highpass";
+      rumble.frequency.value = 340;
+      rumble.Q.value = 0.7;
+      rumble.connect(pad);
       ctxRef.current = ctx;
-      outRef.current = comp;
+      busRef.current = rumble;
     }
     return ctxRef.current;
   }, []);
-  const scheduleTone = useCallback((ctx, freq, start, dur, peak, type) => {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = type || "square";
-    osc.frequency.value = freq;
-    const t0 = ctx.currentTime + start;
-    // fast attack, near-flat hold, short release — punchy/transient reads far louder on small speakers
-    // than a slow fade at the same peak level
-    gain.gain.setValueAtTime(0.0001, t0);
-    gain.gain.linearRampToValueAtTime(peak, t0 + 0.006);
-    gain.gain.setValueAtTime(peak, t0 + dur * 0.6);
-    gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-    osc.connect(gain);
-    gain.connect(outRef.current);
-    osc.start(t0);
-    osc.stop(t0 + dur + 0.02);
+  const getNoise = useCallback(ctx => {
+    if (!noiseRef.current) {
+      const len = Math.floor(ctx.sampleRate * 0.5);
+      const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+      noiseRef.current = buf;
+    }
+    return noiseRef.current;
   }, []);
-  const tones = useCallback(specs => {
+  const scheduleLayer = useCallback((ctx, dest, layer, t0) => {
+    const start = t0 + layer.at;
+    const end = start + layer.dur;
+    const gain = ctx.createGain();
+    // 6ms attack, flat hold, short release. The flat hold is the point: at an
+    // identical peak, a held cue reads far louder than one that decays away.
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.linearRampToValueAtTime(layer.peak, start + 0.006);
+    gain.gain.setValueAtTime(layer.peak, Math.max(start + 0.007, end - 0.03));
+    gain.gain.exponentialRampToValueAtTime(0.0001, end);
+    let src;
+    if (layer.noise) {
+      src = ctx.createBufferSource();
+      src.buffer = getNoise(ctx);
+      src.loop = true;
+      const bp = ctx.createBiquadFilter();
+      bp.type = "bandpass";
+      bp.frequency.value = layer.band;
+      bp.Q.value = layer.q || 1;
+      src.connect(bp);
+      bp.connect(gain);
+    } else {
+      src = ctx.createOscillator();
+      src.type = layer.wave || "square";
+      src.frequency.setValueAtTime(layer.from, start);
+      if (layer.to) src.frequency.exponentialRampToValueAtTime(layer.to, end);
+      src.connect(gain);
+    }
+    gain.connect(dest);
+    src.start(start);
+    src.stop(end + 0.02);
+  }, [getNoise]);
+  const playCue = useCallback(cue => {
     const ctx = getCtx();
     if (!ctx) return;
-    const run = () => specs.forEach(s => scheduleTone(ctx, s[0], s[1], s[2], s[3], s[4]));
+    const run = () => {
+      const shaper = ctx.createWaveShaper();
+      shaper.curve = driveCurve(cue.drive);
+      shaper.oversample = "2x"; // keeps the grit, without letting it alias into mush
+      const out = ctx.createGain();
+      out.gain.value = cue.gain;
+      shaper.connect(out);
+      out.connect(busRef.current);
+      // a few ms of lead-in: scheduling exactly at currentTime can shave the
+      // attack off the first layer on a slow phone
+      const t0 = ctx.currentTime + 0.01;
+      cue.layers.forEach(l => scheduleLayer(ctx, shaper, l, t0));
+    };
     if (ctx.state === "suspended") ctx.resume().then(run).catch(() => {});else run();
-  }, [getCtx, scheduleTone]);
+  }, [getCtx, scheduleLayer]);
   const buzz = useCallback(pattern => {
+    if (!pattern) return;
     if (typeof navigator !== "undefined" && navigator.vibrate) {
       try {
         navigator.vibrate(pattern);
       } catch (e) {}
     }
   }, []);
-  const playSuccess = useCallback(() => {
+  // Mobile browsers only allow an AudioContext to start inside a user gesture,
+  // and one created cold starts suspended. Unlocking on the first tap means the
+  // first cue of a session is as loud and as prompt as every one after it.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const unlock = () => {
+      const ctx = getCtx();
+      if (ctx && ctx.state === "suspended") ctx.resume().catch(() => {});
+    };
+    window.addEventListener("pointerdown", unlock, {
+      once: true,
+      capture: true
+    });
+    return () => window.removeEventListener("pointerdown", unlock, {
+      capture: true
+    });
+  }, [getCtx]);
+  const play = useCallback(name => {
     if (!enabled) return;
-    tones([[659, 0, 0.13, 0.9, "triangle"], [988, 0.1, 0.18, 0.9, "triangle"]]);
-    buzz(18);
-  }, [enabled, tones, buzz]);
-  const playFail = useCallback(() => {
-    if (!enabled) return;
-    // kept well clear of bass frequencies — small phone speakers can barely reproduce anything
-    // under ~300Hz, so a "louder" low buzzer just disappears; this stays in the speaker's efficient range
-    tones([[494, 0, 0.11, 0.95, "square"], [370, 0.1, 0.16, 0.95, "square"], [311, 0.21, 0.2, 0.9, "square"]]);
-    buzz([0, 35, 40, 35, 40, 35]);
-  }, [enabled, tones, buzz]);
+    const cue = CUES[name];
+    if (!cue) return;
+    playCue(cue);
+    buzz(cue.buzz);
+  }, [enabled, playCue, buzz]);
+  const playSuccess = useCallback(() => play("success"), [play]);
+  const playFail = useCallback(() => play("fail"), [play]);
   return {
+    play,
     playSuccess,
     playFail
   };
@@ -3298,7 +3534,8 @@ function Settings({
   function testSound() {
     sound.playSuccess();
     setSoundTested(true);
-    setTimeout(() => sound.playFail(), 500);
+    // the success cue runs ~370ms; leave it room so the two don't overlap
+    setTimeout(() => sound.playFail(), 700);
     setTimeout(() => setSoundTested(false), 3000);
   }
   const [perm, setPerm] = useState(typeof Notification === "undefined" ? "unsupported" : Notification.permission);
