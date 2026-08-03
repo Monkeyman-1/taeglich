@@ -4,19 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Täglich — Deutsch</title>
-<meta name="theme-color" content="#131419">
+<meta name="theme-color" content="#F4F0E8">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
-:root,:root[data-theme="dark"]{--ink:#131419;--panel:#1C1E25;--panel2:#252831;--line:#33374330;--edge:#3A3F4D;--paper:#ECEBE6;--muted:#8B90A0;--signal:#FF5A1F}
-:root[data-theme="light"]{--ink:#F3F1EA;--panel:#FFFFFF;--panel2:#EFEDE5;--line:#33374322;--edge:#DAD6CB;--paper:#191A1F;--muted:#6B6F7D;--signal:#FF5A1F}
-:root[data-accent="blue"]{--signal:#3D8BE0}
-:root[data-accent="green"]{--signal:#1FB37E}
-:root[data-accent="pink"]{--signal:#E0407F}
+:root,:root[data-theme="light"]{--ink:#EFE6D9;--panel:#F7EFE2;--panel2:#E8DCC9;--line:#1B1A1714;--edge:#DCCDB6;--paper:#221F19;--muted:#7E7261;--signal:#C05B34;--onsig:#FBF5EA}
+:root[data-theme="dark"]{--ink:#171614;--panel:#211F1C;--panel2:#2B2822;--line:#F4F0E814;--edge:#3A3630;--paper:#F1ECE2;--muted:#9A9184;--signal:#D4703F;--onsig:#171614}
+:root[data-accent="blue"]{--signal:#2C4A78;--onsig:#F4F6F9}
+:root[data-accent="green"]{--signal:#3E5C4B;--onsig:#F3F7F4}
+:root[data-accent="pink"]{--signal:#8E2F4A;--onsig:#FBF4F6}
+:root[data-theme="dark"][data-accent="blue"]{--signal:#7FA3D4;--onsig:#141A22}
+:root[data-theme="dark"][data-accent="green"]{--signal:#88AE95;--onsig:#141A16}
+:root[data-theme="dark"][data-accent="pink"]{--signal:#D2839C;--onsig:#1F1418}
 *,*::before,*::after{box-sizing:border-box}
-html,body{margin:0;padding:0;background:var(--ink);-webkit-text-size-adjust:100%}
+html,body{margin:0;padding:0;background:var(--ink);color:var(--paper);-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;background-image:radial-gradient(120% 68% at 10% -6%, color-mix(in oklab, var(--signal) 22%, transparent) 0%, transparent 60%),radial-gradient(95% 55% at 100% 2%, color-mix(in oklab, #2C4A78 14%, transparent) 0%, transparent 55%),radial-gradient(80% 50% at 50% 108%, color-mix(in oklab, var(--signal) 12%, transparent) 0%, transparent 60%);background-attachment:fixed}
+::selection{background:color-mix(in oklab, var(--signal) 28%, transparent)}
+.rounded-xl,.rounded-2xl{box-shadow:0 14px 34px -26px rgba(34,31,25,.4)}
+button{transition:transform 120ms ease, opacity 120ms ease}
+button:active{transform:scale(.97)}
 body{overscroll-behavior-y:none}
 button{font:inherit;background:none;border:none;cursor:pointer;color:inherit}
 button:focus-visible,input:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
@@ -374,32 +382,34 @@ const C = {
   paper: "var(--paper)",
   muted: "var(--muted)",
   signal: "var(--signal)",
-  der: "#3D8BE0",
-  die: "#E0407F",
-  das: "#1FB37E",
-  ok: "#1FB37E",
-  warn: "#F0B429",
-  bad: "#E0475B"
+  onsig: "var(--onsig)",
+  der: "#2C4A78",
+  die: "#A8365E",
+  das: "#4A7C59",
+  ok: "#4A7C59",
+  warn: "#B8791C",
+  bad: "#B23A2E"
 };
 const ACCENTS = [{
   key: "orange",
-  hex: "#FF5A1F",
-  label: "Orange"
+  hex: "#C05B34",
+  label: "Ton"
 }, {
   key: "blue",
-  hex: "#3D8BE0",
-  label: "Blau"
+  hex: "#2C4A78",
+  label: "Tinte"
 }, {
   key: "green",
-  hex: "#1FB37E",
-  label: "Grün"
+  hex: "#3E5C4B",
+  label: "Moos"
 }, {
   key: "pink",
-  hex: "#E0407F",
+  hex: "#8E2F4A",
   label: "Beere"
 }];
 const MONO = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace";
-const SANS = "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+const SANS = "-apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif";
+const SERIF = "Georgia, 'Iowan Old Style', 'Times New Roman', serif";
 const GCOL = {
   der: C.der,
   die: C.die,
@@ -1459,7 +1469,7 @@ const DEFAULT_SAVE = {
   introDay: null,
   introCount: 0,
   seen: 0,
-  theme: "dark",
+  theme: "light",
   accent: "orange",
   notif: {
     dailyOn: false,
@@ -1756,7 +1766,8 @@ function Gauge({
       style: {
         height: state === "now" ? 10 : 4,
         alignSelf: "flex-end",
-        background: state === "done" ? C.signal : state === "now" ? C.paper : C.edge,
+        background: state === "done" ? C.signal : state === "now" ? C.paper : C.line,
+        borderRadius: 99,
         transition: active ? "all 220ms ease" : "none",
         minWidth: 2
       }
@@ -1778,25 +1789,24 @@ function Key({
   disabled,
   sub
 }) {
-  const bg = tone === "solid" ? C.signal : tone === "quiet" ? "transparent" : C.panel2;
-  const fg = tone === "solid" ? "#0F1013" : C.paper;
+  const bg = tone === "solid" || tone === "quiet" ? C.signal : C.panel2;
+  const fg = tone === "solid" || tone === "quiet" ? C.onsig : C.paper;
   return /*#__PURE__*/React.createElement("button", {
     onClick: onClick,
     disabled: disabled,
-    className: "rounded-lg py-3 active:translate-y-px " + (grow ? "flex-1 px-1 " : "px-4 ") + (wide ? "w-full flex-1" : ""),
+    className: "rounded-full py-3 transition-transform active:scale-95 " + (grow ? "flex-1 px-1 " : "px-5 ") + (wide ? "w-full flex-1" : ""),
     style: {
       background: bg,
       color: fg,
-      border: "1px solid " + (tone === "solid" ? C.signal : C.edge),
-      fontFamily: MONO,
-      fontSize: grow ? 11 : 13,
-      letterSpacing: "0.04em",
+      border: "1px solid " + (tone === "quiet" || tone === "solid" ? C.signal : C.edge),
+      fontSize: grow ? 13 : 14.5,
+      fontWeight: 600,
+      letterSpacing: "-0.01em",
+      boxShadow: tone === "solid" || tone === "quiet" ? "0 8px 18px -10px " + C.signal : "0 2px 0 0 " + C.edge,
       opacity: disabled ? 0.45 : 1,
       outlineColor: C.signal
     }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "uppercase"
-  }, children), sub ? /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", null, children), sub ? /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 10,
       opacity: 0.6,
@@ -2263,226 +2273,96 @@ function Home({
   const max = Math.max(10, ...days.map(d => d.n));
   const ready = counts.due + counts.fresh;
   const doneToday = save.hist[todayKey()] || 0;
-  return /*#__PURE__*/React.createElement("div", {
-    className: "px-5 pt-8 pb-10"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "flex items-baseline justify-between"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontFamily: MONO,
-      fontSize: 30,
-      fontWeight: 700,
-      letterSpacing: "0.22em",
-      lineHeight: 1
-    }
-  }, "TÄGLICH"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      color: C.muted,
-      fontSize: 12,
-      marginTop: 8
-    }
-  }, "Deutsch für den Umzug — daily German, built for the move.")), /*#__PURE__*/React.createElement("div", {
-    className: "text-right"
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontFamily: MONO,
-      fontSize: 26,
-      color: C.signal,
-      lineHeight: 1
-    }
-  }, save.streak), /*#__PURE__*/React.createElement(Eyebrow, null, "Tage · streak"))), /*#__PURE__*/React.createElement("button", {
-    onClick: onAchievements,
-    className: "mt-5 w-full rounded-xl p-4 text-left",
-    style: {
-      background: C.panel,
-      border: "1px solid " + C.edge
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "flex items-baseline justify-between"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 15,
-      fontWeight: 700
-    }
-  }, "Level ", info.level, " · ", info.title), /*#__PURE__*/React.createElement(Eyebrow, null, save.badges.length, "/", BADGES.length, " Erfolge ›")), /*#__PURE__*/React.createElement(Eyebrow, {
-    color: C.signal
-  }, info.xp, " XP")), /*#__PURE__*/React.createElement("div", {
-    className: "mt-2 rounded-sm",
-    style: {
-      height: 6,
-      background: C.panel2,
-      overflow: "hidden"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      height: "100%",
-      width: Math.round(info.pct * 100) + "%",
-      background: C.signal
-    }
-  }))), chalDef && /*#__PURE__*/React.createElement("div", {
-    className: "mt-3 rounded-xl p-4",
-    style: {
-      background: C.panel,
-      border: "1px solid " + (chalDone ? C.ok : C.edge)
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "flex items-start justify-between gap-3"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Eyebrow, {
-    color: chalDone ? C.ok : C.muted
-  }, "Tagesaufgabe · daily challenge"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 15,
-      fontWeight: 600,
-      marginTop: 4
-    }
-  }, chalDef.title), /*#__PURE__*/React.createElement("div", {
-    style: {
-      color: C.muted,
-      fontSize: 12,
-      marginTop: 2
-    }
-  }, chalDef.desc)), /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 26,
-      height: 26,
-      borderRadius: 99,
-      flexShrink: 0,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      fontSize: 13,
-      background: chalDone ? C.ok : "transparent",
-      color: chalDone ? "#0F1013" : C.muted,
-      border: chalDone ? "none" : "1px solid " + C.edge
-    }
-  }, chalDone ? "✓" : "+" + chalDef.xp))), /*#__PURE__*/React.createElement("div", {
-    className: "mt-7 rounded-xl p-4",
-    style: {
-      background: C.panel,
-      border: "1px solid " + C.edge
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "flex justify-between"
-  }, /*#__PURE__*/React.createElement(Stat, {
-    n: counts.due,
-    l: "fällig · due"
-  }), /*#__PURE__*/React.createElement(Stat, {
-    n: counts.fresh,
-    l: "neu · new",
-    color: C.signal
-  }), /*#__PURE__*/React.createElement(Stat, {
-    n: doneToday,
-    l: "heute · today"
-  }), /*#__PURE__*/React.createElement(Stat, {
-    n: counts.started,
-    l: "im Umlauf · in play"
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "mt-5 flex gap-1 items-end",
-    style: {
-      height: 34
-    }
-  }, days.map(d => /*#__PURE__*/React.createElement("div", {
-    key: d.k,
-    className: "flex-1 flex flex-col justify-end",
-    style: {
-      height: "100%"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "rounded-sm",
-    style: {
-      height: Math.max(2, d.n / max * 34),
-      background: d.n ? d.k === todayKey() ? C.signal : C.edge : "#2A2E38"
-    }
-  })))), /*#__PURE__*/React.createElement("div", {
-    className: "mt-2 flex justify-between"
-  }, /*#__PURE__*/React.createElement(Eyebrow, null, "vor 14 Tagen"), /*#__PURE__*/React.createElement(Eyebrow, null, "heute"))), /*#__PURE__*/React.createElement("div", {
-    className: "mt-6"
-  }, /*#__PURE__*/React.createElement(Key, {
-    tone: "solid",
-    wide: true,
-    onClick: onStart,
-    disabled: ready === 0
-  }, ready === 0 ? "Alles erledigt · nothing due" : "Übung starten · start session"), ready === 0 && /*#__PURE__*/React.createElement("div", {
-    style: {
-      color: C.muted,
-      fontSize: 12,
-      marginTop: 10,
-      lineHeight: 1.5
-    }
-  }, "Nothing is due right now — that's the schedule working. Come back tomorrow, or raise the new-card limit below to pull more in.")), /*#__PURE__*/React.createElement("div", {
-    className: "mt-8"
-  }, /*#__PURE__*/React.createElement(Eyebrow, null, "Neue Karten pro Tag · new cards per day"), /*#__PURE__*/React.createElement("div", {
-    className: "flex gap-2 mt-2"
-  }, [4, 8, 12, 20].map(n => /*#__PURE__*/React.createElement("button", {
-    key: n,
-    onClick: () => onSetNew(n),
-    className: "flex-1 rounded-lg py-2",
-    style: {
-      fontFamily: MONO,
-      fontSize: 13,
-      background: save.newPerDay === n ? C.paper : C.panel,
-      color: save.newPerDay === n ? C.ink : C.muted,
-      border: "1px solid " + C.edge
-    }
-  }, n))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      color: C.muted,
-      fontSize: 11,
-      marginTop: 8,
-      lineHeight: 1.5
-    }
-  }, "Eight a day keeps the daily review load near ten minutes. Raising it raises tomorrow's workload, not today's.")), /*#__PURE__*/React.createElement("div", {
-    className: "mt-8 flex gap-2"
-  }, /*#__PURE__*/React.createElement(Key, {
-    tone: "quiet",
-    grow: true,
-    onClick: onLearn
-  }, "Wörter lernen"), /*#__PURE__*/React.createElement(Key, {
-    tone: "quiet",
-    grow: true,
-    onClick: onGrammar
-  }, "Grammatik"), /*#__PURE__*/React.createElement(Key, {
-    tone: "quiet",
-    grow: true,
-    onClick: onModes
-  }, "Mehr üben")), /*#__PURE__*/React.createElement("div", {
-    className: "mt-8 flex gap-2"
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: onWhy,
-    style: {
-      fontFamily: MONO,
-      fontSize: 11,
-      color: C.muted,
-      letterSpacing: "0.1em"
-    },
-    className: "uppercase underline"
-  }, "Warum das funktioniert · the method"), /*#__PURE__*/React.createElement("div", {
-    className: "flex-1"
-  }), /*#__PURE__*/React.createElement("button", {
-    onClick: onSettings,
-    style: {
-      fontFamily: MONO,
-      fontSize: 11,
-      color: C.muted,
-      letterSpacing: "0.1em"
-    },
-    className: "uppercase underline"
-  }, "Einstellungen"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 14
-    }
-  }), /*#__PURE__*/React.createElement("button", {
-    onClick: () => {
-      if (window.confirm("Reset all progress? This cannot be undone.")) onReset();
-    },
-    style: {
-      fontFamily: MONO,
-      fontSize: 11,
-      color: C.edge,
-      letterSpacing: "0.1em"
-    },
-    className: "uppercase"
-  }, "Zurücksetzen")));
+  const est = Math.max(1, Math.round(ready * 0.45));
+  const week = days.slice(7);
+  const DAY_LABEL = ["SO", "MO", "DI", "MI", "DO", "FR", "SA"];
+  const dateLabel = new Date().toLocaleDateString("de-DE", { weekday: "long", day: "numeric", month: "long" });
+  const e = React.createElement;
+  return e("div", { className: "px-5 pt-7 pb-10" },
+    e("div", { className: "flex items-end justify-between" },
+      e("div", null,
+        e("div", { style: { fontFamily: SERIF, fontSize: 30, lineHeight: 1 } }, "Heute"),
+        e("div", { style: { fontFamily: MONO, fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: C.muted, marginTop: 7 } }, dateLabel)
+      ),
+      e("button", { onClick: onAchievements, style: { display: "flex", gap: 7, alignItems: "center", border: "1px solid " + C.signal, color: C.signal, borderRadius: 99, padding: "7px 13px", fontFamily: MONO, fontSize: 11 } },
+        "Lvl " + info.level + " · " + info.xp + " XP")
+    ),
+
+    e("div", { className: "mt-5 rounded-xl p-5", style: { background: "linear-gradient(165deg, " + C.signal + " 0%, color-mix(in oklab, " + C.signal + " 82%, #14130F) 100%)", color: C.onsig, boxShadow: "0 18px 38px -22px " + C.signal } },
+      e("div", { className: "flex items-end justify-between" },
+        e("div", null,
+          e("div", { style: { fontFamily: MONO, fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", opacity: 0.85 } }, "Heute fällig · due today"),
+          e("div", { style: { fontFamily: SERIF, fontSize: 58, lineHeight: 0.95, marginTop: 4 } }, ready)
+        ),
+        e("div", { style: { textAlign: "right", fontSize: 12, lineHeight: 1.75, opacity: 0.92 } },
+          counts.due + " Wiederholung", e("br"), counts.fresh + " neu", e("br"), "≈ " + est + " Minuten")
+      ),
+      e("button", { onClick: onStart, disabled: ready === 0, className: "w-full mt-5 rounded-lg py-4", style: { background: C.onsig, color: C.signal, fontSize: 15, fontWeight: 700, letterSpacing: "-0.01em", opacity: ready === 0 ? 0.55 : 1 } },
+        ready === 0 ? "Alles erledigt · nothing due" : "Sitzung starten →")
+    ),
+
+    e("div", { className: "mt-3 rounded-xl p-4", style: { background: C.panel, border: "1px solid " + C.edge } },
+      e("div", { className: "flex items-baseline justify-between" },
+        e("div", { style: { fontFamily: SERIF, fontSize: 18 } }, save.streak + (save.streak === 1 ? " Tag in Folge" : " Tage in Folge")),
+        e(Eyebrow, null, doneToday + " heute geübt")
+      ),
+      e("div", { className: "flex gap-2 mt-3" }, week.map(d => {
+        const isToday = d.k === todayKey();
+        const done = d.n > 0;
+        return e("div", { key: d.k, className: "flex-1", style: { textAlign: "center" } },
+          e("div", { style: { height: 34, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontSize: done ? 14 : 11, fontFamily: done ? "inherit" : MONO, background: done ? C.signal : isToday ? "transparent" : C.panel2, color: done ? C.onsig : C.signal, border: done ? "none" : isToday ? "2px dashed " + C.signal : "1px solid " + C.edge } },
+            done ? "✓" : isToday ? "heute" : "·"),
+          e("div", { style: { fontFamily: MONO, fontSize: 9, color: isToday ? C.paper : C.muted, marginTop: 5 } }, DAY_LABEL[new Date(d.k + "T12:00:00").getDay()])
+        );
+      }))
+    ),
+
+    chalDef && e("div", { className: "mt-4 rounded-xl p-4", style: { background: C.panel, border: "1px solid " + (chalDone ? C.ok : C.signal) } },
+      e("div", { className: "flex items-center justify-between gap-3" },
+        e("div", null,
+          e(Eyebrow, { color: chalDone ? C.ok : C.signal }, "Tagesaufgabe · daily challenge"),
+          e("div", { style: { fontFamily: SERIF, fontSize: 18, marginTop: 4 } }, chalDef.title),
+          e("div", { style: { color: C.muted, fontSize: 12, marginTop: 3, lineHeight: 1.5 } }, chalDef.desc)
+        ),
+        e("div", { style: { textAlign: "center", flexShrink: 0 } },
+          e("div", { style: { fontFamily: SERIF, fontSize: 22, color: chalDone ? C.ok : C.signal } }, chalDone ? "✓" : "+" + chalDef.xp),
+          e("div", { style: { fontFamily: MONO, fontSize: 9, letterSpacing: "0.14em", color: C.muted } }, chalDone ? "fertig" : "XP")
+        )
+      )
+    ),
+
+    e("div", { className: "mt-5 rounded-xl p-4", style: { background: C.panel, border: "1px solid " + C.edge } },
+      e("div", { className: "flex justify-between" },
+        e(Stat, { n: counts.due, l: "fällig · due" }),
+        e(Stat, { n: counts.fresh, l: "neu · new", color: C.signal }),
+        e(Stat, { n: doneToday, l: "heute · today" }),
+        e(Stat, { n: counts.started, l: "im Umlauf · in play" })
+      ),
+      e("div", { className: "mt-5 flex gap-1 items-end", style: { height: 34 } }, days.map(d =>
+        e("div", { key: d.k, className: "flex-1 flex flex-col justify-end", style: { height: "100%" } },
+          e("div", { className: "rounded-sm", style: { height: Math.max(2, d.n / max * 34), background: d.n ? (d.k === todayKey() ? C.signal : "color-mix(in oklab, " + C.signal + " 42%, " + C.panel2 + ")") : C.line } })
+        )
+      )),
+      e("div", { className: "mt-2 flex justify-between" }, e(Eyebrow, null, "vor 14 Tagen"), e(Eyebrow, null, "heute"))
+    ),
+
+    ready === 0 && e("div", { style: { color: C.muted, fontSize: 12, marginTop: 12, lineHeight: 1.6 } },
+      "Nichts fällig — das ist der Plan, der funktioniert. Morgen wieder, oder unten mehr neue Karten zulassen."),
+
+    e("div", { className: "mt-7 flex gap-2" },
+      e(Key, { tone: "quiet", grow: true, onClick: onLearn }, "Wörter"),
+      e(Key, { tone: "quiet", grow: true, onClick: onGrammar }, "Grammatik"),
+      e(Key, { tone: "quiet", grow: true, onClick: onModes }, "Mehr üben")
+    ),
+
+    e("div", { className: "mt-7 flex gap-2 items-baseline" },
+      e("button", { onClick: onWhy, style: { fontFamily: MONO, fontSize: 11, color: C.muted, letterSpacing: "0.1em" }, className: "uppercase underline" }, "Die Methode"),
+      e("div", { className: "flex-1" }),
+      e("button", { onClick: onSettings, style: { fontFamily: MONO, fontSize: 11, color: C.muted, letterSpacing: "0.1em" }, className: "uppercase underline" }, "Einstellungen"),
+      e("div", { style: { width: 14 } }),
+      e("button", { onClick: () => { if (window.confirm("Reset all progress? This cannot be undone.")) onReset(); }, style: { fontFamily: MONO, fontSize: 11, color: C.edge, letterSpacing: "0.1em" }, className: "uppercase" }, "Zurücksetzen")
+    )
+  );
 }
 function Stat({
   n,
@@ -2491,10 +2371,11 @@ function Stat({
 }) {
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     style: {
-      fontFamily: MONO,
-      fontSize: 22,
+      fontFamily: SERIF,
+      fontSize: 30,
       color: color || C.paper,
-      lineHeight: 1
+      lineHeight: 1,
+      letterSpacing: "-0.02em"
     }
   }, n), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -2568,11 +2449,12 @@ function Study({
       color: C.muted
     }
   }, pos + 1, "/", total)), /*#__PURE__*/React.createElement("div", {
-    className: "mt-6 rounded-xl p-5 flex-1 flex flex-col",
+    className: "mt-6 rounded-2xl p-5 flex-1 flex flex-col",
     style: {
-      background: C.panel,
+      background: "linear-gradient(170deg, color-mix(in oklab, " + accent + " 9%, " + C.panel + ") 0%, " + C.panel + " 42%)",
       border: "1px solid " + C.edge,
-      borderLeft: "3px solid " + accent
+      borderTop: "3px solid " + accent,
+      boxShadow: "0 18px 40px -28px rgba(27,26,23,.5)"
     }
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex justify-between items-center"
@@ -2582,9 +2464,10 @@ function Study({
     className: "mt-6"
   }, card.kind === "produce" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 24,
-      lineHeight: 1.25,
-      fontWeight: 600
+      fontFamily: SERIF,
+      fontSize: 34,
+      lineHeight: 1.15,
+      letterSpacing: "-0.01em"
     }
   }, item.en), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -2594,9 +2477,10 @@ function Study({
     }
   }, item.t === "n" ? "Noun — write it with the article." : item.t === "v" ? "Verb — infinitive." : "Write it in German.")), card.kind === "gender" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 30,
-      lineHeight: 1.2,
-      fontWeight: 600
+      fontFamily: SERIF,
+      fontSize: 38,
+      lineHeight: 1.1,
+      letterSpacing: "-0.01em"
     }
   }, item.de), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -2654,7 +2538,7 @@ function Study({
         fontSize: 16,
         letterSpacing: "0.06em",
         background: isRight ? GCOL[g] : chosen ? C.bad : C.panel2,
-        color: isRight || chosen ? "#0F1013" : GCOL[g],
+        color: isRight || chosen ? C.onsig : GCOL[g],
         border: "1px solid " + (isRight || chosen ? "transparent" : C.edge)
       }
     }, g);
@@ -2793,58 +2677,37 @@ function Done({
   onHome,
   onMore
 }) {
+  const e = React.createElement;
   const acc = tally.total ? Math.round(tally.right / tally.total * 100) : 0;
-  const note = acc >= 92 ? "Very high accuracy — the cards are too easy. Push new cards per day up." : acc >= 70 ? "That accuracy band is where memory actually strengthens. Hold it here." : "Rough session — that's the material doing its job. The misses come back sooner.";
-  return /*#__PURE__*/React.createElement("div", {
-    className: "px-5 pt-10 pb-10"
-  }, /*#__PURE__*/React.createElement(Eyebrow, {
-    color: C.signal
-  }, "Sitzung beendet · session complete"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontFamily: MONO,
-      fontSize: 54,
-      lineHeight: 1,
-      marginTop: 14
-    }
-  }, acc, "%"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      color: C.muted,
-      fontSize: 12,
-      marginTop: 8
-    }
-  }, tally.right, " von ", tally.total, " richtig"), /*#__PURE__*/React.createElement("div", {
-    className: "mt-7 rounded-xl p-4 flex justify-between",
-    style: {
-      background: C.panel,
-      border: "1px solid " + C.edge
-    }
-  }, /*#__PURE__*/React.createElement(Stat, {
-    n: tally.learned,
-    l: "neu gelernt · new",
-    color: C.signal
-  }), /*#__PURE__*/React.createElement(Stat, {
-    n: tally.total,
-    l: "Karten · cards"
-  }), /*#__PURE__*/React.createElement(Stat, {
-    n: save.streak,
-    l: "Tage · streak"
-  })), /*#__PURE__*/React.createElement("div", {
-    style: {
-      color: C.paper,
-      fontSize: 14,
-      marginTop: 22,
-      lineHeight: 1.6
-    }
-  }, note), /*#__PURE__*/React.createElement("div", {
-    className: "mt-7 flex gap-2"
-  }, /*#__PURE__*/React.createElement(Key, {
-    tone: "solid",
-    wide: true,
-    onClick: onHome
-  }, "Fertig · done"), /*#__PURE__*/React.createElement(Key, {
-    wide: true,
-    onClick: onMore
-  }, "Weiter üben")));
+  const band = acc >= 92 ? "zu leicht" : acc >= 70 ? "genau richtig" : "hart verdient";
+  const note = acc >= 92 ? "Sehr hohe Trefferquote — die Karten sind zu leicht. Zieh die neuen Karten pro Tag hoch." : acc >= 70 ? "Dieses Band ist genau da, wo Gedächtnis wirklich wächst. Halt es hier." : "Harte Runde — genau das soll der Stoff tun. Die Fehler kommen früher zurück.";
+  const xp = tally.total * 2 + tally.learned * 3;
+  return e("div", { className: "px-5 pt-9 pb-10" },
+    e("div", { className: "rounded-xl p-5", style: { background: C.signal, color: C.onsig } },
+      e("div", { style: { fontFamily: MONO, fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", opacity: 0.85 } }, "Sitzung beendet · " + band),
+      e("div", { className: "flex items-end justify-between", style: { marginTop: 6 } },
+        e("div", { style: { fontFamily: SERIF, fontSize: 66, lineHeight: 0.9 } }, acc, "%"),
+        e("div", { style: { textAlign: "right", fontSize: 12, lineHeight: 1.75, opacity: 0.92 } },
+          tally.right + " von " + tally.total + " richtig", e("br"), "+" + xp + " XP", e("br"), save.streak + " Tage in Folge")
+      ),
+      e("div", { className: "flex gap-1 mt-5" }, Array.from({ length: tally.total }, (_, i) =>
+        e("div", { key: i, className: "flex-1 rounded-sm", style: { height: 5, background: C.onsig, opacity: i < tally.right ? 0.95 : 0.32 } })
+      ))
+    ),
+
+    e("div", { className: "mt-3 rounded-xl p-4 flex justify-between", style: { background: C.panel, border: "1px solid " + C.edge } },
+      e(Stat, { n: tally.learned, l: "neu gelernt · new", color: C.signal }),
+      e(Stat, { n: tally.total, l: "Karten · cards" }),
+      e(Stat, { n: save.streak, l: "Tage · streak" })
+    ),
+
+    e("div", { style: { color: C.paper, fontSize: 14, marginTop: 22, lineHeight: 1.6 } }, note),
+
+    e("div", { className: "mt-7 flex gap-2" },
+      e(Key, { tone: "solid", wide: true, onClick: onHome }, "Fertig · done"),
+      e(Key, { wide: true, onClick: onMore }, "Weiter üben")
+    )
+  );
 }
 
 /* ---------- method ---------- */
@@ -2864,12 +2727,11 @@ function Why({
     }
   }, "← ZURÜCK"), /*#__PURE__*/React.createElement("div", {
     style: {
-      fontFamily: MONO,
-      fontSize: 22,
-      letterSpacing: "0.18em",
-      marginTop: 18
+      fontFamily: SERIF,
+      fontSize: 30,
+      marginTop: 16
     }
-  }, "DIE METHODE"), /*#__PURE__*/React.createElement("div", {
+  }, "Die Methode"), /*#__PURE__*/React.createElement("div", {
     className: "mt-8 flex flex-col gap-6"
   }, rows.map((r, i) => /*#__PURE__*/React.createElement("div", {
     key: i,
@@ -2942,12 +2804,11 @@ function Learn({
     }
   }, "← ZURÜCK"), /*#__PURE__*/React.createElement("div", {
     style: {
-      fontFamily: MONO,
-      fontSize: 22,
-      letterSpacing: "0.18em",
-      marginTop: 18
+      fontFamily: SERIF,
+      fontSize: 30,
+      marginTop: 16
     }
-  }, "WÖRTER LERNEN"), /*#__PURE__*/React.createElement("div", {
+  }, "Wörter lernen"), /*#__PURE__*/React.createElement("div", {
     style: {
       color: C.muted,
       fontSize: 12,
@@ -2980,7 +2841,7 @@ function Learn({
       fontFamily: MONO,
       fontSize: 11,
       background: topic === tp ? C.signal : C.panel,
-      color: topic === tp ? "#0F1013" : C.muted,
+      color: topic === tp ? C.onsig : C.muted,
       border: "1px solid " + (topic === tp ? C.signal : C.edge),
       marginBottom: 6
     }
@@ -3009,10 +2870,11 @@ function Learn({
       className: "flex items-center gap-3"
     }, /*#__PURE__*/React.createElement("div", {
       style: {
-        width: 8,
-        height: 8,
+        width: 10,
+        height: 10,
         borderRadius: 99,
         background: dot,
+        boxShadow: "0 0 0 4px color-mix(in oklab, " + dot + " 18%, transparent)",
         flexShrink: 0
       }
     }), /*#__PURE__*/React.createElement("div", {
@@ -3205,12 +3067,11 @@ function Grammar({
     }
   }, "← ZURÜCK"), /*#__PURE__*/React.createElement("div", {
     style: {
-      fontFamily: MONO,
-      fontSize: 22,
-      letterSpacing: "0.18em",
-      marginTop: 18
+      fontFamily: SERIF,
+      fontSize: 30,
+      marginTop: 16
     }
-  }, "GRAMMATIK"), /*#__PURE__*/React.createElement("div", {
+  }, "Grammatik"), /*#__PURE__*/React.createElement("div", {
     style: {
       color: C.muted,
       fontSize: 12,
@@ -3401,12 +3262,33 @@ function Settings({
     }
   }, "← ZURÜCK"), /*#__PURE__*/React.createElement("div", {
     style: {
-      fontFamily: MONO,
-      fontSize: 22,
-      letterSpacing: "0.18em",
-      marginTop: 18
+      fontFamily: SERIF,
+      fontSize: 30,
+      marginTop: 16
     }
-  }, "EINSTELLUNGEN"), /*#__PURE__*/React.createElement(Eyebrow, null, "Erscheinungsbild"), /*#__PURE__*/React.createElement(SettingsRow, {
+  }, "Einstellungen"), /*#__PURE__*/React.createElement(Eyebrow, null, "Tagespensum"), /*#__PURE__*/React.createElement(SettingsRow, {
+    title: "Neue Karten pro Tag",
+    sub: "Acht pro Tag hält die tägliche Runde bei etwa zehn Minuten. Mehr erhöht die Last von morgen, nicht die von heute."
+  }, /*#__PURE__*/React.createElement(Segmented, {
+    value: save.newPerDay,
+    onChange: n => commit(s => ({
+      ...s,
+      newPerDay: n
+    })),
+    options: [4, 8, 12, 20].map(n => ({
+      value: n,
+      label: String(n)
+    }))
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 40,
+      borderTop: "1px solid " + C.edge
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 24
+    }
+  }, /*#__PURE__*/React.createElement(Eyebrow, null, "Erscheinungsbild")), /*#__PURE__*/React.createElement(SettingsRow, {
     title: "Thema"
   }, /*#__PURE__*/React.createElement(Segmented, {
     value: save.theme,
@@ -3678,11 +3560,11 @@ function ModeMultipleChoice({
     if (revealed && isCorrect) {
       bg = C.ok;
       bd = C.ok;
-      fg = "#0F1013";
+      fg = C.onsig;
     } else if (revealed && isPicked) {
       bg = C.bad;
       bd = C.bad;
-      fg = "#0F1013";
+      fg = C.onsig;
     }
     return /*#__PURE__*/React.createElement("button", {
       key: i,
@@ -4038,11 +3920,11 @@ function ModeMatch({
     if (isMatched) {
       bg = C.ok;
       bd = C.ok;
-      fg = "#0F1013";
+      fg = C.onsig;
     } else if (isWrong) {
       bg = C.bad;
       bd = C.bad;
-      fg = "#0F1013";
+      fg = C.onsig;
     } else if (isSel) {
       bg = C.panel2;
       bd = C.signal;
@@ -4130,12 +4012,11 @@ function Modes({
     }
   }, "← ZURÜCK"), /*#__PURE__*/React.createElement("div", {
     style: {
-      fontFamily: MONO,
-      fontSize: 22,
-      letterSpacing: "0.18em",
-      marginTop: 18
+      fontFamily: SERIF,
+      fontSize: 30,
+      marginTop: 16
     }
-  }, "MEHR ÜBEN"), /*#__PURE__*/React.createElement("div", {
+  }, "Mehr üben"), /*#__PURE__*/React.createElement("div", {
     style: {
       color: C.muted,
       fontSize: 12,
@@ -4226,12 +4107,11 @@ function Achievements({
     }
   }, "← ZURÜCK"), /*#__PURE__*/React.createElement("div", {
     style: {
-      fontFamily: MONO,
-      fontSize: 22,
-      letterSpacing: "0.18em",
-      marginTop: 18
+      fontFamily: SERIF,
+      fontSize: 30,
+      marginTop: 16
     }
-  }, "ERFOLGE"), /*#__PURE__*/React.createElement("div", {
+  }, "Erfolge"), /*#__PURE__*/React.createElement("div", {
     className: "mt-6 rounded-xl p-4",
     style: {
       background: C.panel,
