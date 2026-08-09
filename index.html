@@ -2644,6 +2644,8 @@ function Home({
       }))
     ),
 
+    e(LevelProgressCard, { save: save, onLearn: onLearn }),
+
     chalDef && e("div", { className: "mt-4 rounded-xl p-4", style: { background: C.panel, border: "1px solid " + (chalDone ? C.ok : C.signal) } },
       e("div", { className: "flex items-center justify-between gap-3" },
         e("div", null,
@@ -2709,6 +2711,39 @@ function Stat({
       marginTop: 6
     }
   }, /*#__PURE__*/React.createElement(Eyebrow, null, l)));
+}
+function LevelProgressCard({
+  save,
+  onLearn
+}) {
+  const e = React.createElement;
+  const rows = useMemo(() => levelProgress(save.prog), [save.prog]);
+  if (!rows.length) return null;
+  const finished = rows.filter(r => r.total > 0 && r.mastered === r.total);
+  return e("div", { className: "mt-3 rounded-xl p-4", style: { background: C.panel, border: "1px solid " + C.edge } },
+    e("div", { className: "flex items-baseline justify-between" },
+      e(Eyebrow, null, "Fortschritt nach Stufe · progress by level"),
+      onLearn && e("button", { onClick: onLearn, style: { fontFamily: MONO, fontSize: 10, letterSpacing: "0.1em", color: C.muted }, className: "uppercase underline" }, "Wörter ansehen")
+    ),
+    e("div", { className: "mt-3 flex flex-col gap-3" }, rows.map(r => {
+      const pctMastered = r.total ? r.mastered / r.total * 100 : 0;
+      const pctStarted = r.total ? r.started / r.total * 100 : 0;
+      const done = r.total > 0 && r.mastered === r.total;
+      return e("div", { key: r.lv },
+        e("div", { className: "flex items-baseline justify-between" },
+          e("div", { style: { fontFamily: SERIF, fontSize: 15 } }, r.lv),
+          e("div", { style: { fontFamily: MONO, fontSize: 11, color: done ? C.ok : C.muted } }, r.mastered + " / " + r.total + " gefestigt")
+        ),
+        e("div", { className: "mt-1", style: { height: 6, borderRadius: 99, background: C.line, overflow: "hidden", display: "flex" } },
+          e("div", { style: { width: pctMastered + "%", background: done ? C.ok : C.signal, flexShrink: 0 } }),
+          e("div", { style: { width: pctStarted + "%", background: C.edge, flexShrink: 0 } })
+        )
+      );
+    })),
+    finished.length > 0 && e("div", { className: "mt-3 pt-3", style: { borderTop: "1px solid " + C.edge, color: C.ok, fontSize: 12, lineHeight: 1.5 } },
+      "Alle " + finished.map(r => r.lv).join(", ") + "-Wörter gefestigt — Zeit, mehr " + finished.map(r => r.lv).join("/") + "-Wörter hinzuzufügen. " +
+      "All " + finished.map(r => r.lv).join(", ") + " words mastered — add more " + finished.map(r => r.lv).join("/") + " words.")
+  );
 }
 
 /* ---------- study ---------- */
@@ -3109,11 +3144,43 @@ const TYPE_LABEL = {
 };
 const LEARN_ITEMS = ITEMS.filter(it => it.t !== "g");
 const LEARN_TOPICS = Array.from(new Set(LEARN_ITEMS.map(it => it.tp)));
-const LEVEL_ORDER = {
-  A1: 0,
-  A2: 1,
-  B1: 2
-};
+const CEFR_LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
+const LEVEL_ORDER = Object.fromEntries(CEFR_LEVELS.map((lv, i) => [lv, i]));
+// levels that actually have words in ITEMS right now, in CEFR order — grows on its own as words are added
+const USED_LEVELS = CEFR_LEVELS.filter(lv => LEARN_ITEMS.some(it => it.lv === lv));
+
+// a word counts as mastered once every card it produced has been reviewed
+// successfully and spaced out to MATURE_DAYS+; short of that it's "in progress"
+const MATURE_DAYS = 21;
+function itemStatus(it, prog) {
+  const cards = CARDS.filter(c => c.itemId === it.id);
+  if (!cards.length) return "new";
+  let started = false,
+    mastered = true;
+  cards.forEach(c => {
+    const st = prog[c.id];
+    if (st) started = true;
+    if (!st || st.stage !== "review" || st.iv < MATURE_DAYS) mastered = false;
+  });
+  return mastered ? "mastered" : started ? "started" : "new";
+}
+function levelProgress(prog) {
+  return USED_LEVELS.map(lv => {
+    const items = LEARN_ITEMS.filter(it => it.lv === lv);
+    let mastered = 0,
+      started = 0;
+    items.forEach(it => {
+      const status = itemStatus(it, prog);
+      if (status === "mastered") mastered += 1;else if (status === "started") started += 1;
+    });
+    return {
+      lv,
+      total: items.length,
+      mastered,
+      started
+    };
+  });
+}
 function Learn({
   onBack,
   speak
@@ -3149,7 +3216,7 @@ function Learn({
     }
   }, "Browse before you drill. Tap a card to see it in a sentence, tap ▶ to hear it spoken."), /*#__PURE__*/React.createElement("div", {
     className: "mt-6 flex gap-2"
-  }, ["Alle", "A1", "A2", "B1"].map(lv => /*#__PURE__*/React.createElement("button", {
+  }, ["Alle"].concat(USED_LEVELS).map(lv => /*#__PURE__*/React.createElement("button", {
     key: lv,
     onClick: () => setLevel(lv),
     className: "flex-1 rounded-lg py-2",
