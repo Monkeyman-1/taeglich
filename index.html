@@ -1464,6 +1464,7 @@ const DEFAULT_SAVE = {
   streak: 0,
   lastDay: null,
   hist: {},
+  dayStats: {},
   newPerDay: 8,
   goal: 24,
   introDay: null,
@@ -1502,6 +1503,20 @@ async function persist(save) {
   try {
     localStorage.setItem(KEY, JSON.stringify(save));
   } catch (e) {}
+}
+// per-day totals that survive quitting and resuming: a day is the unit, not a session
+const BLANK_DAY = {
+  right: 0,
+  total: 0,
+  learned: 0,
+  sessions: 0
+};
+function dayStatsFor(save, day) {
+  const d = save && save.dayStats && save.dayStats[day || todayKey()];
+  return {
+    ...BLANK_DAY,
+    ...(d || {})
+  };
 }
 
 /* ---------- XP, levels, badges, daily challenge ---------- */
@@ -2265,6 +2280,20 @@ function App() {
   function start() {
     const q = buildSession();
     if (!q.length) return false;
+    const day = todayKey();
+    commit(s => {
+      const today = dayStatsFor(s, day);
+      return {
+        ...s,
+        dayStats: {
+          ...s.dayStats,
+          [day]: {
+            ...today,
+            sessions: today.sessions + 1
+          }
+        }
+      };
+    });
     setQueue(q);
     setPos(0);
     setTally({
@@ -2294,6 +2323,7 @@ function App() {
         const y = todayKey(Date.now() - DAY);
         streak = s.lastDay === y ? s.streak + 1 : 1;
       }
+      const today = dayStatsFor(s, day);
       return {
         ...s,
         prog: {
@@ -2301,6 +2331,15 @@ function App() {
           [card.id]: next
         },
         hist,
+        dayStats: {
+          ...s.dayStats,
+          [day]: {
+            ...today,
+            right: today.right + (grade >= 2 ? 1 : 0),
+            total: today.total + 1,
+            learned: today.learned + (isNew ? 1 : 0)
+          }
+        },
         streak,
         lastDay: day,
         seen: s.seen + 1,
@@ -2600,6 +2639,7 @@ function Home({
   const max = Math.max(10, ...days.map(d => d.n));
   const ready = counts.due + counts.fresh;
   const doneToday = save.hist[todayKey()] || 0;
+  const today = dayStatsFor(save);
   const est = Math.max(1, Math.round(ready * 0.45));
   const week = days.slice(7);
   const DAY_LABEL = ["SO", "MO", "DI", "MI", "DO", "FR", "SA"];
@@ -2631,7 +2671,9 @@ function Home({
     e("div", { className: "mt-3 rounded-xl p-4", style: { background: C.panel, border: "1px solid " + C.edge } },
       e("div", { className: "flex items-baseline justify-between" },
         e("div", { style: { fontFamily: SERIF, fontSize: 18 } }, save.streak + (save.streak === 1 ? " Tag in Folge" : " Tage in Folge")),
-        e(Eyebrow, null, doneToday + " heute geübt")
+        e(Eyebrow, null, today.total
+          ? doneToday + " heute · " + Math.round(today.right / today.total * 100) + "% richtig"
+          : doneToday + " heute geübt")
       ),
       e("div", { className: "flex gap-2 mt-3" }, week.map(d => {
         const isToday = d.k === todayKey();
@@ -2712,6 +2754,27 @@ function Stat({
     }
   }, /*#__PURE__*/React.createElement(Eyebrow, null, l)));
 }
+// the whole day's work, not just this sitting — quitting and coming back keeps counting
+function TodayTotals({
+  save
+}) {
+  const e = React.createElement;
+  const d = dayStatsFor(save);
+  if (!d.total) return null;
+  const acc = Math.round(d.right / d.total * 100);
+  return e("div", { className: "mt-3 rounded-xl p-4", style: { background: C.panel, border: "1px solid " + C.edge } },
+    e("div", { className: "flex items-baseline justify-between" },
+      e(Eyebrow, null, "Heute gesamt · today so far"),
+      e("div", { style: { fontFamily: MONO, fontSize: 11, color: C.muted } },
+        d.sessions + (d.sessions === 1 ? " Sitzung" : " Sitzungen"))
+    ),
+    e("div", { className: "mt-3 flex justify-between gap-3" },
+      e(Stat, { n: acc + "%", l: "richtig · accuracy" }),
+      e(Stat, { n: d.total, l: "Karten · cards" }),
+      e(Stat, { n: d.learned, l: "neu · new", color: C.signal })
+    )
+  );
+}
 function LevelProgressCard({
   save,
   onLearn
@@ -2772,7 +2835,9 @@ function Study({
       return () => clearTimeout(t);
     }
     if (card.kind !== "gender" && inputRef.current) inputRef.current.focus();
-  }, [card.id]);
+    // keyed on pos as well as card.id: a lapsed last card is re-queued immediately
+    // after itself, so the id alone doesn't change and the card would stay revealed
+  }, [card.id, pos]);
   function check() {
     if (!input.trim()) return;
     const r = judge(input, target);
@@ -3062,11 +3127,13 @@ function Done({
       ))
     ),
 
-    e("div", { className: "mt-3 rounded-xl p-4 flex justify-between", style: { background: C.panel, border: "1px solid " + C.edge } },
+    e("div", { className: "mt-3 rounded-xl p-4 flex justify-between gap-3", style: { background: C.panel, border: "1px solid " + C.edge } },
       e(Stat, { n: tally.learned, l: "neu gelernt · new", color: C.signal }),
       e(Stat, { n: tally.total, l: "Karten · cards" }),
       e(Stat, { n: save.streak, l: "Tage · streak" })
     ),
+
+    e(TodayTotals, { save: save }),
 
     e("div", { style: { color: C.paper, fontSize: 14, marginTop: 22, lineHeight: 1.6 } }, note),
 
