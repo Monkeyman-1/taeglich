@@ -1464,6 +1464,7 @@ const DEFAULT_SAVE = {
   streak: 0,
   lastDay: null,
   hist: {},
+  dayStats: {},
   newPerDay: 8,
   goal: 24,
   introDay: null,
@@ -1502,6 +1503,20 @@ async function persist(save) {
   try {
     localStorage.setItem(KEY, JSON.stringify(save));
   } catch (e) {}
+}
+// per-day totals that survive quitting and resuming: a day is the unit, not a session
+const BLANK_DAY = {
+  right: 0,
+  total: 0,
+  learned: 0,
+  sessions: 0
+};
+function dayStatsFor(save, day) {
+  const d = save && save.dayStats && save.dayStats[day || todayKey()];
+  return {
+    ...BLANK_DAY,
+    ...(d || {})
+  };
 }
 
 /* ---------- XP, levels, badges, daily challenge ---------- */
@@ -1732,77 +1747,325 @@ function useSpeech() {
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "de-DE";
     u.rate = rate || 0.92;
+    u.volume = 1;
     if (voice.current) u.voice = voice.current;
     window.speechSynthesis.speak(u);
   }, []);
 }
 
-/* ---------- sound effects ---------- */
+/* ---------- sound effects ----------
+   Every audible cue in the app is defined in CUES and played through this one
+   hook — study, multiple choice, listening, word order and matching all share
+   it, so tuning a cue here changes it everywhere at once. To add a cue, add an
+   entry to CUES; never schedule oscillators at a call site.
+
+   Why the cues are shaped the way they are (phone speakers, learned the hard way):
+   - A phone speaker is a few millimetres across and falls off a cliff below
+     ~500Hz, so "low and menacing" just reads as "quiet". Roughly 700Hz-4kHz is
+     both the speaker's efficient band and where human hearing is most
+     sensitive, so every cue lives up there.
+   - Once peak gain is already near 1.0, the only headroom left is harmonic
+     content and average level, not peak level. Layers are summed deliberately
+     hot and run into a soft-clip curve: saturation raises RMS (and, for the
+     fail cue, roughness) without the crackle of hard digital clipping.
+   - Loudness integrates over roughly 200ms, so a cue held flat for a moment
+     reads much louder than the same peak decaying immediately.
+*/
+
+// A cue layer is one oscillator, or one band-passed noise burst:
+//   at / dur   seconds, relative to the start of the cue
+//   peak       amplitude before drive — layers sum, the shaper catches the excess
+//   from / to  Hz; `to` sweeps the pitch over the layer (falling = failure)
+//   band / q   noise layers only: bandpass centre frequency and resonance
+// drive = soft-clip amount, buzz = navigator.vibrate pattern, and gain = trim
+// after the drive. Gains above 1 are intentional: the output ceiling below is a
+// hard bound, so pushing past unity trades crest factor for average level
+// rather than clipping. Measured against the phone-speaker band, the return
+// flattens out past ~1.4 — beyond that it only squares the waveform off.
+const CUES = {
+  success: {
+    drive: 2.5,
+    gain: 1.2,
+    buzz: [30],
+    // rising fifth with an octave doubled on top: the doubling is what carries
+    // on a small speaker, the fundamental alone sounds thin
+    layers: [{
+      wave: "triangle",
+      from: 659,
+      at: 0,
+      dur: 0.15,
+      peak: 0.7
+    }, {
+      wave: "sine",
+      from: 1318,
+      at: 0,
+      dur: 0.15,
+      peak: 0.35
+    }, {
+      wave: "triangle",
+      from: 988,
+      at: 0.11,
+      dur: 0.26,
+      peak: 0.8
+    }, {
+      wave: "sine",
+      from: 1976,
+      at: 0.11,
+      dur: 0.26,
+      peak: 0.4
+    }]
+  },
+  // Deliberately maxed out: this is as loud as the hardware can be driven.
+  // Trim sits far past unity so the whole cue lies flat against the output
+  // ceiling — measured crest factor is about 0.4dB, i.e. very nearly a
+  // full-scale square wave, and +9.7dB over the cue this replaced in the band
+  // a phone actually radiates. There is no headroom left to find; anything
+  // louder has to come from the device volume. Turn drive/gain DOWN if it ever
+  // needs to be gentler — raising them further does nothing but square it off.
+  fail: {
+    drive: 14,
+    gain: 3.2,
+    buzz: [140, 60, 140, 60, 300],
+    // A mechanical rasp: two squares a semitone apart, chopped 30 times a
+    // second by the gate. Three things do the work — the semitone pair beats
+    // against itself for roughness, the gate stops it ever settling into a tone
+    // you can tune out, and 1.2-1.3kHz is where a phone speaker is loudest.
+    // The bandpassed noise slap on the front gives it a hard edge on attack.
+    // A conventional low game-show buzzer was measured against this and lost
+    // badly (+2.1dB vs +9.7dB): its fundamentals are below what the speaker can
+    // move, so almost nothing of it survives the trip to your ear.
+    layers: [{
+      wave: "square",
+      from: 1244,
+      at: 0,
+      dur: 0.58,
+      peak: 1,
+      gate: 30
+    }, {
+      wave: "square",
+      from: 1318,
+      at: 0,
+      dur: 0.58,
+      peak: 1,
+      gate: 30
+    }, {
+      wave: "sawtooth",
+      from: 880,
+      at: 0,
+      dur: 0.58,
+      peak: 0.8,
+      gate: 30
+    }, {
+      noise: true,
+      band: 3000,
+      q: 0.7,
+      at: 0,
+      dur: 0.08,
+      peak: 0.7
+    }]
+  }
+};
+// Drive curve: tanh soft-clip normalised to still span ±1. Adds harmonics —
+// louder, and at high drive grittier — where hard clipping would only crackle.
+const DRIVE_CURVES = {};
+function driveCurve(amount) {
+  if (!DRIVE_CURVES[amount]) {
+    const n = 1024;
+    const curve = new Float32Array(n);
+    for (let i = 0; i < n; i++) {
+      const x = i * 2 / (n - 1) - 1;
+      curve[i] = Math.tanh(x * amount) / Math.tanh(amount);
+    }
+    DRIVE_CURVES[amount] = curve;
+  }
+  return DRIVE_CURVES[amount];
+}
+
+// Output ceiling: unity below CEIL_KNEE, then a soft knee that can never reach
+// past CEIL_MAX no matter what is fed in. A DynamicsCompressor was tried here
+// first and measured badly — its detector lets the attack of a driven cue
+// overshoot full scale (peaks of 1.02-1.14 even with the trim pulled right
+// down), which is the crackle this is meant to prevent. A waveshaper is a hard
+// mathematical bound instead, and cheaper.
+// How far a gated layer's LFO pulls the level down on each chop. Full depth
+// (1) leaves silent gaps, which reads as stuttering and costs average level;
+// this keeps the tone present the whole time and just mauls it rhythmically.
+const GATE_DEPTH = 0.8;
+const CEIL_KNEE = 0.7;
+const CEIL_MAX = 0.98;
+// A waveshaper's input domain is fixed at ±1, so the bus pads the signal by
+// PAD_IN and this curve is stretched by the same factor to compensate. That
+// keeps peaks up to ±2.0 on the curve instead of flat-topping everything above
+// unity — cues are summed deliberately hot and do land above 1.0.
+const PAD_IN = 0.5;
+let CEILING_CURVE = null;
+function ceilingCurve() {
+  if (!CEILING_CURVE) {
+    const n = 2048;
+    const curve = new Float32Array(n);
+    for (let i = 0; i < n; i++) {
+      const x = (i * 2 / (n - 1) - 1) / PAD_IN;
+      const a = Math.abs(x);
+      const y = a <= CEIL_KNEE ? a : CEIL_KNEE + (CEIL_MAX - CEIL_KNEE) * Math.tanh((a - CEIL_KNEE) / (CEIL_MAX - CEIL_KNEE));
+      curve[i] = x < 0 ? -y : y;
+    }
+    CEILING_CURVE = curve;
+  }
+  return CEILING_CURVE;
+}
 function useSound(enabled) {
   const ctxRef = useRef(null);
-  const outRef = useRef(null);
+  const busRef = useRef(null);
+  const noiseRef = useRef(null);
   const getCtx = useCallback(() => {
     if (typeof window === "undefined") return null;
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return null;
     if (!ctxRef.current) {
       const ctx = new AC();
-      // light safety net only — must not squash normal peaks back down, or it defeats the point
-      const comp = ctx.createDynamicsCompressor();
-      comp.threshold.value = -1;
-      comp.knee.value = 0;
-      comp.ratio.value = 20;
-      comp.attack.value = 0.001;
-      comp.release.value = 0.05;
-      comp.connect(ctx.destination);
+      const ceiling = ctx.createWaveShaper();
+      ceiling.curve = ceilingCurve();
+      // Must stay "none". Oversampling filters the signal on the way back down
+      // and that filter rings past the curve's bound — measured at peaks of
+      // 1.13-1.18 on the fail cue, i.e. the ceiling stops being a ceiling.
+      // Sample-by-sample is the only setting that actually holds the line.
+      ceiling.oversample = "none";
+      ceiling.connect(ctx.destination);
+      const pad = ctx.createGain();
+      pad.gain.value = PAD_IN;
+      pad.connect(ceiling);
+      // Rumble filter ahead of the ceiling. Driving two close tones into a
+      // soft-clip curve generates difference tones an octave or more below
+      // either of them — measured at 48% of the fail cue's total energy before
+      // this was added. A phone speaker cannot reproduce any of it, but it
+      // still eats headroom and drags the ceiling down, so the audible band
+      // ends up quieter. No cue has a fundamental below 588Hz, so this only
+      // removes what was never going to be heard anyway.
+      const rumble = ctx.createBiquadFilter();
+      rumble.type = "highpass";
+      rumble.frequency.value = 340;
+      rumble.Q.value = 0.7;
+      rumble.connect(pad);
       ctxRef.current = ctx;
-      outRef.current = comp;
+      busRef.current = rumble;
     }
     return ctxRef.current;
   }, []);
-  const scheduleTone = useCallback((ctx, freq, start, dur, peak, type) => {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = type || "square";
-    osc.frequency.value = freq;
-    const t0 = ctx.currentTime + start;
-    // fast attack, near-flat hold, short release — punchy/transient reads far louder on small speakers
-    // than a slow fade at the same peak level
-    gain.gain.setValueAtTime(0.0001, t0);
-    gain.gain.linearRampToValueAtTime(peak, t0 + 0.006);
-    gain.gain.setValueAtTime(peak, t0 + dur * 0.6);
-    gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-    osc.connect(gain);
-    gain.connect(outRef.current);
-    osc.start(t0);
-    osc.stop(t0 + dur + 0.02);
+  const getNoise = useCallback(ctx => {
+    if (!noiseRef.current) {
+      const len = Math.floor(ctx.sampleRate * 0.5);
+      const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+      noiseRef.current = buf;
+    }
+    return noiseRef.current;
   }, []);
-  const tones = useCallback(specs => {
+  const scheduleLayer = useCallback((ctx, dest, layer, t0) => {
+    const start = t0 + layer.at;
+    const end = start + layer.dur;
+    const gain = ctx.createGain();
+    // 6ms attack, flat hold, short release. The flat hold is the point: at an
+    // identical peak, a held cue reads far louder than one that decays away.
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.linearRampToValueAtTime(layer.peak, start + 0.006);
+    gain.gain.setValueAtTime(layer.peak, Math.max(start + 0.007, end - 0.03));
+    gain.gain.exponentialRampToValueAtTime(0.0001, end);
+    let src;
+    if (layer.noise) {
+      src = ctx.createBufferSource();
+      src.buffer = getNoise(ctx);
+      src.loop = true;
+      const bp = ctx.createBiquadFilter();
+      bp.type = "bandpass";
+      bp.frequency.value = layer.band;
+      bp.Q.value = layer.q || 1;
+      src.connect(bp);
+      bp.connect(gain);
+    } else {
+      src = ctx.createOscillator();
+      src.type = layer.wave || "square";
+      src.frequency.setValueAtTime(layer.from, start);
+      if (layer.to) src.frequency.exponentialRampToValueAtTime(layer.to, end);
+      src.connect(gain);
+    }
+    // Optional gate: a square LFO chopping the layer on and off. A steady tone
+    // is easy to tune out; one hacked into ~30 slices a second is mechanical
+    // and impossible to ignore, which is the whole job of the fail cue.
+    let tail = gain;
+    if (layer.gate) {
+      const chop = ctx.createGain();
+      chop.gain.value = 1 - GATE_DEPTH / 2;
+      const lfo = ctx.createOscillator();
+      lfo.type = "square";
+      lfo.frequency.value = layer.gate;
+      const depth = ctx.createGain();
+      depth.gain.value = GATE_DEPTH / 2;
+      lfo.connect(depth);
+      depth.connect(chop.gain);
+      lfo.start(start);
+      lfo.stop(end + 0.02);
+      gain.connect(chop);
+      tail = chop;
+    }
+    tail.connect(dest);
+    src.start(start);
+    src.stop(end + 0.02);
+  }, [getNoise]);
+  const playCue = useCallback(cue => {
     const ctx = getCtx();
     if (!ctx) return;
-    const run = () => specs.forEach(s => scheduleTone(ctx, s[0], s[1], s[2], s[3], s[4]));
+    const run = () => {
+      const shaper = ctx.createWaveShaper();
+      shaper.curve = driveCurve(cue.drive);
+      shaper.oversample = "2x"; // keeps the grit, without letting it alias into mush
+      const out = ctx.createGain();
+      out.gain.value = cue.gain;
+      shaper.connect(out);
+      out.connect(busRef.current);
+      // a few ms of lead-in: scheduling exactly at currentTime can shave the
+      // attack off the first layer on a slow phone
+      const t0 = ctx.currentTime + 0.01;
+      cue.layers.forEach(l => scheduleLayer(ctx, shaper, l, t0));
+    };
     if (ctx.state === "suspended") ctx.resume().then(run).catch(() => {});else run();
-  }, [getCtx, scheduleTone]);
+  }, [getCtx, scheduleLayer]);
   const buzz = useCallback(pattern => {
+    if (!pattern) return;
     if (typeof navigator !== "undefined" && navigator.vibrate) {
       try {
         navigator.vibrate(pattern);
       } catch (e) {}
     }
   }, []);
-  const playSuccess = useCallback(() => {
+  // Mobile browsers only allow an AudioContext to start inside a user gesture,
+  // and one created cold starts suspended. Unlocking on the first tap means the
+  // first cue of a session is as loud and as prompt as every one after it.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const unlock = () => {
+      const ctx = getCtx();
+      if (ctx && ctx.state === "suspended") ctx.resume().catch(() => {});
+    };
+    window.addEventListener("pointerdown", unlock, {
+      once: true,
+      capture: true
+    });
+    return () => window.removeEventListener("pointerdown", unlock, {
+      capture: true
+    });
+  }, [getCtx]);
+  const play = useCallback(name => {
     if (!enabled) return;
-    tones([[659, 0, 0.13, 0.9, "triangle"], [988, 0.1, 0.18, 0.9, "triangle"]]);
-    buzz(18);
-  }, [enabled, tones, buzz]);
-  const playFail = useCallback(() => {
-    if (!enabled) return;
-    // kept well clear of bass frequencies — small phone speakers can barely reproduce anything
-    // under ~300Hz, so a "louder" low buzzer just disappears; this stays in the speaker's efficient range
-    tones([[494, 0, 0.11, 0.95, "square"], [370, 0.1, 0.16, 0.95, "square"], [311, 0.21, 0.2, 0.9, "square"]]);
-    buzz([0, 35, 40, 35, 40, 35]);
-  }, [enabled, tones, buzz]);
+    const cue = CUES[name];
+    if (!cue) return;
+    playCue(cue);
+    buzz(cue.buzz);
+  }, [enabled, playCue, buzz]);
+  const playSuccess = useCallback(() => play("success"), [play]);
+  const playFail = useCallback(() => play("fail"), [play]);
   return {
+    play,
     playSuccess,
     playFail
   };
@@ -2017,6 +2280,20 @@ function App() {
   function start() {
     const q = buildSession();
     if (!q.length) return false;
+    const day = todayKey();
+    commit(s => {
+      const today = dayStatsFor(s, day);
+      return {
+        ...s,
+        dayStats: {
+          ...s.dayStats,
+          [day]: {
+            ...today,
+            sessions: today.sessions + 1
+          }
+        }
+      };
+    });
     setQueue(q);
     setPos(0);
     setTally({
@@ -2046,6 +2323,7 @@ function App() {
         const y = todayKey(Date.now() - DAY);
         streak = s.lastDay === y ? s.streak + 1 : 1;
       }
+      const today = dayStatsFor(s, day);
       return {
         ...s,
         prog: {
@@ -2053,6 +2331,15 @@ function App() {
           [card.id]: next
         },
         hist,
+        dayStats: {
+          ...s.dayStats,
+          [day]: {
+            ...today,
+            right: today.right + (grade >= 2 ? 1 : 0),
+            total: today.total + 1,
+            learned: today.learned + (isNew ? 1 : 0)
+          }
+        },
         streak,
         lastDay: day,
         seen: s.seen + 1,
@@ -2352,6 +2639,7 @@ function Home({
   const max = Math.max(10, ...days.map(d => d.n));
   const ready = counts.due + counts.fresh;
   const doneToday = save.hist[todayKey()] || 0;
+  const today = dayStatsFor(save);
   const est = Math.max(1, Math.round(ready * 0.45));
   const week = days.slice(7);
   const DAY_LABEL = ["SO", "MO", "DI", "MI", "DO", "FR", "SA"];
@@ -2383,7 +2671,9 @@ function Home({
     e("div", { className: "mt-3 rounded-xl p-4", style: { background: C.panel, border: "1px solid " + C.edge } },
       e("div", { className: "flex items-baseline justify-between" },
         e("div", { style: { fontFamily: SERIF, fontSize: 18 } }, save.streak + (save.streak === 1 ? " Tag in Folge" : " Tage in Folge")),
-        e(Eyebrow, null, doneToday + " heute geübt")
+        e(Eyebrow, null, today.total
+          ? doneToday + " heute · " + Math.round(today.right / today.total * 100) + "% richtig"
+          : doneToday + " heute geübt")
       ),
       e("div", { className: "flex gap-2 mt-3" }, week.map(d => {
         const isToday = d.k === todayKey();
@@ -2395,6 +2685,8 @@ function Home({
         );
       }))
     ),
+
+    e(LevelProgressCard, { save: save, onLearn: onLearn }),
 
     chalDef && e("div", { className: "mt-4 rounded-xl p-4", style: { background: C.panel, border: "1px solid " + (chalDone ? C.ok : C.signal) } },
       e("div", { className: "flex items-center justify-between gap-3" },
@@ -2462,6 +2754,60 @@ function Stat({
     }
   }, /*#__PURE__*/React.createElement(Eyebrow, null, l)));
 }
+// the whole day's work, not just this sitting — quitting and coming back keeps counting
+function TodayTotals({
+  save
+}) {
+  const e = React.createElement;
+  const d = dayStatsFor(save);
+  if (!d.total) return null;
+  const acc = Math.round(d.right / d.total * 100);
+  return e("div", { className: "mt-3 rounded-xl p-4", style: { background: C.panel, border: "1px solid " + C.edge } },
+    e("div", { className: "flex items-baseline justify-between" },
+      e(Eyebrow, null, "Heute gesamt · today so far"),
+      e("div", { style: { fontFamily: MONO, fontSize: 11, color: C.muted } },
+        d.sessions + (d.sessions === 1 ? " Sitzung" : " Sitzungen"))
+    ),
+    e("div", { className: "mt-3 flex justify-between gap-3" },
+      e(Stat, { n: acc + "%", l: "richtig · accuracy" }),
+      e(Stat, { n: d.total, l: "Karten · cards" }),
+      e(Stat, { n: d.learned, l: "neu · new", color: C.signal })
+    )
+  );
+}
+function LevelProgressCard({
+  save,
+  onLearn
+}) {
+  const e = React.createElement;
+  const rows = useMemo(() => levelProgress(save.prog), [save.prog]);
+  if (!rows.length) return null;
+  const finished = rows.filter(r => r.total > 0 && r.mastered === r.total);
+  return e("div", { className: "mt-3 rounded-xl p-4", style: { background: C.panel, border: "1px solid " + C.edge } },
+    e("div", { className: "flex items-baseline justify-between" },
+      e(Eyebrow, null, "Fortschritt nach Stufe · progress by level"),
+      onLearn && e("button", { onClick: onLearn, style: { fontFamily: MONO, fontSize: 10, letterSpacing: "0.1em", color: C.muted }, className: "uppercase underline" }, "Wörter ansehen")
+    ),
+    e("div", { className: "mt-3 flex flex-col gap-3" }, rows.map(r => {
+      const pctMastered = r.total ? r.mastered / r.total * 100 : 0;
+      const pctStarted = r.total ? r.started / r.total * 100 : 0;
+      const done = r.total > 0 && r.mastered === r.total;
+      return e("div", { key: r.lv },
+        e("div", { className: "flex items-baseline justify-between" },
+          e("div", { style: { fontFamily: SERIF, fontSize: 15 } }, r.lv),
+          e("div", { style: { fontFamily: MONO, fontSize: 11, color: done ? C.ok : C.muted } }, r.mastered + " / " + r.total + " gefestigt")
+        ),
+        e("div", { className: "mt-1", style: { height: 6, borderRadius: 99, background: C.line, overflow: "hidden", display: "flex" } },
+          e("div", { style: { width: pctMastered + "%", background: done ? C.ok : C.signal, flexShrink: 0 } }),
+          e("div", { style: { width: pctStarted + "%", background: C.edge, flexShrink: 0 } })
+        )
+      );
+    })),
+    finished.length > 0 && e("div", { className: "mt-3 pt-3", style: { borderTop: "1px solid " + C.edge, color: C.ok, fontSize: 12, lineHeight: 1.5 } },
+      "Alle " + finished.map(r => r.lv).join(", ") + "-Wörter gefestigt — Zeit, mehr " + finished.map(r => r.lv).join("/") + "-Wörter hinzuzufügen. " +
+      "All " + finished.map(r => r.lv).join(", ") + " words mastered — add more " + finished.map(r => r.lv).join("/") + " words.")
+  );
+}
 
 /* ---------- study ---------- */
 function Study({
@@ -2489,7 +2835,9 @@ function Study({
       return () => clearTimeout(t);
     }
     if (card.kind !== "gender" && inputRef.current) inputRef.current.focus();
-  }, [card.id]);
+    // keyed on pos as well as card.id: a lapsed last card is re-queued immediately
+    // after itself, so the id alone doesn't change and the card would stay revealed
+  }, [card.id, pos]);
   function check() {
     if (!input.trim()) return;
     const r = judge(input, target);
@@ -2779,11 +3127,13 @@ function Done({
       ))
     ),
 
-    e("div", { className: "mt-3 rounded-xl p-4 flex justify-between", style: { background: C.panel, border: "1px solid " + C.edge } },
+    e("div", { className: "mt-3 rounded-xl p-4 flex justify-between gap-3", style: { background: C.panel, border: "1px solid " + C.edge } },
       e(Stat, { n: tally.learned, l: "neu gelernt · new", color: C.signal }),
       e(Stat, { n: tally.total, l: "Karten · cards" }),
       e(Stat, { n: save.streak, l: "Tage · streak" })
     ),
+
+    e(TodayTotals, { save: save }),
 
     e("div", { style: { color: C.paper, fontSize: 14, marginTop: 22, lineHeight: 1.6 } }, note),
 
@@ -2861,11 +3211,43 @@ const TYPE_LABEL = {
 };
 const LEARN_ITEMS = ITEMS.filter(it => it.t !== "g");
 const LEARN_TOPICS = Array.from(new Set(LEARN_ITEMS.map(it => it.tp)));
-const LEVEL_ORDER = {
-  A1: 0,
-  A2: 1,
-  B1: 2
-};
+const CEFR_LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
+const LEVEL_ORDER = Object.fromEntries(CEFR_LEVELS.map((lv, i) => [lv, i]));
+// levels that actually have words in ITEMS right now, in CEFR order — grows on its own as words are added
+const USED_LEVELS = CEFR_LEVELS.filter(lv => LEARN_ITEMS.some(it => it.lv === lv));
+
+// a word counts as mastered once every card it produced has been reviewed
+// successfully and spaced out to MATURE_DAYS+; short of that it's "in progress"
+const MATURE_DAYS = 21;
+function itemStatus(it, prog) {
+  const cards = CARDS.filter(c => c.itemId === it.id);
+  if (!cards.length) return "new";
+  let started = false,
+    mastered = true;
+  cards.forEach(c => {
+    const st = prog[c.id];
+    if (st) started = true;
+    if (!st || st.stage !== "review" || st.iv < MATURE_DAYS) mastered = false;
+  });
+  return mastered ? "mastered" : started ? "started" : "new";
+}
+function levelProgress(prog) {
+  return USED_LEVELS.map(lv => {
+    const items = LEARN_ITEMS.filter(it => it.lv === lv);
+    let mastered = 0,
+      started = 0;
+    items.forEach(it => {
+      const status = itemStatus(it, prog);
+      if (status === "mastered") mastered += 1;else if (status === "started") started += 1;
+    });
+    return {
+      lv,
+      total: items.length,
+      mastered,
+      started
+    };
+  });
+}
 function Learn({
   onBack,
   speak
@@ -2901,7 +3283,7 @@ function Learn({
     }
   }, "Browse before you drill. Tap a card to see it in a sentence, tap ▶ to hear it spoken."), /*#__PURE__*/React.createElement("div", {
     className: "mt-6 flex gap-2"
-  }, ["Alle", "A1", "A2", "B1"].map(lv => /*#__PURE__*/React.createElement("button", {
+  }, ["Alle"].concat(USED_LEVELS).map(lv => /*#__PURE__*/React.createElement("button", {
     key: lv,
     onClick: () => setLevel(lv),
     className: "flex-1 rounded-lg py-2",
@@ -3298,7 +3680,8 @@ function Settings({
   function testSound() {
     sound.playSuccess();
     setSoundTested(true);
-    setTimeout(() => sound.playFail(), 500);
+    // the success cue runs ~370ms; leave it room so the two don't overlap
+    setTimeout(() => sound.playFail(), 700);
     setTimeout(() => setSoundTested(false), 3000);
   }
   const [perm, setPerm] = useState(typeof Notification === "undefined" ? "unsupported" : Notification.permission);
