@@ -1,6 +1,20 @@
 # Täglich — Deutsch
 
-A daily German practice app (spaced repetition, typed recall) built as a single-page, installable PWA. No build step — `index.html` is the whole app.
+A daily German practice app (spaced repetition, typed recall) built as a single-page, installable PWA. No build step — `index.html` is the whole app, and `vocab.json` is the word list.
+
+> Changing the code or adding words? Read **[CLAUDE.md](CLAUDE.md)** first — it documents the data schema, how cards are generated, and the caching rules that decide whether your change ever reaches a phone.
+
+## Adding words
+
+Words live in `vocab.json`, not in the HTML. Append to `items`, then:
+
+```bash
+node tools/validate-vocab.mjs
+```
+
+No code change is needed. A new CEFR level or topic creates its own filter tab
+and progress row automatically. The schema and card-generation rules are in
+[CLAUDE.md](CLAUDE.md#item-schema).
 
 ## One-time setup: enable GitHub Pages
 
@@ -24,7 +38,17 @@ The app registers a service worker (`sw.js`) that caches its files for offline u
 
 **To force an immediate update** after pushing a change, fully close the app and reopen it (or pull to refresh) — twice if the change doesn't appear the first time, since the first load activates the new service worker and the second load serves the new content.
 
-If you make a change and it doesn't show up after reopening twice, bump the cache name in `sw.js` (e.g. `taeglich-v1` → `taeglich-v2`) in the same commit — this forces the service worker to treat it as a new version and refresh the cache immediately.
+`index.html` and `vocab.json` are served **network-first**, so new releases and
+new words reach installed copies on their own. If you add another file that
+changes between releases, put it on that same path in `sw.js` — anything left
+cache-first will pin users to a stale copy indefinitely.
+
+### If a push doesn't appear at all
+
+Check that the deploy actually ran: **Actions → Deploy to GitHub Pages**. The
+workflow only fires for the branches listed in `.github/workflows/deploy.yml`,
+and GitHub Pages will only publish from the repository's **default** branch —
+a push to any other branch builds nothing, however healthy the commit looks.
 
 ## Sound
 
