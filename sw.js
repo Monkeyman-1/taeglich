@@ -1,5 +1,5 @@
-const CACHE = "taeglich-v13";
-const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./icon-512-maskable.png"];
+const CACHE = "taeglich-v14";
+const FILES = ["./", "./index.html", "./vocab.json", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./icon-512-maskable.png"];
 self.addEventListener("install", (e) => {
   self.skipWaiting();
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)).catch(() => {}));
@@ -15,16 +15,19 @@ self.addEventListener("fetch", (e) => {
   if (e.request.method !== "GET") return;
   const url = new URL(e.request.url);
   if (url.origin !== self.location.origin) return;
-  // The entire app is one HTML file, so serving it cache-first pins users to an old
-  // build forever. Network-first keeps it current and still works offline.
+  // The app is one HTML file and one data file. Serving either cache-first pins
+  // users to an old build — or an old word list — forever. Network-first keeps
+  // them current and still falls back to cache when offline.
   const isShell = e.request.mode === "navigate" || url.pathname.endsWith("/") || url.pathname.endsWith("/index.html");
-  if (isShell) {
+  const isVocab = url.pathname.endsWith("/vocab.json");
+  if (isShell || isVocab) {
+    const key = isVocab ? "./vocab.json" : "./index.html";
     e.respondWith(
       fetch(e.request).then((res) => {
         const copy = res.clone();
-        caches.open(CACHE).then((c) => c.put("./index.html", copy)).catch(() => {});
+        caches.open(CACHE).then((c) => c.put(key, copy)).catch(() => {});
         return res;
-      }).catch(() => caches.match("./index.html").then((hit) => hit || caches.match("./")))
+      }).catch(() => caches.match(key).then((hit) => hit || (isShell ? caches.match("./") : undefined)))
     );
     return;
   }

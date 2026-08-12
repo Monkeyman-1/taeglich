@@ -1,0 +1,24 @@
+name: Check
+
+# Runs on every branch and pull request, not just the deploy branch, so anyone
+# adding words or features gets feedback before the change reaches main.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate vocab.json
+        run: node tools/validate-vocab.mjs
+      - name: Check index.html scripts parse
+        run: node tools/check-html.mjs

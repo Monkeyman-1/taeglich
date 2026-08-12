@@ -1,0 +1,1382 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "n01",
+      "t": "n",
+      "art": "der",
+      "de": "Termin",
+      "en": "appointment",
+      "lv": "A1",
+      "tp": "Behörden",
+      "s": [
+        "Ich habe morgen einen Termin beim Amt.",
+        "I have an appointment at the office tomorrow.",
+        "Termin"
+      ]
+    },
+    {
+      "id": "n02",
+      "t": "n",
+      "art": "die",
+      "de": "Wohnung",
+      "en": "flat, apartment",
+      "lv": "A1",
+      "tp": "Umzug",
+      "s": [
+        "Wir suchen eine Wohnung in der Nähe.",
+        "We're looking for a flat nearby.",
+        "Wohnung"
+      ]
+    },
+    {
+      "id": "n03",
+      "t": "n",
+      "art": "das",
+      "de": "Amt",
+      "en": "public office",
+      "lv": "A2",
+      "tp": "Behörden",
+      "s": [
+        "Das Amt ist nur vormittags geöffnet.",
+        "The office is only open in the mornings.",
+        "Amt"
+      ]
+    },
+    {
+      "id": "n04",
+      "t": "n",
+      "art": "die",
+      "de": "Anmeldung",
+      "en": "registration",
+      "lv": "A2",
+      "tp": "Behörden",
+      "s": [
+        "Die Anmeldung beim Bürgeramt ist Pflicht.",
+        "Registering at the citizens' office is mandatory.",
+        "Anmeldung"
+      ]
+    },
+    {
+      "id": "n05",
+      "t": "n",
+      "art": "der",
+      "de": "Antrag",
+      "en": "application, formal request",
+      "lv": "A2",
+      "tp": "Behörden",
+      "s": [
+        "Ich muss einen Antrag stellen.",
+        "I have to submit an application.",
+        "Antrag"
+      ]
+    },
+    {
+      "id": "n06",
+      "t": "n",
+      "art": "die",
+      "de": "Krankenkasse",
+      "en": "health insurance provider",
+      "lv": "A2",
+      "tp": "Behörden",
+      "s": [
+        "Ohne Krankenkasse geht in Deutschland nichts.",
+        "Nothing works in Germany without health insurance.",
+        "Krankenkasse"
+      ]
+    },
+    {
+      "id": "n07",
+      "t": "n",
+      "art": "der",
+      "de": "Vertrag",
+      "en": "contract",
+      "lv": "A2",
+      "tp": "Arbeit",
+      "s": [
+        "Bitte unterschreiben Sie den Vertrag.",
+        "Please sign the contract.",
+        "Vertrag"
+      ]
+    },
+    {
+      "id": "n08",
+      "t": "n",
+      "art": "die",
+      "de": "Miete",
+      "en": "rent",
+      "lv": "A1",
+      "tp": "Umzug",
+      "s": [
+        "Die Miete ist am Ersten fällig.",
+        "The rent is due on the first.",
+        "Miete"
+      ]
+    },
+    {
+      "id": "n09",
+      "t": "n",
+      "art": "das",
+      "de": "Konto",
+      "en": "bank account",
+      "lv": "A2",
+      "tp": "Behörden",
+      "s": [
+        "Ich habe ein Konto bei einer deutschen Bank eröffnet.",
+        "I opened an account with a German bank.",
+        "Konto"
+      ]
+    },
+    {
+      "id": "n10",
+      "t": "n",
+      "art": "der",
+      "de": "Ausweis",
+      "en": "ID card",
+      "lv": "A1",
+      "tp": "Behörden",
+      "s": [
+        "Zeigen Sie mir bitte Ihren Ausweis.",
+        "Please show me your ID.",
+        "Ausweis"
+      ]
+    },
+    {
+      "id": "n11",
+      "t": "n",
+      "art": "die",
+      "de": "Steuer",
+      "en": "tax",
+      "lv": "A2",
+      "tp": "Behörden",
+      "s": [
+        "Die Steuern kommen direkt vom Gehalt.",
+        "The taxes come straight out of your salary.",
+        "Steuern"
+      ]
+    },
+    {
+      "id": "n12",
+      "t": "n",
+      "art": "das",
+      "de": "Gehalt",
+      "en": "salary",
+      "lv": "A2",
+      "tp": "Arbeit",
+      "s": [
+        "Mein Gehalt kommt am Monatsende.",
+        "My salary arrives at the end of the month.",
+        "Gehalt"
+      ]
+    },
+    {
+      "id": "n13",
+      "t": "n",
+      "art": "die",
+      "de": "Rechnung",
+      "en": "bill, invoice",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Die Rechnung kommt per Post.",
+        "The bill comes by post.",
+        "Rechnung"
+      ]
+    },
+    {
+      "id": "n14",
+      "t": "n",
+      "art": "der",
+      "de": "Bahnhof",
+      "en": "station",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Der Bahnhof ist zehn Minuten zu Fuß.",
+        "The station is ten minutes on foot.",
+        "Bahnhof"
+      ]
+    },
+    {
+      "id": "n15",
+      "t": "n",
+      "art": "die",
+      "de": "Bewerbung",
+      "en": "job application",
+      "lv": "A2",
+      "tp": "Arbeit",
+      "s": [
+        "Meine Bewerbung ist schon raus.",
+        "My application has already gone out.",
+        "Bewerbung"
+      ]
+    },
+    {
+      "id": "n16",
+      "t": "n",
+      "art": "das",
+      "de": "Vorstellungsgespräch",
+      "en": "job interview",
+      "lv": "B1",
+      "tp": "Arbeit",
+      "s": [
+        "Das Vorstellungsgespräch dauert eine Stunde.",
+        "The job interview lasts an hour.",
+        "Vorstellungsgespräch"
+      ]
+    },
+    {
+      "id": "n17",
+      "t": "n",
+      "art": "der",
+      "de": "Betrieb",
+      "en": "company, plant",
+      "lv": "B1",
+      "tp": "Arbeit",
+      "s": [
+        "Der Betrieb hat zweihundert Mitarbeiter.",
+        "The company has two hundred employees.",
+        "Betrieb"
+      ]
+    },
+    {
+      "id": "n18",
+      "t": "n",
+      "art": "die",
+      "de": "Besprechung",
+      "en": "meeting",
+      "lv": "A2",
+      "tp": "Arbeit",
+      "s": [
+        "Die Besprechung beginnt um neun.",
+        "The meeting starts at nine.",
+        "Besprechung"
+      ]
+    },
+    {
+      "id": "n19",
+      "t": "n",
+      "art": "die",
+      "de": "Frist",
+      "en": "deadline",
+      "lv": "B1",
+      "tp": "Arbeit",
+      "s": [
+        "Die Frist läuft am Freitag ab.",
+        "The deadline expires on Friday.",
+        "Frist"
+      ]
+    },
+    {
+      "id": "n20",
+      "t": "n",
+      "art": "der",
+      "de": "Kollege",
+      "en": "colleague",
+      "lv": "A1",
+      "tp": "Arbeit",
+      "s": [
+        "Mein Kollege hilft mir dabei.",
+        "My colleague is helping me with it.",
+        "Kollege"
+      ]
+    },
+    {
+      "id": "n21",
+      "t": "n",
+      "art": "die",
+      "de": "Erfahrung",
+      "en": "experience",
+      "lv": "A2",
+      "tp": "Arbeit",
+      "s": [
+        "Ich habe Erfahrung mit mobilen Robotern.",
+        "I have experience with mobile robots.",
+        "Erfahrung"
+      ]
+    },
+    {
+      "id": "n22",
+      "t": "n",
+      "art": "das",
+      "de": "Angebot",
+      "en": "offer, quote",
+      "lv": "A2",
+      "tp": "Arbeit",
+      "s": [
+        "Ich schicke Ihnen ein Angebot.",
+        "I'll send you a quote.",
+        "Angebot"
+      ]
+    },
+    {
+      "id": "n23",
+      "t": "n",
+      "art": "die",
+      "de": "Werkstatt",
+      "en": "workshop",
+      "lv": "A2",
+      "tp": "Technik",
+      "s": [
+        "Der Roboter steht in der Werkstatt.",
+        "The robot is in the workshop.",
+        "Werkstatt"
+      ]
+    },
+    {
+      "id": "n24",
+      "t": "n",
+      "art": "das",
+      "de": "Werkzeug",
+      "en": "tool",
+      "lv": "A1",
+      "tp": "Technik",
+      "s": [
+        "Gib mir bitte das Werkzeug.",
+        "Pass me the tool, please.",
+        "Werkzeug"
+      ]
+    },
+    {
+      "id": "n25",
+      "t": "n",
+      "art": "die",
+      "de": "Schraube",
+      "en": "screw",
+      "lv": "A2",
+      "tp": "Technik",
+      "s": [
+        "Die Schraube ist zu locker.",
+        "The screw is too loose.",
+        "Schraube"
+      ]
+    },
+    {
+      "id": "n26",
+      "t": "n",
+      "art": "das",
+      "de": "Zahnrad",
+      "en": "gear, cogwheel",
+      "lv": "B1",
+      "tp": "Technik",
+      "s": [
+        "Das Zahnrad greift nicht richtig.",
+        "The gear isn't meshing properly.",
+        "Zahnrad"
+      ]
+    },
+    {
+      "id": "n27",
+      "t": "n",
+      "art": "der",
+      "de": "Motor",
+      "en": "motor, engine",
+      "lv": "A1",
+      "tp": "Technik",
+      "s": [
+        "Der Motor läuft ruhig.",
+        "The motor runs quietly.",
+        "Motor"
+      ]
+    },
+    {
+      "id": "n28",
+      "t": "n",
+      "art": "die",
+      "de": "Steuerung",
+      "en": "control system",
+      "lv": "B1",
+      "tp": "Technik",
+      "s": [
+        "Die Steuerung reagiert zu langsam.",
+        "The control system responds too slowly.",
+        "Steuerung"
+      ]
+    },
+    {
+      "id": "n29",
+      "t": "n",
+      "art": "der",
+      "de": "Sensor",
+      "en": "sensor",
+      "lv": "A2",
+      "tp": "Technik",
+      "s": [
+        "Der Sensor misst die Temperatur.",
+        "The sensor measures the temperature.",
+        "Sensor"
+      ]
+    },
+    {
+      "id": "n30",
+      "t": "n",
+      "art": "die",
+      "de": "Messung",
+      "en": "measurement",
+      "lv": "B1",
+      "tp": "Technik",
+      "s": [
+        "Die Messung war ungenau.",
+        "The measurement was imprecise.",
+        "Messung"
+      ]
+    },
+    {
+      "id": "n31",
+      "t": "n",
+      "art": "der",
+      "de": "Versuch",
+      "en": "test, attempt",
+      "lv": "A2",
+      "tp": "Technik",
+      "s": [
+        "Der Versuch hat funktioniert.",
+        "The test worked.",
+        "Versuch"
+      ]
+    },
+    {
+      "id": "n32",
+      "t": "n",
+      "art": "die",
+      "de": "Zeichnung",
+      "en": "drawing",
+      "lv": "A2",
+      "tp": "Technik",
+      "s": [
+        "Auf der Zeichnung fehlt eine Maßangabe.",
+        "A dimension is missing from the drawing.",
+        "Zeichnung"
+      ]
+    },
+    {
+      "id": "n33",
+      "t": "n",
+      "art": "das",
+      "de": "Bauteil",
+      "en": "component, part",
+      "lv": "B1",
+      "tp": "Technik",
+      "s": [
+        "Das Bauteil ist aus Aluminium.",
+        "The component is made of aluminium.",
+        "Bauteil"
+      ]
+    },
+    {
+      "id": "n34",
+      "t": "n",
+      "art": "der",
+      "de": "Werkstoff",
+      "en": "material",
+      "lv": "B1",
+      "tp": "Technik",
+      "s": [
+        "Welcher Werkstoff ist am besten?",
+        "Which material is best?",
+        "Werkstoff"
+      ]
+    },
+    {
+      "id": "n35",
+      "t": "n",
+      "art": "die",
+      "de": "Festigkeit",
+      "en": "strength (of material)",
+      "lv": "B1",
+      "tp": "Technik",
+      "s": [
+        "Die Festigkeit reicht nicht aus.",
+        "The strength isn't sufficient.",
+        "Festigkeit"
+      ]
+    },
+    {
+      "id": "v01",
+      "t": "v",
+      "de": "sich anmelden",
+      "en": "to register",
+      "lv": "A2",
+      "tp": "Behörden",
+      "s": [
+        "Ich muss mich beim Bürgeramt anmelden.",
+        "I have to register at the citizens' office.",
+        "anmelden"
+      ]
+    },
+    {
+      "id": "v02",
+      "t": "v",
+      "de": "beantragen",
+      "en": "to apply for",
+      "lv": "B1",
+      "tp": "Behörden",
+      "s": [
+        "Wir beantragen eine Aufenthaltserlaubnis.",
+        "We're applying for a residence permit.",
+        "beantragen"
+      ]
+    },
+    {
+      "id": "v03",
+      "t": "v",
+      "de": "unterschreiben",
+      "en": "to sign",
+      "lv": "A2",
+      "tp": "Behörden",
+      "s": [
+        "Unterschreiben Sie bitte hier.",
+        "Please sign here.",
+        "Unterschreiben"
+      ]
+    },
+    {
+      "id": "v04",
+      "t": "v",
+      "de": "einstellen",
+      "en": "to hire; to adjust",
+      "lv": "B1",
+      "tp": "Arbeit",
+      "s": [
+        "Die Firma stellt zwei Ingenieure ein.",
+        "The company is hiring two engineers.",
+        "stellt"
+      ]
+    },
+    {
+      "id": "v05",
+      "t": "v",
+      "de": "kündigen",
+      "en": "to hand in notice",
+      "lv": "B1",
+      "tp": "Arbeit",
+      "s": [
+        "Ich habe zum Monatsende gekündigt.",
+        "I handed in my notice for the end of the month.",
+        "gekündigt"
+      ]
+    },
+    {
+      "id": "v06",
+      "t": "v",
+      "de": "funktionieren",
+      "en": "to work, to function",
+      "lv": "A2",
+      "tp": "Technik",
+      "s": [
+        "Der Sensor funktioniert nicht.",
+        "The sensor isn't working.",
+        "funktioniert"
+      ]
+    },
+    {
+      "id": "v07",
+      "t": "v",
+      "de": "messen",
+      "en": "to measure",
+      "lv": "A2",
+      "tp": "Technik",
+      "s": [
+        "Wir messen den Abstand.",
+        "We're measuring the distance.",
+        "messen"
+      ]
+    },
+    {
+      "id": "v08",
+      "t": "v",
+      "de": "berechnen",
+      "en": "to calculate",
+      "lv": "B1",
+      "tp": "Technik",
+      "s": [
+        "Ich berechne die Kraft.",
+        "I'm calculating the force.",
+        "berechne"
+      ]
+    },
+    {
+      "id": "v09",
+      "t": "v",
+      "de": "entwickeln",
+      "en": "to develop",
+      "lv": "B1",
+      "tp": "Technik",
+      "s": [
+        "Wir entwickeln einen neuen Antrieb.",
+        "We're developing a new drive system.",
+        "entwickeln"
+      ]
+    },
+    {
+      "id": "v10",
+      "t": "v",
+      "de": "anschließen",
+      "en": "to connect (plug in)",
+      "lv": "A2",
+      "tp": "Technik",
+      "s": [
+        "Schließ bitte das Kabel an.",
+        "Please plug in the cable.",
+        "an"
+      ]
+    },
+    {
+      "id": "v11",
+      "t": "v",
+      "de": "einschalten",
+      "en": "to switch on",
+      "lv": "A1",
+      "tp": "Technik",
+      "s": [
+        "Schalte die Maschine ein.",
+        "Switch the machine on.",
+        "ein"
+      ]
+    },
+    {
+      "id": "v12",
+      "t": "v",
+      "de": "ausschalten",
+      "en": "to switch off",
+      "lv": "A1",
+      "tp": "Technik",
+      "s": [
+        "Bitte schalte den Motor aus.",
+        "Please switch the motor off.",
+        "aus"
+      ]
+    },
+    {
+      "id": "v13",
+      "t": "v",
+      "de": "erklären",
+      "en": "to explain",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Kannst du mir das erklären?",
+        "Can you explain that to me?",
+        "erklären"
+      ]
+    },
+    {
+      "id": "v14",
+      "t": "v",
+      "de": "verstehen",
+      "en": "to understand",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich verstehe die Frage nicht.",
+        "I don't understand the question.",
+        "verstehe"
+      ]
+    },
+    {
+      "id": "v15",
+      "t": "v",
+      "de": "brauchen",
+      "en": "to need",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich brauche mehr Zeit.",
+        "I need more time.",
+        "brauche"
+      ]
+    },
+    {
+      "id": "v16",
+      "t": "v",
+      "de": "dauern",
+      "en": "to take (time)",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Das dauert zwei Wochen.",
+        "That takes two weeks.",
+        "dauert"
+      ]
+    },
+    {
+      "id": "v17",
+      "t": "v",
+      "de": "anfangen",
+      "en": "to begin",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Wann fängst du an?",
+        "When do you start?",
+        "an"
+      ]
+    },
+    {
+      "id": "v18",
+      "t": "v",
+      "de": "aufhören",
+      "en": "to stop",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Hör bitte damit auf.",
+        "Please stop that.",
+        "auf"
+      ]
+    },
+    {
+      "id": "v19",
+      "t": "v",
+      "de": "sich freuen auf",
+      "en": "to look forward to",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Ich freue mich auf den Umzug.",
+        "I'm looking forward to the move.",
+        "freue"
+      ]
+    },
+    {
+      "id": "v20",
+      "t": "v",
+      "de": "sich kümmern um",
+      "en": "to take care of",
+      "lv": "B1",
+      "tp": "Alltag",
+      "s": [
+        "Ich kümmere mich um die Anmeldung.",
+        "I'll take care of the registration.",
+        "kümmere"
+      ]
+    },
+    {
+      "id": "v21",
+      "t": "v",
+      "de": "wohnen",
+      "en": "to live, to reside",
+      "lv": "A1",
+      "tp": "Umzug",
+      "s": [
+        "Ich wohne seit einem Jahr hier.",
+        "I've been living here for a year.",
+        "wohne"
+      ]
+    },
+    {
+      "id": "v22",
+      "t": "v",
+      "de": "umziehen",
+      "en": "to move house",
+      "lv": "A2",
+      "tp": "Umzug",
+      "s": [
+        "Wir ziehen im Mai nach München um.",
+        "We're moving to Munich in May.",
+        "um"
+      ]
+    },
+    {
+      "id": "v23",
+      "t": "v",
+      "de": "abholen",
+      "en": "to pick up, collect",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich hole dich am Bahnhof ab.",
+        "I'll pick you up at the station.",
+        "ab"
+      ]
+    },
+    {
+      "id": "v24",
+      "t": "v",
+      "de": "besprechen",
+      "en": "to discuss",
+      "lv": "B1",
+      "tp": "Arbeit",
+      "s": [
+        "Wir besprechen das morgen.",
+        "We'll discuss that tomorrow.",
+        "besprechen"
+      ]
+    },
+    {
+      "id": "v25",
+      "t": "v",
+      "de": "bauen",
+      "en": "to build",
+      "lv": "A1",
+      "tp": "Technik",
+      "s": [
+        "Er baut einen Roboter.",
+        "He's building a robot.",
+        "baut"
+      ]
+    },
+    {
+      "id": "a01",
+      "t": "a",
+      "de": "genau",
+      "en": "exact, precise",
+      "lv": "A1",
+      "tp": "Technik",
+      "s": [
+        "Das ist nicht genau genug.",
+        "That isn't precise enough.",
+        "genau"
+      ]
+    },
+    {
+      "id": "a02",
+      "t": "a",
+      "de": "günstig",
+      "en": "cheap, favourable",
+      "lv": "A2",
+      "tp": "Umzug",
+      "s": [
+        "Die Wohnung ist ziemlich günstig.",
+        "The flat is fairly cheap.",
+        "günstig"
+      ]
+    },
+    {
+      "id": "a03",
+      "t": "a",
+      "de": "schwierig",
+      "en": "difficult",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Die Grammatik ist am Anfang schwierig.",
+        "The grammar is difficult at the start.",
+        "schwierig"
+      ]
+    },
+    {
+      "id": "a04",
+      "t": "a",
+      "de": "wichtig",
+      "en": "important",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Das ist mir sehr wichtig.",
+        "That's very important to me.",
+        "wichtig"
+      ]
+    },
+    {
+      "id": "a05",
+      "t": "a",
+      "de": "möglich",
+      "en": "possible",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Ist das bis Freitag möglich?",
+        "Is that possible by Friday?",
+        "möglich"
+      ]
+    },
+    {
+      "id": "a06",
+      "t": "a",
+      "de": "fertig",
+      "en": "finished, ready",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich bin gleich fertig.",
+        "I'll be finished in a moment.",
+        "fertig"
+      ]
+    },
+    {
+      "id": "a07",
+      "t": "a",
+      "de": "zuverlässig",
+      "en": "reliable",
+      "lv": "B1",
+      "tp": "Arbeit",
+      "s": [
+        "Der Kollege ist sehr zuverlässig.",
+        "That colleague is very reliable.",
+        "zuverlässig"
+      ]
+    },
+    {
+      "id": "a08",
+      "t": "a",
+      "de": "ungefähr",
+      "en": "approximately",
+      "lv": "A2",
+      "tp": "Technik",
+      "s": [
+        "Es wiegt ungefähr zwei Kilo.",
+        "It weighs approximately two kilos.",
+        "ungefähr"
+      ]
+    },
+    {
+      "id": "a09",
+      "t": "a",
+      "de": "dringend",
+      "en": "urgent",
+      "lv": "A2",
+      "tp": "Arbeit",
+      "s": [
+        "Der Antrag ist dringend.",
+        "The application is urgent.",
+        "dringend"
+      ]
+    },
+    {
+      "id": "a10",
+      "t": "a",
+      "de": "einfach",
+      "en": "simple, easy",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Die Lösung ist ganz einfach.",
+        "The solution is quite simple.",
+        "einfach"
+      ]
+    },
+    {
+      "id": "k01",
+      "t": "k",
+      "de": "weil",
+      "en": "because (verb goes last)",
+      "lv": "A2",
+      "tp": "Struktur",
+      "s": [
+        "Ich lerne Deutsch, weil ich nach Deutschland ziehe.",
+        "I'm learning German because I'm moving to Germany.",
+        "weil"
+      ]
+    },
+    {
+      "id": "k02",
+      "t": "k",
+      "de": "obwohl",
+      "en": "although (verb goes last)",
+      "lv": "B1",
+      "tp": "Struktur",
+      "s": [
+        "Obwohl es schwer ist, macht es Spaß.",
+        "Although it's hard, it's fun.",
+        "Obwohl"
+      ]
+    },
+    {
+      "id": "k03",
+      "t": "k",
+      "de": "deshalb",
+      "en": "therefore (verb comes next)",
+      "lv": "A2",
+      "tp": "Struktur",
+      "s": [
+        "Es regnet, deshalb bleiben wir zu Hause.",
+        "It's raining, therefore we're staying home.",
+        "deshalb"
+      ]
+    },
+    {
+      "id": "k04",
+      "t": "k",
+      "de": "trotzdem",
+      "en": "nevertheless",
+      "lv": "B1",
+      "tp": "Struktur",
+      "s": [
+        "Es war spät, trotzdem habe ich weitergelernt.",
+        "It was late, nevertheless I kept studying.",
+        "trotzdem"
+      ]
+    },
+    {
+      "id": "k05",
+      "t": "k",
+      "de": "sobald",
+      "en": "as soon as",
+      "lv": "B1",
+      "tp": "Struktur",
+      "s": [
+        "Sobald ich ankomme, melde ich mich.",
+        "As soon as I arrive, I'll get in touch.",
+        "Sobald"
+      ]
+    },
+    {
+      "id": "k06",
+      "t": "k",
+      "de": "damit",
+      "en": "so that",
+      "lv": "B1",
+      "tp": "Struktur",
+      "s": [
+        "Ich übe täglich, damit ich schneller lerne.",
+        "I practise daily so that I learn faster.",
+        "damit"
+      ]
+    },
+    {
+      "id": "k07",
+      "t": "k",
+      "de": "seit",
+      "en": "since, for (+ dative)",
+      "lv": "A2",
+      "tp": "Struktur",
+      "s": [
+        "Ich lerne seit drei Monaten Deutsch.",
+        "I've been learning German for three months.",
+        "seit"
+      ]
+    },
+    {
+      "id": "k08",
+      "t": "k",
+      "de": "außerdem",
+      "en": "besides, moreover",
+      "lv": "A2",
+      "tp": "Struktur",
+      "s": [
+        "Außerdem brauche ich noch einen Termin.",
+        "Besides, I still need an appointment.",
+        "Außerdem"
+      ]
+    },
+    {
+      "id": "k09",
+      "t": "k",
+      "de": "während",
+      "en": "while, during",
+      "lv": "B1",
+      "tp": "Struktur",
+      "s": [
+        "Während der Besprechung war es sehr laut.",
+        "It was very loud during the meeting.",
+        "Während"
+      ]
+    },
+    {
+      "id": "p01",
+      "t": "p",
+      "de": "Könnten Sie das bitte wiederholen?",
+      "en": "Could you repeat that, please?",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p02",
+      "t": "p",
+      "de": "Das kommt darauf an.",
+      "en": "It depends.",
+      "lv": "A2",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p03",
+      "t": "p",
+      "de": "Ich melde mich.",
+      "en": "I'll get in touch.",
+      "lv": "A2",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p04",
+      "t": "p",
+      "de": "Passt das für Sie?",
+      "en": "Does that work for you?",
+      "lv": "A2",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p05",
+      "t": "p",
+      "de": "Ich hätte gern einen Kaffee.",
+      "en": "I'd like a coffee.",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p06",
+      "t": "p",
+      "de": "Wie viel kostet das?",
+      "en": "How much does that cost?",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p07",
+      "t": "p",
+      "de": "Entschuldigung, ich habe eine Frage.",
+      "en": "Excuse me, I have a question.",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p08",
+      "t": "p",
+      "de": "Was bedeutet das auf Deutsch?",
+      "en": "What does that mean in German?",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p09",
+      "t": "p",
+      "de": "Können wir Deutsch sprechen?",
+      "en": "Can we speak German?",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p10",
+      "t": "p",
+      "de": "Machen wir es so.",
+      "en": "Let's do it that way.",
+      "lv": "A2",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p11",
+      "t": "p",
+      "de": "Ich bin gerade beschäftigt.",
+      "en": "I'm busy right now.",
+      "lv": "A2",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p12",
+      "t": "p",
+      "de": "Ich verstehe nur Bahnhof.",
+      "en": "I don't understand a word. (idiom)",
+      "lv": "B1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p13",
+      "t": "p",
+      "de": "Da bin ich überfragt.",
+      "en": "That's beyond me / I've no idea.",
+      "lv": "B1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p14",
+      "t": "p",
+      "de": "Ich schaue mir das an.",
+      "en": "I'll take a look at it.",
+      "lv": "A2",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p15",
+      "t": "p",
+      "de": "Wo finde ich den Eingang?",
+      "en": "Where do I find the entrance?",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "g01",
+      "t": "g",
+      "de": "mit + Dativ",
+      "en": "mit takes the dative",
+      "lv": "A1",
+      "tp": "Fälle",
+      "s": [
+        "Ich fahre mit ___ Bus zur Arbeit.",
+        "I take the bus to work.",
+        "dem"
+      ]
+    },
+    {
+      "id": "g02",
+      "t": "g",
+      "de": "in + Akkusativ (Bewegung)",
+      "en": "in takes the accusative for movement",
+      "lv": "A2",
+      "tp": "Fälle",
+      "s": [
+        "Er geht in ___ Werkstatt.",
+        "He's going into the workshop.",
+        "die"
+      ]
+    },
+    {
+      "id": "g03",
+      "t": "g",
+      "de": "auf + Dativ (Position)",
+      "en": "auf takes the dative for position",
+      "lv": "A2",
+      "tp": "Fälle",
+      "s": [
+        "Das Werkzeug liegt auf ___ Tisch.",
+        "The tool is lying on the table.",
+        "dem"
+      ]
+    },
+    {
+      "id": "g04",
+      "t": "g",
+      "de": "Perfekt mit haben",
+      "en": "perfect tense with haben",
+      "lv": "A2",
+      "tp": "Zeiten",
+      "s": [
+        "Ich habe den Antrag ___.",
+        "I submitted the application.",
+        "gestellt"
+      ]
+    },
+    {
+      "id": "g05",
+      "t": "g",
+      "de": "Perfekt mit sein",
+      "en": "perfect tense with sein (movement)",
+      "lv": "A2",
+      "tp": "Zeiten",
+      "s": [
+        "Wir sind nach Berlin ___.",
+        "We drove to Berlin.",
+        "gefahren"
+      ]
+    },
+    {
+      "id": "g06",
+      "t": "g",
+      "de": "helfen + Dativ",
+      "en": "helfen takes the dative",
+      "lv": "A2",
+      "tp": "Fälle",
+      "s": [
+        "Kannst du ___ bitte helfen?",
+        "Can you help me, please?",
+        "mir"
+      ]
+    },
+    {
+      "id": "g07",
+      "t": "g",
+      "de": "danken + Dativ",
+      "en": "danken takes the dative",
+      "lv": "A2",
+      "tp": "Fälle",
+      "s": [
+        "Ich danke ___ für die Hilfe.",
+        "I thank you for the help.",
+        "dir"
+      ]
+    },
+    {
+      "id": "g08",
+      "t": "g",
+      "de": "Komparativ",
+      "en": "comparative form",
+      "lv": "A2",
+      "tp": "Struktur",
+      "s": [
+        "Der Zug ist ___ als das Auto.",
+        "The train is faster than the car.",
+        "schneller"
+      ]
+    },
+    {
+      "id": "g09",
+      "t": "g",
+      "de": "warten auf + Akkusativ",
+      "en": "to wait for",
+      "lv": "A2",
+      "tp": "Präpositionen",
+      "s": [
+        "Wir warten ___ den Bus.",
+        "We're waiting for the bus.",
+        "auf"
+      ]
+    },
+    {
+      "id": "g10",
+      "t": "g",
+      "de": "sich interessieren für",
+      "en": "to be interested in",
+      "lv": "B1",
+      "tp": "Präpositionen",
+      "s": [
+        "Sie interessiert sich ___ Technik.",
+        "She's interested in engineering.",
+        "für"
+      ]
+    },
+    {
+      "id": "g11",
+      "t": "g",
+      "de": "arbeiten bei",
+      "en": "to work at (a company)",
+      "lv": "A2",
+      "tp": "Präpositionen",
+      "s": [
+        "Ich arbeite ___ einer Firma in München.",
+        "I work at a company in Munich.",
+        "bei"
+      ]
+    },
+    {
+      "id": "g12",
+      "t": "g",
+      "de": "bestehen aus",
+      "en": "to consist of",
+      "lv": "B1",
+      "tp": "Präpositionen",
+      "s": [
+        "Der Roboter besteht ___ vielen Bauteilen.",
+        "The robot consists of many components.",
+        "aus"
+      ]
+    },
+    {
+      "id": "g13",
+      "t": "g",
+      "de": "sich bewerben auf",
+      "en": "to apply for (a position)",
+      "lv": "B1",
+      "tp": "Präpositionen",
+      "s": [
+        "Ich bewerbe mich ___ eine Stelle als Ingenieur.",
+        "I'm applying for a position as an engineer.",
+        "auf"
+      ]
+    },
+    {
+      "id": "g14",
+      "t": "g",
+      "de": "Verb an Position 2",
+      "en": "verb stays in second position",
+      "lv": "A1",
+      "tp": "Struktur",
+      "s": [
+        "Am Montag ___ ich einen Termin.",
+        "On Monday I have an appointment.",
+        "habe"
+      ]
+    },
+    {
+      "id": "g15",
+      "t": "g",
+      "de": "Modalverb + Infinitiv am Ende",
+      "en": "modal verb sends the infinitive to the end",
+      "lv": "A1",
+      "tp": "Struktur",
+      "s": [
+        "Ich muss heute noch die Messung ___.",
+        "I still have to do the measurement today.",
+        "machen"
+      ]
+    }
+  ]
+}
