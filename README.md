@@ -13,7 +13,8 @@ node tools/validate-vocab.mjs
 ```
 
 No code change is needed. A new CEFR level or topic creates its own filter tab
-and progress row automatically. The schema and card-generation rules are in
+and progress row automatically. Word-order (`t: "o"`) and case (`t: "c"`)
+drills live in the same file. The schema and card-generation rules are in
 [CLAUDE.md](CLAUDE.md#item-schema).
 
 ## One-time setup: enable GitHub Pages

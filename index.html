@@ -30,7 +30,7 @@ button{font:inherit;background:none;border:none;cursor:pointer;color:inherit}
 button:focus-visible,input:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 @keyframes toastPop{from{opacity:0;transform:translate(-50%,12px)}to{opacity:1;transform:translate(-50%,0)}}
 input{font:inherit}
-.flex{display:flex}.flex-col{flex-direction:column}.flex-1{flex:1 1 0%}
+.flex{display:flex}.flex-col{flex-direction:column}.flex-1{flex:1 1 0%}.flex-wrap{flex-wrap:wrap}
 .items-center{align-items:center}.items-end{align-items:flex-end}.items-baseline{align-items:baseline}
 .justify-between{justify-content:space-between}.justify-center{justify-content:center}.justify-end{justify-content:flex-end}
 .gap-1{gap:.25rem}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}
@@ -47,7 +47,7 @@ input{font:inherit}
 .rounded-sm{border-radius:.125rem}.rounded-md{border-radius:.375rem}
 .rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}
 .w-full{width:100%}.min-w-0{min-width:0}.min-h-screen{min-height:100vh}
-.text-right{text-align:right}.uppercase{text-transform:uppercase}.underline{text-decoration:underline}
+.text-left{text-align:left}.text-right{text-align:right}.uppercase{text-transform:uppercase}.underline{text-decoration:underline}
 .active\:translate-y-px:active{transform:translateY(1px)}
 @media (prefers-reduced-motion: reduce){*{transition:none !important;animation:none !important}}
 </style>
@@ -426,12 +426,21 @@ const KIND_LABEL = {
   produce: "Schreiben · produce it",
   gender: "Artikel · der / die / das",
   cloze: "Lücke · fill the gap",
-  listen: "Hören · listen and write"
+  listen: "Hören · listen and write",
+  order: "Satzbau · word order",
+  case: "Fälle · pick the form"
 };
+// drills teach grammar rather than a word, so they stay out of the word browser
+// and the free-play word games; only the daily session (and Satzbau) uses them
+const DRILL_TYPES = ["g", "o", "c"];
+// card kinds that train sentence structure; buildSession gives them a daily slot
+const SKILL_KINDS = ["order", "case"];
 function kindsFor(it) {
   if (it.t === "n") return ["produce", "gender", "cloze"];
   if (it.t === "p") return ["produce", "listen"];
   if (it.t === "g") return ["cloze"];
+  if (it.t === "o") return ["order"];
+  if (it.t === "c") return ["case"];
   return it.s ? ["produce", "cloze"] : ["produce"];
 }
 /* Everything derived from the word list. These are rebuilt by initVocab()
@@ -445,6 +454,7 @@ let ITEM_BY_ID = {};
 let LEARN_ITEMS = [];
 let LEARN_TOPICS = [];
 let USED_LEVELS = [];
+let ORDER_ITEMS = [];
 function initVocab(items) {
   ITEMS = items;
   CARDS = [];
@@ -460,7 +470,8 @@ function initVocab(items) {
       });
     });
   });
-  LEARN_ITEMS = ITEMS.filter(it => it.t !== "g");
+  LEARN_ITEMS = ITEMS.filter(it => !DRILL_TYPES.includes(it.t));
+  ORDER_ITEMS = ITEMS.filter(it => it.t === "o");
   LEARN_TOPICS = Array.from(new Set(LEARN_ITEMS.map(it => it.tp)));
   // only levels that actually have words, so a new level appears by itself
   USED_LEVELS = CEFR_LEVELS.filter(lv => LEARN_ITEMS.some(it => it.lv === lv));
@@ -487,6 +498,58 @@ function clozeSentence(it) {
     /* older engine, fall through */
   }
   return sent.replace(word, "___");
+}
+
+/* ---------- sentence-building drills (t:"o") ----------
+   de holds the sentence in chunks:  "Morgen | *fahre | ich | nach Berlin."
+   A leading "*" marks a verb part, so the answer can show where the verbs sit.
+   fix = how many leading chunks start already placed, so one drill tests one rule.
+   alt = other word orders that are also correct, in the same chunk format. */
+function orderChunks(src) {
+  return String(src || "").split("|").map(s => s.trim()).filter(Boolean).map(raw => {
+    const verb = raw.charAt(0) === "*";
+    return {
+      text: verb ? raw.slice(1).trim() : raw,
+      verb
+    };
+  });
+}
+// fold() lowercases and drops punctuation, so "Morgen" matches "morgen" and commas don't count
+const orderKey = texts => texts.map(fold).join(" ");
+function parseOrder(it) {
+  const parts = orderChunks(it.de);
+  const fix = Math.max(0, Math.min(it.fix || 0, parts.length - 2));
+  const tiles = parts.map((p, i) => {
+    // loose tiles carry no punctuation and no sentence-start capital: either would give the order away
+    let w = p.text;
+    if (i >= fix) {
+      w = w.replace(/[.,!?;:]+$/, "").trim();
+      if (i === 0) w = w.charAt(0).toLowerCase() + w.slice(1);
+    }
+    return {
+      k: i,
+      w,
+      verb: p.verb
+    };
+  });
+  const answers = [it.de].concat(it.alt || []).map(src => orderKey(orderChunks(src).map(p => p.text)));
+  return {
+    parts,
+    fix,
+    fixed: tiles.slice(0, fix),
+    loose: tiles.slice(fix),
+    answers,
+    sentence: parts.map(p => p.text).join(" ")
+  };
+}
+// the free-play Satzbau game falls back to plain example sentences if a word list has no drills
+function legacyOrderItem(it) {
+  const s = sentenceOf(it);
+  return {
+    id: it.id,
+    de: s[0].split(" ").join(" | "),
+    en: s[1]
+  };
 }
 
 /* ---------- text helpers ---------- */
@@ -1360,7 +1423,13 @@ function App() {
     newCards.forEach(c => {
       (grouped[ITEM_BY_ID[c.itemId].tp] = grouped[ITEM_BY_ID[c.itemId].tp] || []).push(c);
     });
-    const topics = Object.keys(grouped);
+    // sentence-structure topics lead every day so grammar gets a slot next to new words;
+    // the word topics take turns at the front, otherwise topics late in the list never come up
+    const allTopics = Object.keys(grouped);
+    const skillTopics = allTopics.filter(t => grouped[t].some(c => SKILL_KINDS.includes(c.kind)));
+    const wordTopics = allTopics.filter(t => !skillTopics.includes(t));
+    const turn = wordTopics.length ? Math.floor(now / DAY) % wordTopics.length : 0;
+    const topics = skillTopics.concat(wordTopics.slice(turn), wordTopics.slice(0, turn));
     const spread = [];
     let idx = 0;
     while (spread.length < newCards.length) {
@@ -1713,8 +1782,9 @@ function App() {
   }), screen === "modes-order" && /*#__PURE__*/React.createElement(ModeOrder, {
     onExit: navBack,
     onComplete: (score, total) => onModeComplete("order", score, total),
-    sound: sound
-  }), screen === "modes-match" && /*#__PURE__*/React.createElement(ModeMatch, {
+    sound: sound,
+    speak: speak
+  }), screen === "modes-match" &&/*#__PURE__*/React.createElement(ModeMatch, {
     onExit: navBack,
     onComplete: (score, total) => onModeComplete("match", score, total),
     sound: sound
@@ -1980,7 +2050,7 @@ function LevelProgressCard({
 }
 
 /* ---------- study ---------- */
-function Study({
+function StudyWord({
   card,
   pos,
   total,
@@ -2272,6 +2342,422 @@ function Study({
   }, "Leicht")))));
 }
 
+/* ---------- study: grammar drills (word order, cases) ---------- */
+// one card per screen; keyed on card and position so a re-queued card starts fresh
+function Study(props) {
+  const kind = props.card.kind;
+  const View = kind === "order" ? StudyOrder : kind === "case" ? StudyCase : StudyWord;
+  return React.createElement(View, {
+    ...props,
+    key: props.card.id + "@" + props.pos
+  });
+}
+function StudyFrame({
+  pos,
+  total,
+  onQuit,
+  label,
+  meta,
+  children,
+  footer
+}) {
+  const e = React.createElement;
+  return e("div", {
+    className: "px-5 pt-6 pb-8 flex flex-col",
+    style: {
+      minHeight: "100vh"
+    }
+  }, e("div", {
+    className: "flex items-center gap-3"
+  }, e("button", {
+    onClick: onQuit,
+    style: {
+      fontFamily: MONO,
+      fontSize: 11,
+      color: C.muted,
+      letterSpacing: "0.1em"
+    }
+  }, "← ENDE"), e("div", {
+    className: "flex-1"
+  }, e(Gauge, {
+    total,
+    done: pos,
+    active: true
+  })), e("div", {
+    style: {
+      fontFamily: MONO,
+      fontSize: 11,
+      color: C.muted
+    }
+  }, pos + 1, "/", total)), e("div", {
+    className: "mt-6 rounded-2xl p-5 flex-1 flex flex-col",
+    style: {
+      background: "linear-gradient(170deg, color-mix(in oklab, " + C.signal + " 9%, " + C.panel + ") 0%, " + C.panel + " 42%)",
+      border: "1px solid " + C.edge,
+      borderTop: "3px solid " + C.signal,
+      boxShadow: "0 18px 40px -28px rgba(27,26,23,.5)"
+    }
+  }, e("div", {
+    className: "flex justify-between items-center"
+  }, e(Eyebrow, {
+    color: C.signal
+  }, label), e(Eyebrow, null, meta)), children, e("div", {
+    className: "flex-1"
+  }), e("div", {
+    className: "mt-6"
+  }, footer)));
+}
+// same grading row as the word cards: a miss comes straight back, a hit picks its interval
+function GradeKeys({
+  result,
+  state,
+  card,
+  onAnswer
+}) {
+  const e = React.createElement;
+  if (result === "wrong") return e(Key, {
+    tone: "solid",
+    wide: true,
+    onClick: () => onAnswer(card, 0),
+    sub: "kommt gleich wieder · " + previewIv(state, 0)
+  }, "Weiter · continue");
+  return e("div", {
+    className: "flex gap-2"
+  }, e(Key, {
+    grow: true,
+    onClick: () => onAnswer(card, 0),
+    sub: previewIv(state, 0)
+  }, "Nochmal"), e(Key, {
+    grow: true,
+    onClick: () => onAnswer(card, 1),
+    sub: previewIv(state, 1)
+  }, "Schwer"), e(Key, {
+    grow: true,
+    tone: "solid",
+    onClick: () => onAnswer(card, 2),
+    sub: previewIv(state, 2)
+  }, "Gut"), e(Key, {
+    grow: true,
+    onClick: () => onAnswer(card, 3),
+    sub: previewIv(state, 3)
+  }, "Leicht"));
+}
+function ResultLine({
+  result
+}) {
+  return React.createElement("div", {
+    className: "uppercase",
+    style: {
+      fontFamily: MONO,
+      fontSize: 11,
+      letterSpacing: "0.14em",
+      color: result === "right" ? C.ok : C.bad
+    }
+  }, result === "right" ? "Richtig" : "Nicht ganz");
+}
+function WhyBox({
+  text
+}) {
+  const e = React.createElement;
+  if (!text) return null;
+  return e("div", {
+    className: "mt-4 rounded-lg p-3",
+    style: {
+      background: C.panel2,
+      borderLeft: "3px solid " + C.signal
+    }
+  }, e(Eyebrow, {
+    color: C.signal
+  }, "Warum · why"), e("div", {
+    style: {
+      fontSize: 15,
+      lineHeight: 1.55,
+      marginTop: 6
+    }
+  }, text));
+}
+// the whole sentence with every verb part picked out, so the verb positions are visible at a glance
+function VerbSentence({
+  parts,
+  onSpeak
+}) {
+  const e = React.createElement;
+  return e("div", {
+    className: "flex items-center gap-3"
+  }, e("div", {
+    style: {
+      fontSize: 19,
+      lineHeight: 1.6,
+      fontWeight: 500
+    }
+  }, parts.map((p, i) => e(React.Fragment, {
+    key: i
+  }, i ? " " : "", e("span", {
+    style: p.verb ? {
+      color: C.signal,
+      fontWeight: 700,
+      borderBottom: "2px solid " + C.signal
+    } : null
+  }, p.text)))), onSpeak && e("button", {
+    onClick: onSpeak,
+    "aria-label": "Satz anhören · hear the sentence",
+    style: {
+      color: C.muted,
+      fontFamily: MONO,
+      fontSize: 13,
+      padding: "4px 6px"
+    }
+  }, "▶"));
+}
+function Tile({
+  children,
+  onClick,
+  placed,
+  fixed,
+  verb,
+  disabled
+}) {
+  return React.createElement("button", {
+    onClick,
+    disabled: disabled || fixed,
+    className: "rounded-lg",
+    style: {
+      padding: "9px 13px",
+      fontSize: 17,
+      lineHeight: 1.2,
+      background: fixed ? "transparent" : placed ? C.panel2 : C.panel,
+      color: verb ? C.signal : fixed ? C.muted : C.paper,
+      fontWeight: verb ? 700 : 500,
+      border: (fixed ? "1px dashed " : "1px solid ") + (verb ? C.signal : C.edge),
+      boxShadow: fixed ? "none" : "0 2px 0 0 " + C.edge
+    }
+  }, children);
+}
+// shared by the daily card and the free-play game: returns the board and its check button
+function useOrderPlay(it, sound, speak) {
+  const e = React.createElement;
+  const p = useMemo(() => parseOrder(it), [it]);
+  const [pool] = useState(() => {
+    // never hand out the tiles already in the right order
+    let s = shuffleArr(p.loose);
+    for (let n = 0; n < 8 && s.length > 1 && p.answers.includes(orderKey(p.fixed.concat(s).map(t => p.parts[t.k].text))); n++) s = shuffleArr(p.loose);
+    return s;
+  });
+  const [built, setBuilt] = useState([]);
+  const [result, setResult] = useState(null);
+  const [hint, setHint] = useState(false);
+  const left = pool.filter(t => !built.some(b => b.k === t.k));
+  const done = built.length === p.loose.length;
+  const showVerbs = hint || result !== null;
+  function check() {
+    if (!done || result) return;
+    const ok = p.answers.includes(orderKey(p.fixed.concat(built).map(t => p.parts[t.k].text)));
+    setResult(ok ? "right" : "wrong");
+    if (ok) sound.playSuccess();else sound.playFail();
+  }
+  const body = e(React.Fragment, null, e("div", {
+    style: {
+      fontFamily: SERIF,
+      fontSize: 24,
+      lineHeight: 1.3,
+      marginTop: 18
+    }
+  }, it.en), e("div", {
+    style: {
+      color: C.muted,
+      fontSize: 13,
+      marginTop: 8
+    }
+  }, "Tippe die Teile in die richtige Reihenfolge · tap the parts in order"), e("div", {
+    className: "mt-5 rounded-xl p-3 flex flex-wrap gap-2",
+    style: {
+      background: C.panel2,
+      border: "1px solid " + (result === "right" ? C.ok : result === "wrong" ? C.bad : C.edge),
+      minHeight: 64,
+      alignContent: "flex-start"
+    }
+  }, p.fixed.map(t => e(Tile, {
+    key: t.k,
+    fixed: true,
+    verb: showVerbs && t.verb
+  }, t.w)), built.map(t => e(Tile, {
+    key: t.k,
+    placed: true,
+    verb: showVerbs && t.verb,
+    disabled: !!result,
+    onClick: () => setBuilt(b => b.filter(x => x.k !== t.k))
+  }, t.w))), e("div", {
+    className: "mt-4 flex flex-wrap gap-2",
+    style: {
+      minHeight: 44
+    }
+  }, left.map(t => e(Tile, {
+    key: t.k,
+    verb: showVerbs && t.verb,
+    disabled: !!result,
+    onClick: () => setBuilt(b => b.concat(t))
+  }, t.w))), !result && e("button", {
+    onClick: () => setHint(h => !h),
+    style: {
+      marginTop: 14,
+      fontFamily: MONO,
+      fontSize: 11,
+      letterSpacing: "0.08em",
+      color: hint ? C.signal : C.muted
+    }
+  }, hint ? "✓ VERBEN MARKIERT · verbs shown" : "TIPP · show the verbs"), result && e("div", {
+    className: "mt-6"
+  }, e(ResultLine, {
+    result
+  }), e("div", {
+    className: "mt-2"
+  }, e(VerbSentence, {
+    parts: p.parts,
+    onSpeak: () => speak(p.sentence)
+  })), e(WhyBox, {
+    text: it.why
+  })));
+  const checkKey = e(Key, {
+    tone: "solid",
+    wide: true,
+    onClick: check,
+    disabled: !done
+  }, "Prüfen · check");
+  return {
+    result,
+    body,
+    checkKey
+  };
+}
+function StudyOrder({
+  card,
+  pos,
+  total,
+  state,
+  onAnswer,
+  onQuit,
+  speak,
+  sound
+}) {
+  const item = ITEM_BY_ID[card.itemId];
+  const play = useOrderPlay(item, sound, speak);
+  return React.createElement(StudyFrame, {
+    pos,
+    total,
+    onQuit,
+    label: KIND_LABEL.order,
+    meta: item.lv,
+    footer: play.result ? React.createElement(GradeKeys, {
+      result: play.result,
+      state,
+      card,
+      onAnswer
+    }) : play.checkKey
+  }, play.body);
+}
+function StudyCase({
+  card,
+  pos,
+  total,
+  state,
+  onAnswer,
+  onQuit,
+  speak,
+  sound
+}) {
+  const e = React.createElement;
+  const item = ITEM_BY_ID[card.itemId];
+  const [opts] = useState(() => shuffleArr(item.opts));
+  const [picked, setPicked] = useState(null);
+  const result = picked === null ? null : picked === item.ans ? "right" : "wrong";
+  const full = item.de.replace("___", item.ans);
+  function pick(o) {
+    if (picked !== null) return;
+    setPicked(o);
+    if (o === item.ans) sound.playSuccess();else sound.playFail();
+  }
+  const parts = item.de.split("___");
+  return e(StudyFrame, {
+    pos,
+    total,
+    onQuit,
+    label: KIND_LABEL.case,
+    meta: item.lv + " · " + item.tp,
+    footer: result ? e(GradeKeys, {
+      result,
+      state,
+      card,
+      onAnswer
+    }) : e("div", {
+      style: {
+        color: C.muted,
+        fontSize: 12,
+        fontFamily: MONO
+      }
+    }, "Form wählen · pick one …")
+  }, e("div", {
+    style: {
+      fontSize: 23,
+      lineHeight: 1.5,
+      fontWeight: 500,
+      marginTop: 22
+    }
+  }, parts[0], e("span", {
+    style: {
+      borderBottom: "2px solid " + (result === "wrong" ? C.bad : C.signal),
+      padding: result ? "0 4px" : "0 26px",
+      color: result === "wrong" ? C.ok : C.signal,
+      fontWeight: 700
+    }
+  }, result ? item.ans : " "), parts.slice(1).join("___")), e("div", {
+    style: {
+      color: C.muted,
+      fontSize: 14,
+      marginTop: 10
+    }
+  }, item.en), e("div", {
+    className: "mt-6 flex flex-wrap gap-2"
+  }, opts.map(o => {
+    const isAns = result && o === item.ans;
+    const isMiss = result === "wrong" && o === picked;
+    return e("button", {
+      key: o,
+      onClick: () => pick(o),
+      className: "rounded-lg py-3",
+      style: {
+        flex: "1 1 40%",
+        fontSize: 18,
+        fontWeight: 600,
+        background: isAns ? C.ok : isMiss ? C.bad : C.panel2,
+        color: isAns || isMiss ? C.onsig : C.paper,
+        border: "1px solid " + (isAns || isMiss ? "transparent" : C.edge),
+        boxShadow: "0 2px 0 0 " + C.edge
+      }
+    }, o);
+  })), result && e("div", {
+    className: "mt-6"
+  }, e(ResultLine, {
+    result
+  }), e("div", {
+    className: "flex items-center gap-3 mt-2"
+  }, e("div", {
+    style: {
+      fontSize: 17,
+      lineHeight: 1.5
+    }
+  }, full), e("button", {
+    onClick: () => speak(full),
+    "aria-label": "Satz anhören · hear the sentence",
+    style: {
+      color: C.muted,
+      fontFamily: MONO,
+      fontSize: 13
+    }
+  }, "▶")), e(WhyBox, {
+    text: item.why
+  })));
+}
+
 /* ---------- done ---------- */
 function Done({
   tally,
@@ -2318,7 +2804,7 @@ function Done({
 function Why({
   onBack
 }) {
-  const rows = [["Verteiltes Wiederholen", "Spaced repetition", "Each card comes back just before you'd forget it. Intervals stretch when you get it right and collapse when you don't — one long session can't replace six short ones."], ["Aktives Abrufen", "Retrieval practice", "You type the German instead of picking from four options. Producing an answer builds a stronger trace than recognising one, and it's the skill you actually need in a room in Munich."], ["Verschränktes Üben", "Interleaving", "Topics and card types are mixed, never blocked. It feels worse in the session and tests better a week later."], ["Wünschenswerte Erschwernisse", "Desirable difficulty", "Around 70–85% accuracy is the productive zone. Too easy means the schedule is wasting your time."], ["Sprache im Kontext", "Language in context", "Every word carries a real sentence, so you learn how it combines — chunks, not isolated dictionary entries."], ["Doppelte Kodierung", "Dual coding", "der / die / das are colour-coded everywhere in the app. Gender is the thing English speakers never fix; tying it to a consistent colour gives the memory a second hook."]];
+  const rows = [["Verteiltes Wiederholen", "Spaced repetition", "Each card comes back just before you'd forget it. Intervals stretch when you get it right and collapse when you don't — one long session can't replace six short ones."], ["Aktives Abrufen", "Retrieval practice", "You type the German instead of picking from four options. Producing an answer builds a stronger trace than recognising one, and it's the skill you actually need in a room in Munich."], ["Verschränktes Üben", "Interleaving", "Topics and card types are mixed, never blocked. It feels worse in the session and tests better a week later."], ["Wünschenswerte Erschwernisse", "Desirable difficulty", "Around 70–85% accuracy is the productive zone. Too easy means the schedule is wasting your time."], ["Sprache im Kontext", "Language in context", "Every word carries a real sentence, so you learn how it combines — chunks, not isolated dictionary entries."], ["Doppelte Kodierung", "Dual coding", "der / die / das are colour-coded everywhere in the app. Gender is the thing English speakers never fix; tying it to a consistent colour gives the memory a second hook."], ["Satzbau und Fälle", "Structure, not just words", "Every session also builds whole sentences and picks case endings, then shows the rule in one line. Verbs are marked in every answer, so the patterns — verb second, verb last after weil and dass — become something you see, not just memorise."]];
   return /*#__PURE__*/React.createElement("div", {
     className: "px-5 pt-8 pb-10"
   }, /*#__PURE__*/React.createElement("button", {
@@ -2377,7 +2863,8 @@ const TYPE_LABEL = {
   v: "Verb",
   a: "Adjektiv",
   p: "Ausdruck",
-  k: "Bindewort"
+  k: "Bindewort",
+  d: "Kleines Wort"
 };
 // LEARN_ITEMS, LEARN_TOPICS, USED_LEVELS and CEFR_LEVELS are declared with the
 // rest of the vocabulary state near the top of the file and filled by initVocab().
@@ -3402,44 +3889,43 @@ function ModeListening({
 }
 
 /* ---------- word-order builder ---------- */
+// drills (t:"o") are built for this; plain example sentences are only a fallback
 function buildOrderRound(n) {
-  const pool = LEARN_ITEMS.filter(it => {
+  const pool = ORDER_ITEMS.length ? ORDER_ITEMS : LEARN_ITEMS.filter(it => {
     const s = sentenceOf(it);
     return s && s[0].split(" ").length >= 4;
-  });
-  return shuffleArr(pool).slice(0, n).map(it => {
-    const s = sentenceOf(it);
-    const words = s[0].split(" ");
-    return {
-      it,
-      de: s[0],
-      en: s[1],
-      words,
-      pool: shuffleArr(words.map((w, i) => ({
-        w,
-        k: i
-      })))
-    };
-  });
+  }).map(legacyOrderItem);
+  return shuffleArr(pool).slice(0, n);
+}
+function OrderRound({
+  it,
+  sound,
+  speak,
+  onNext
+}) {
+  const e = React.createElement;
+  const play = useOrderPlay(it, sound, speak);
+  return e(React.Fragment, null, play.body, e("div", {
+    className: "flex-1"
+  }), e("div", {
+    className: "mt-6"
+  }, play.result ? e(Key, {
+    tone: "solid",
+    wide: true,
+    onClick: () => onNext(play.result === "right")
+  }, "Weiter") : play.checkKey));
 }
 function ModeOrder({
   onExit,
   onComplete,
-  sound
+  sound,
+  speak
 }) {
+  const e = React.createElement;
   const [round] = useState(() => buildOrderRound(6));
   const [pos, setPos] = useState(0);
-  const [built, setBuilt] = useState([]);
-  const [left, setLeft] = useState([]);
-  const [checked, setChecked] = useState(null); // null | "right" | "wrong"
   const [score, setScore] = useState(0);
   const firedRef = useRef(false);
-  useEffect(() => {
-    if (pos >= round.length) return;
-    setBuilt([]);
-    setLeft(round[pos].pool);
-    setChecked(null);
-  }, [pos]);
   useEffect(() => {
     if (pos >= round.length && !firedRef.current) {
       firedRef.current = true;
@@ -3447,105 +3933,38 @@ function ModeOrder({
     }
   }, [pos]);
   if (pos >= round.length) {
-    return /*#__PURE__*/React.createElement("div", {
+    return e("div", {
       className: "px-5 pt-6 pb-8 flex flex-col",
       style: {
         minHeight: "60vh"
       }
-    }, /*#__PURE__*/React.createElement(RoundResult, {
+    }, e(RoundResult, {
       score: score,
       total: round.length,
       onRetry: () => window.location.reload(),
       onExit: onExit
     }));
   }
-  const r = round[pos];
-  function tapPool(tile) {
-    if (checked) return;
-    setBuilt(b => b.concat(tile));
-    setLeft(l => l.filter(t => t.k !== tile.k));
-  }
-  function tapBuilt(tile) {
-    if (checked) return;
-    setLeft(l => l.concat(tile));
-    setBuilt(b => b.filter(t => t.k !== tile.k));
-  }
-  function check() {
-    const attempt = built.map(t => t.w).join(" ");
-    const ok = attempt === r.de;
-    setChecked(ok ? "right" : "wrong");
-    if (ok) {
-      setScore(s => s + 1);
-      sound.playSuccess();
-    } else {
-      sound.playFail();
-    }
-  }
-  return /*#__PURE__*/React.createElement("div", {
+  return e("div", {
     className: "px-5 pt-6 pb-8 flex flex-col",
     style: {
-      minHeight: "60vh"
+      minHeight: "80vh"
     }
-  }, /*#__PURE__*/React.createElement(ModeHeader, {
+  }, e(ModeHeader, {
     onExit: onExit,
     title: "SATZBAU",
     pos: pos,
     total: round.length
-  }), /*#__PURE__*/React.createElement("div", {
-    style: {
-      color: C.muted,
-      fontSize: 13,
-      marginTop: 16,
-      lineHeight: 1.5
+  }), e(OrderRound, {
+    key: pos,
+    it: round[pos],
+    sound,
+    speak: speak || (() => {}),
+    onNext: ok => {
+      if (ok) setScore(x => x + 1);
+      setPos(x => x + 1);
     }
-  }, r.en), /*#__PURE__*/React.createElement("div", {
-    className: "mt-4 rounded-xl p-4 flex flex-wrap gap-2",
-    style: {
-      background: C.panel,
-      border: "1px solid " + (checked === "right" ? C.ok : checked === "wrong" ? C.bad : C.edge),
-      minHeight: 64
-    }
-  }, built.map(tile => /*#__PURE__*/React.createElement("button", {
-    key: tile.k,
-    onClick: () => tapBuilt(tile),
-    disabled: !!checked,
-    className: "rounded-md px-3 py-2",
-    style: {
-      background: C.panel2,
-      border: "1px solid " + C.edge,
-      color: C.paper,
-      fontSize: 15
-    }
-  }, tile.w))), /*#__PURE__*/React.createElement("div", {
-    className: "mt-4 flex flex-wrap gap-2"
-  }, left.map(tile => /*#__PURE__*/React.createElement("button", {
-    key: tile.k,
-    onClick: () => tapPool(tile),
-    className: "rounded-md px-3 py-2",
-    style: {
-      background: "transparent",
-      border: "1px solid " + C.edge,
-      color: C.muted,
-      fontSize: 15
-    }
-  }, tile.w))), checked === "wrong" && /*#__PURE__*/React.createElement("div", {
-    className: "mt-4 rounded-lg p-3",
-    style: {
-      background: C.panel2,
-      borderLeft: "2px solid " + C.bad
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 15
-    }
-  }, r.de)), /*#__PURE__*/React.createElement("div", {
-    className: "flex-1"
-  }), /*#__PURE__*/React.createElement(Key, {
-    tone: "solid",
-    wide: true,
-    disabled: !checked && built.length !== r.words.length,
-    onClick: () => checked ? (setPos(p => p + 1)) : check()
-  }, checked ? "Weiter" : "Prüfen"));
+  }));
 }
 
 /* ---------- matching game ---------- */
@@ -3681,7 +4100,7 @@ const MODE_LIST = [{
 }, {
   key: "order",
   title: "Satzbau",
-  sub: "Drag words into the right order."
+  sub: "Build sentences: verb second, verb at the end, and more."
 }, {
   key: "match",
   title: "Zuordnen",

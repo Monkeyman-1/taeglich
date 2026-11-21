@@ -40,8 +40,9 @@ Nothing else. No code change is needed, and the UI adapts on its own:
 ```jsonc
 {
   "id": "n42",                    // unique, stable — progress is saved against it
-  "t": "n",                       // n noun | v verb | a adjective | k connector
-                                  // p phrase | g grammar drill
+  "t": "n",                       // n noun | v verb | a adjective | d small word (adverb, particle)
+                                  // k connector | p phrase | g grammar drill
+                                  // o word-order drill | c case/ending drill (see below)
   "art": "die",                   // nouns only: der | die | das
   "de": "Wohnung",                // bare German word — NO article here
   "en": "flat, apartment",        // English gloss
@@ -66,10 +67,58 @@ schedule, and the mastery tracker are all keyed on it. Changing an existing
 | `n` | produce, gender (der/die/das), cloze |
 | `p` | produce, listen |
 | `g` | cloze only — the drill *is* the sentence, so `s` is required |
+| `o` | order — tap the parts of the sentence into place |
+| `c` | case — pick the right form from `opts` |
 | others | produce, plus cloze when `s` is present |
 
 Grammar drills (`t: "g"`) may put `___` directly in `s[0]`; for everything else
 the app blanks `s[2]` out of the sentence itself.
+
+### Sentence drills: word order (`o`) and cases (`c`)
+
+These teach structure rather than a word, so they are kept out of the word
+browser and the word games (`DRILL_TYPES`). Both need `why`: one plain-English
+sentence shown after every answer, right or wrong. Keep it short and concrete.
+
+```jsonc
+{
+  "id": "o02", "t": "o", "lv": "A1", "tp": "Satzbau",
+  "de": "Morgen | *fahre | ich | mit dem Zug | nach Berlin.",
+  "en": "Tomorrow I'm taking the train to Berlin.",
+  "fix": 1,                        // optional: leading chunks already placed
+  "alt": ["..."],                  // optional: other correct orders, same chunks
+  "why": "Verb second, then the person. ..."
+}
+```
+
+- `|` splits the sentence into tiles. Keep phrases that move together in one
+  tile (`mit dem Zug`), so the drill is about the rule, not about shuffling words.
+- `*` marks every verb part (finite verb, infinitive, participle, separable
+  prefix). The answer underlines them, which is how the learner *sees* verb
+  second / verb last.
+- Use `fix` to pin the start when the drill tests one rule, e.g. pin `Morgen` to
+  force inversion, or pin the main clause to test the `weil` clause.
+- Any order that is also correct and natural goes in `alt`, or the learner is
+  marked wrong for good German. Matching ignores case and punctuation.
+- The first loose tile is shown lowercased. Don't start a sentence with a noun
+  or `Sie` unless that chunk is pinned with `fix`.
+
+```jsonc
+{
+  "id": "c14", "t": "c", "lv": "A2", "tp": "Fälle",
+  "de": "Ich stelle die Lampe neben ___ Fernseher.",
+  "en": "I'm putting the lamp next to the TV.",
+  "opts": ["der", "den", "dem", "des"], "ans": "den",
+  "why": "stellen means you move it somewhere (wohin?). Movement takes the accusative: den."
+}
+```
+
+- Exactly one `___`. `opts` are shuffled by the app and must include `ans`.
+- Don't offer a distractor that is also correct (`am Kino` next to `im Kino`).
+
+Topics that contain `o` or `c` cards lead the new-card rotation every day
+(`SKILL_KINDS` in `buildSession`), so each session has some sentence work next
+to the new words. The word topics take turns behind them.
 
 ## Hard constraints
 

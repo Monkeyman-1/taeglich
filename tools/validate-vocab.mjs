@@ -16,9 +16,12 @@ import { dirname, join } from "node:path";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const FILE = join(ROOT, "vocab.json");
 
-const TYPES = ["n", "v", "a", "k", "p", "g"];
+const TYPES = ["n", "v", "a", "d", "k", "p", "g", "o", "c"];
 const ARTICLES = ["der", "die", "das"];
 const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
+
+// same folding the app uses to compare answers
+const fold = s => (s || "").toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss").replace(/[.,!?;:"'’„“]/g, "").replace(/\s+/g, " ").trim();
 
 const errors = [];
 const warnings = [];
@@ -84,6 +87,41 @@ items.forEach((it, i) => {
     }
   } else if (it.t === "g") {
     err(i, id, 'grammar drills (t:"g") require s — the drill is the sentence');
+  }
+
+  // drills explain their rule after every answer, so an empty explanation is a dead end
+  if ((it.t === "o" || it.t === "c") && (typeof it.why !== "string" || !it.why.trim())) {
+    err(i, id, `${it.t === "o" ? "word-order" : "case"} drills need why: a plain-English rule shown after answering`);
+  }
+
+  // word order: de = "Morgen | *fahre | ich | nach Berlin." (| splits tiles, * marks a verb part)
+  if (it.t === "o" && typeof it.de === "string") {
+    const chunks = src => String(src).split("|").map(s => s.trim()).filter(Boolean).map(c => c.replace(/^\*/, "").trim());
+    const bag = src => chunks(src).map(fold).sort().join("\u0000");
+    const parts = chunks(it.de);
+    if (parts.length < 3) err(i, id, "word-order drills need at least 3 chunks split by |");
+    if (!/\|\s*\*/.test("|" + it.de)) err(i, id, "mark at least one verb chunk with * so the answer can show the verb positions");
+    if (it.fix !== undefined && (!Number.isInteger(it.fix) || it.fix < 0 || it.fix > parts.length - 2)) {
+      err(i, id, `fix must be a whole number from 0 to ${parts.length - 2} (leave at least two tiles to move)`);
+    }
+    if (it.alt !== undefined) {
+      if (!Array.isArray(it.alt)) err(i, id, "alt must be a list of other correct orders");
+      else it.alt.forEach((a, j) => {
+        // an alternative made of different tiles could never be built, so it would never match
+        if (bag(a) !== bag(it.de)) err(i, id, `alt[${j}] uses different chunks from de`);
+      });
+    }
+  }
+
+  // case drills: one ___ gap and a set of choices that includes the answer
+  if (it.t === "c" && typeof it.de === "string") {
+    if (it.de.split("___").length !== 2) err(i, id, "case drills need exactly one ___ gap in de");
+    if (!Array.isArray(it.opts) || it.opts.length < 2 || it.opts.some(o => typeof o !== "string" || !o.trim())) {
+      err(i, id, "opts must list at least 2 choices");
+    } else {
+      if (new Set(it.opts).size !== it.opts.length) err(i, id, "opts has the same choice twice");
+      if (!it.opts.includes(it.ans)) err(i, id, `ans ${JSON.stringify(it.ans)} is not one of opts`);
+    }
   }
 });
 

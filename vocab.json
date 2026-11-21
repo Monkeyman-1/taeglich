@@ -1377,6 +1377,4101 @@
         "I still have to do the measurement today.",
         "machen"
       ]
+    },
+    {
+      "id": "n36",
+      "t": "n",
+      "art": "die",
+      "de": "Zeit",
+      "en": "time",
+      "lv": "A1",
+      "tp": "Zeit",
+      "s": [
+        "Ich habe heute keine Zeit.",
+        "I don't have time today.",
+        "Zeit"
+      ]
+    },
+    {
+      "id": "n37",
+      "t": "n",
+      "art": "das",
+      "de": "Jahr",
+      "en": "year",
+      "lv": "A1",
+      "tp": "Zeit",
+      "s": [
+        "Nächstes Jahr ziehe ich nach Deutschland.",
+        "Next year I'm moving to Germany.",
+        "Jahr"
+      ]
+    },
+    {
+      "id": "n38",
+      "t": "n",
+      "art": "die",
+      "de": "Woche",
+      "en": "week",
+      "lv": "A1",
+      "tp": "Zeit",
+      "s": [
+        "Ich arbeite vier Tage pro Woche.",
+        "I work four days a week.",
+        "Woche"
+      ]
+    },
+    {
+      "id": "n39",
+      "t": "n",
+      "art": "der",
+      "de": "Tag",
+      "en": "day",
+      "lv": "A1",
+      "tp": "Zeit",
+      "s": [
+        "Wie war dein Tag?",
+        "How was your day?",
+        "Tag"
+      ]
+    },
+    {
+      "id": "n40",
+      "t": "n",
+      "art": "der",
+      "de": "Abend",
+      "en": "evening",
+      "lv": "A1",
+      "tp": "Zeit",
+      "s": [
+        "Am Abend lese ich gern.",
+        "In the evening I like to read.",
+        "Abend"
+      ]
+    },
+    {
+      "id": "n41",
+      "t": "n",
+      "art": "der",
+      "de": "Morgen",
+      "en": "morning",
+      "lv": "A1",
+      "tp": "Zeit",
+      "s": [
+        "Am Morgen trinke ich immer Kaffee.",
+        "In the morning I always drink coffee.",
+        "Morgen"
+      ]
+    },
+    {
+      "id": "n42",
+      "t": "n",
+      "art": "die",
+      "de": "Uhr",
+      "en": "clock, watch; o'clock",
+      "lv": "A1",
+      "tp": "Zeit",
+      "s": [
+        "Um wie viel Uhr fängt der Film an?",
+        "What time does the film start?",
+        "Uhr"
+      ]
+    },
+    {
+      "id": "n43",
+      "t": "n",
+      "art": "das",
+      "de": "Wochenende",
+      "en": "weekend",
+      "lv": "A1",
+      "tp": "Zeit",
+      "s": [
+        "Was machst du am Wochenende?",
+        "What are you doing at the weekend?",
+        "Wochenende"
+      ]
+    },
+    {
+      "id": "n44",
+      "t": "n",
+      "art": "der",
+      "de": "Mensch",
+      "en": "person, human",
+      "lv": "A1",
+      "tp": "Menschen",
+      "s": [
+        "Sie ist ein sehr offener Mensch.",
+        "She's a very open person.",
+        "Mensch"
+      ]
+    },
+    {
+      "id": "n45",
+      "t": "n",
+      "art": "der",
+      "de": "Freund",
+      "en": "friend; boyfriend",
+      "lv": "A1",
+      "tp": "Menschen",
+      "s": [
+        "Mein Freund kommt aus Hamburg.",
+        "My friend is from Hamburg.",
+        "Freund"
+      ]
+    },
+    {
+      "id": "n46",
+      "t": "n",
+      "art": "die",
+      "de": "Familie",
+      "en": "family",
+      "lv": "A1",
+      "tp": "Menschen",
+      "s": [
+        "Meine Familie wohnt in England.",
+        "My family lives in England.",
+        "Familie"
+      ]
+    },
+    {
+      "id": "n47",
+      "t": "n",
+      "art": "das",
+      "de": "Kind",
+      "en": "child",
+      "lv": "A1",
+      "tp": "Menschen",
+      "s": [
+        "Das Kind spielt im Garten.",
+        "The child is playing in the garden.",
+        "Kind"
+      ]
+    },
+    {
+      "id": "n48",
+      "t": "n",
+      "art": "der",
+      "de": "Nachbar",
+      "en": "neighbour",
+      "lv": "A2",
+      "tp": "Menschen",
+      "s": [
+        "Unser Nachbar ist sehr laut.",
+        "Our neighbour is very loud.",
+        "Nachbar"
+      ]
+    },
+    {
+      "id": "n49",
+      "t": "n",
+      "art": "der",
+      "de": "Chef",
+      "en": "boss",
+      "lv": "A1",
+      "tp": "Arbeit",
+      "s": [
+        "Der Chef ist heute nicht da.",
+        "The boss isn't in today.",
+        "Chef"
+      ]
+    },
+    {
+      "id": "n50",
+      "t": "n",
+      "art": "die",
+      "de": "Stadt",
+      "en": "town, city",
+      "lv": "A1",
+      "tp": "Unterwegs",
+      "s": [
+        "Die Stadt ist im Sommer voller Touristen.",
+        "The city is full of tourists in summer.",
+        "Stadt"
+      ]
+    },
+    {
+      "id": "n51",
+      "t": "n",
+      "art": "der",
+      "de": "Weg",
+      "en": "way, path",
+      "lv": "A1",
+      "tp": "Unterwegs",
+      "s": [
+        "Kannst du mir den Weg zeigen?",
+        "Can you show me the way?",
+        "Weg"
+      ]
+    },
+    {
+      "id": "n52",
+      "t": "n",
+      "art": "die",
+      "de": "Straße",
+      "en": "street, road",
+      "lv": "A1",
+      "tp": "Unterwegs",
+      "s": [
+        "Wir wohnen in einer ruhigen Straße.",
+        "We live on a quiet street.",
+        "Straße"
+      ]
+    },
+    {
+      "id": "n53",
+      "t": "n",
+      "art": "das",
+      "de": "Auto",
+      "en": "car",
+      "lv": "A1",
+      "tp": "Unterwegs",
+      "s": [
+        "Mein Auto ist in der Werkstatt.",
+        "My car is at the garage.",
+        "Auto"
+      ]
+    },
+    {
+      "id": "n54",
+      "t": "n",
+      "art": "der",
+      "de": "Zug",
+      "en": "train",
+      "lv": "A1",
+      "tp": "Unterwegs",
+      "s": [
+        "Der Zug hat zwanzig Minuten Verspätung.",
+        "The train is twenty minutes late.",
+        "Zug"
+      ]
+    },
+    {
+      "id": "n55",
+      "t": "n",
+      "art": "die",
+      "de": "Verspätung",
+      "en": "delay",
+      "lv": "A2",
+      "tp": "Unterwegs",
+      "s": [
+        "Wegen der Verspätung komme ich zu spät.",
+        "Because of the delay I'll be late.",
+        "Verspätung"
+      ]
+    },
+    {
+      "id": "n56",
+      "t": "n",
+      "art": "die",
+      "de": "Fahrkarte",
+      "en": "ticket (train, bus)",
+      "lv": "A1",
+      "tp": "Unterwegs",
+      "s": [
+        "Ich kaufe die Fahrkarte am Automaten.",
+        "I'm buying the ticket at the machine.",
+        "Fahrkarte"
+      ]
+    },
+    {
+      "id": "n57",
+      "t": "n",
+      "art": "der",
+      "de": "Flughafen",
+      "en": "airport",
+      "lv": "A1",
+      "tp": "Unterwegs",
+      "s": [
+        "Wie komme ich zum Flughafen?",
+        "How do I get to the airport?",
+        "Flughafen"
+      ]
+    },
+    {
+      "id": "n58",
+      "t": "n",
+      "art": "der",
+      "de": "Urlaub",
+      "en": "holiday, time off",
+      "lv": "A1",
+      "tp": "Unterwegs",
+      "s": [
+        "Im Urlaub fahre ich ans Meer.",
+        "On holiday I'm going to the seaside.",
+        "Urlaub"
+      ]
+    },
+    {
+      "id": "n59",
+      "t": "n",
+      "art": "das",
+      "de": "Geld",
+      "en": "money",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich habe kein Geld dabei.",
+        "I don't have any money on me.",
+        "Geld"
+      ]
+    },
+    {
+      "id": "n60",
+      "t": "n",
+      "art": "das",
+      "de": "Problem",
+      "en": "problem",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Wir haben ein kleines Problem.",
+        "We have a small problem.",
+        "Problem"
+      ]
+    },
+    {
+      "id": "n61",
+      "t": "n",
+      "art": "die",
+      "de": "Frage",
+      "en": "question",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Darf ich eine Frage stellen?",
+        "May I ask a question?",
+        "Frage"
+      ]
+    },
+    {
+      "id": "n62",
+      "t": "n",
+      "art": "die",
+      "de": "Antwort",
+      "en": "answer",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich warte noch auf eine Antwort.",
+        "I'm still waiting for an answer.",
+        "Antwort"
+      ]
+    },
+    {
+      "id": "n63",
+      "t": "n",
+      "art": "die",
+      "de": "Idee",
+      "en": "idea",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Hast du eine bessere Idee?",
+        "Do you have a better idea?",
+        "Idee"
+      ]
+    },
+    {
+      "id": "n64",
+      "t": "n",
+      "art": "das",
+      "de": "Handy",
+      "en": "mobile phone",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Mein Handy ist fast leer.",
+        "My phone is almost dead.",
+        "Handy"
+      ]
+    },
+    {
+      "id": "n65",
+      "t": "n",
+      "art": "der",
+      "de": "Schlüssel",
+      "en": "key",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich finde meinen Schlüssel nicht.",
+        "I can't find my key.",
+        "Schlüssel"
+      ]
+    },
+    {
+      "id": "n66",
+      "t": "n",
+      "art": "der",
+      "de": "Arzt",
+      "en": "doctor",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich muss morgen zum Arzt.",
+        "I have to go to the doctor's tomorrow.",
+        "Arzt"
+      ]
+    },
+    {
+      "id": "n67",
+      "t": "n",
+      "art": "die",
+      "de": "Gesundheit",
+      "en": "health; bless you! (after a sneeze)",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Gesundheit ist das Wichtigste.",
+        "Health is the most important thing.",
+        "Gesundheit"
+      ]
+    },
+    {
+      "id": "n68",
+      "t": "n",
+      "art": "das",
+      "de": "Wetter",
+      "en": "weather",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Wie ist das Wetter heute?",
+        "What's the weather like today?",
+        "Wetter"
+      ]
+    },
+    {
+      "id": "n69",
+      "t": "n",
+      "art": "die",
+      "de": "Sprache",
+      "en": "language",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Deutsch ist eine schöne Sprache.",
+        "German is a beautiful language.",
+        "Sprache"
+      ]
+    },
+    {
+      "id": "n70",
+      "t": "n",
+      "art": "das",
+      "de": "Wort",
+      "en": "word",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich kenne das Wort nicht.",
+        "I don't know the word.",
+        "Wort"
+      ]
+    },
+    {
+      "id": "n71",
+      "t": "n",
+      "art": "der",
+      "de": "Satz",
+      "en": "sentence",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Kannst du den Satz wiederholen?",
+        "Can you repeat the sentence?",
+        "Satz"
+      ]
+    },
+    {
+      "id": "n72",
+      "t": "n",
+      "art": "die",
+      "de": "Lust",
+      "en": "desire, fancy (to do sth)",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Hast du Lust auf Kino?",
+        "Do you fancy the cinema?",
+        "Lust"
+      ]
+    },
+    {
+      "id": "n73",
+      "t": "n",
+      "art": "der",
+      "de": "Spaß",
+      "en": "fun",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Das macht richtig Spaß!",
+        "That's really fun!",
+        "Spaß"
+      ]
+    },
+    {
+      "id": "n74",
+      "t": "n",
+      "art": "die",
+      "de": "Ahnung",
+      "en": "idea, clue",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Ich habe keine Ahnung.",
+        "I have no idea.",
+        "Ahnung"
+      ]
+    },
+    {
+      "id": "n75",
+      "t": "n",
+      "art": "der",
+      "de": "Unterschied",
+      "en": "difference",
+      "lv": "B1",
+      "tp": "Alltag",
+      "s": [
+        "Was ist der Unterschied?",
+        "What's the difference?",
+        "Unterschied"
+      ]
+    },
+    {
+      "id": "n76",
+      "t": "n",
+      "art": "die",
+      "de": "Möglichkeit",
+      "en": "possibility, option",
+      "lv": "B1",
+      "tp": "Alltag",
+      "s": [
+        "Es gibt noch eine andere Möglichkeit.",
+        "There's another option.",
+        "Möglichkeit"
+      ]
+    },
+    {
+      "id": "n77",
+      "t": "n",
+      "art": "der",
+      "de": "Grund",
+      "en": "reason",
+      "lv": "B1",
+      "tp": "Alltag",
+      "s": [
+        "Aus welchem Grund?",
+        "For what reason?",
+        "Grund"
+      ]
+    },
+    {
+      "id": "n78",
+      "t": "n",
+      "art": "die",
+      "de": "Aufgabe",
+      "en": "task",
+      "lv": "A2",
+      "tp": "Arbeit",
+      "s": [
+        "Die Aufgabe ist schwerer als gedacht.",
+        "The task is harder than I thought.",
+        "Aufgabe"
+      ]
+    },
+    {
+      "id": "n79",
+      "t": "n",
+      "art": "das",
+      "de": "Ziel",
+      "en": "goal, target",
+      "lv": "A2",
+      "tp": "Arbeit",
+      "s": [
+        "Mein Ziel ist es, fließend Deutsch zu sprechen.",
+        "My goal is to speak German fluently.",
+        "Ziel"
+      ]
+    },
+    {
+      "id": "n80",
+      "t": "n",
+      "art": "die",
+      "de": "Stelle",
+      "en": "job, position; place",
+      "lv": "A2",
+      "tp": "Arbeit",
+      "s": [
+        "Die Stelle ist noch frei.",
+        "The position is still open.",
+        "Stelle"
+      ]
+    },
+    {
+      "id": "n81",
+      "t": "n",
+      "art": "das",
+      "de": "Ergebnis",
+      "en": "result",
+      "lv": "B1",
+      "tp": "Arbeit",
+      "s": [
+        "Das Ergebnis ist besser als erwartet.",
+        "The result is better than expected.",
+        "Ergebnis"
+      ]
+    },
+    {
+      "id": "n82",
+      "t": "n",
+      "art": "die",
+      "de": "Lösung",
+      "en": "solution",
+      "lv": "A2",
+      "tp": "Arbeit",
+      "s": [
+        "Wir brauchen schnell eine Lösung.",
+        "We need a solution fast.",
+        "Lösung"
+      ]
+    },
+    {
+      "id": "n83",
+      "t": "n",
+      "art": "das",
+      "de": "Essen",
+      "en": "food; meal",
+      "lv": "A1",
+      "tp": "Essen",
+      "s": [
+        "Das Essen ist gleich fertig.",
+        "The food is nearly ready.",
+        "Essen"
+      ]
+    },
+    {
+      "id": "n84",
+      "t": "n",
+      "art": "das",
+      "de": "Frühstück",
+      "en": "breakfast",
+      "lv": "A1",
+      "tp": "Essen",
+      "s": [
+        "Zum Frühstück esse ich Haferflocken.",
+        "For breakfast I have porridge.",
+        "Frühstück"
+      ]
+    },
+    {
+      "id": "n85",
+      "t": "n",
+      "art": "das",
+      "de": "Brot",
+      "en": "bread",
+      "lv": "A1",
+      "tp": "Essen",
+      "s": [
+        "Das Brot ist noch warm.",
+        "The bread is still warm.",
+        "Brot"
+      ]
+    },
+    {
+      "id": "n86",
+      "t": "n",
+      "art": "das",
+      "de": "Wasser",
+      "en": "water",
+      "lv": "A1",
+      "tp": "Essen",
+      "s": [
+        "Ein Glas Wasser, bitte.",
+        "A glass of water, please.",
+        "Wasser"
+      ]
+    },
+    {
+      "id": "n87",
+      "t": "n",
+      "art": "die",
+      "de": "Milch",
+      "en": "milk",
+      "lv": "A1",
+      "tp": "Essen",
+      "s": [
+        "Wir haben keine Milch mehr.",
+        "We've run out of milk.",
+        "Milch"
+      ]
+    },
+    {
+      "id": "n88",
+      "t": "n",
+      "art": "das",
+      "de": "Fleisch",
+      "en": "meat",
+      "lv": "A1",
+      "tp": "Essen",
+      "s": [
+        "Ich esse wenig Fleisch.",
+        "I don't eat much meat.",
+        "Fleisch"
+      ]
+    },
+    {
+      "id": "n89",
+      "t": "n",
+      "art": "das",
+      "de": "Gemüse",
+      "en": "vegetables",
+      "lv": "A1",
+      "tp": "Essen",
+      "s": [
+        "Das Gemüse vom Markt ist frischer.",
+        "The vegetables from the market are fresher.",
+        "Gemüse"
+      ]
+    },
+    {
+      "id": "n90",
+      "t": "n",
+      "art": "der",
+      "de": "Hunger",
+      "en": "hunger",
+      "lv": "A1",
+      "tp": "Essen",
+      "s": [
+        "Ich habe großen Hunger.",
+        "I'm really hungry.",
+        "Hunger"
+      ]
+    },
+    {
+      "id": "n91",
+      "t": "n",
+      "art": "die",
+      "de": "Küche",
+      "en": "kitchen; cooking",
+      "lv": "A1",
+      "tp": "Zuhause",
+      "s": [
+        "Die Küche ist klein, aber praktisch.",
+        "The kitchen is small but practical.",
+        "Küche"
+      ]
+    },
+    {
+      "id": "n92",
+      "t": "n",
+      "art": "das",
+      "de": "Zimmer",
+      "en": "room",
+      "lv": "A1",
+      "tp": "Zuhause",
+      "s": [
+        "Mein Zimmer ist im ersten Stock.",
+        "My room is on the first floor.",
+        "Zimmer"
+      ]
+    },
+    {
+      "id": "n93",
+      "t": "n",
+      "art": "der",
+      "de": "Schrank",
+      "en": "cupboard, wardrobe",
+      "lv": "A2",
+      "tp": "Zuhause",
+      "s": [
+        "Die Teller stehen im Schrank.",
+        "The plates are in the cupboard.",
+        "Schrank"
+      ]
+    },
+    {
+      "id": "n94",
+      "t": "n",
+      "art": "die",
+      "de": "Tür",
+      "en": "door",
+      "lv": "A1",
+      "tp": "Zuhause",
+      "s": [
+        "Mach bitte die Tür zu.",
+        "Close the door, please.",
+        "Tür"
+      ]
+    },
+    {
+      "id": "n95",
+      "t": "n",
+      "art": "das",
+      "de": "Fenster",
+      "en": "window",
+      "lv": "A1",
+      "tp": "Zuhause",
+      "s": [
+        "Kann ich das Fenster aufmachen?",
+        "Can I open the window?",
+        "Fenster"
+      ]
+    },
+    {
+      "id": "v26",
+      "t": "v",
+      "de": "machen",
+      "en": "to do, to make",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Was machst du heute Abend?",
+        "What are you doing tonight?",
+        "machst"
+      ]
+    },
+    {
+      "id": "v27",
+      "t": "v",
+      "de": "gehen",
+      "en": "to go, to walk",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich gehe jetzt nach Hause.",
+        "I'm going home now.",
+        "gehe"
+      ]
+    },
+    {
+      "id": "v28",
+      "t": "v",
+      "de": "kommen",
+      "en": "to come",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Woher kommst du?",
+        "Where are you from?",
+        "kommst"
+      ]
+    },
+    {
+      "id": "v29",
+      "t": "v",
+      "de": "sehen",
+      "en": "to see",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Siehst du das Schild da?",
+        "Can you see that sign there?",
+        "Siehst"
+      ]
+    },
+    {
+      "id": "v30",
+      "t": "v",
+      "de": "wissen",
+      "en": "to know (a fact)",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Das weiß ich nicht.",
+        "I don't know that.",
+        "weiß"
+      ]
+    },
+    {
+      "id": "v31",
+      "t": "v",
+      "de": "sagen",
+      "en": "to say",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Was hast du gesagt?",
+        "What did you say?",
+        "gesagt"
+      ]
+    },
+    {
+      "id": "v32",
+      "t": "v",
+      "de": "geben",
+      "en": "to give",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Gibst du mir bitte das Salz?",
+        "Can you pass me the salt, please?",
+        "Gibst"
+      ]
+    },
+    {
+      "id": "v33",
+      "t": "v",
+      "de": "nehmen",
+      "en": "to take",
+      "lv": "A1",
+      "tp": "Unterwegs",
+      "s": [
+        "Ich nehme den Bus.",
+        "I'm taking the bus.",
+        "nehme"
+      ]
+    },
+    {
+      "id": "v34",
+      "t": "v",
+      "de": "finden",
+      "en": "to find; to think (opinion)",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Wie findest du die Wohnung?",
+        "What do you think of the flat?",
+        "findest"
+      ]
+    },
+    {
+      "id": "v35",
+      "t": "v",
+      "de": "denken",
+      "en": "to think",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich denke oft an dich.",
+        "I often think about you.",
+        "denke"
+      ]
+    },
+    {
+      "id": "v36",
+      "t": "v",
+      "de": "glauben",
+      "en": "to believe, to think",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich glaube, das stimmt.",
+        "I think that's right.",
+        "glaube"
+      ]
+    },
+    {
+      "id": "v37",
+      "t": "v",
+      "de": "bleiben",
+      "en": "to stay",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Wir bleiben heute zu Hause.",
+        "We're staying at home today.",
+        "bleiben"
+      ]
+    },
+    {
+      "id": "v38",
+      "t": "v",
+      "de": "kennen",
+      "en": "to know (a person, a place)",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Kennst du ein gutes Restaurant?",
+        "Do you know a good restaurant?",
+        "Kennst"
+      ]
+    },
+    {
+      "id": "v39",
+      "t": "v",
+      "de": "sprechen",
+      "en": "to speak",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Sprichst du Englisch?",
+        "Do you speak English?",
+        "Sprichst"
+      ]
+    },
+    {
+      "id": "v40",
+      "t": "v",
+      "de": "lesen",
+      "en": "to read",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich lese jeden Abend im Bett.",
+        "I read in bed every evening.",
+        "lese"
+      ]
+    },
+    {
+      "id": "v41",
+      "t": "v",
+      "de": "essen",
+      "en": "to eat",
+      "lv": "A1",
+      "tp": "Essen",
+      "s": [
+        "Was isst du zu Mittag?",
+        "What are you having for lunch?",
+        "isst"
+      ]
+    },
+    {
+      "id": "v42",
+      "t": "v",
+      "de": "trinken",
+      "en": "to drink",
+      "lv": "A1",
+      "tp": "Essen",
+      "s": [
+        "Trinkst du Tee oder Kaffee?",
+        "Do you drink tea or coffee?",
+        "Trinkst"
+      ]
+    },
+    {
+      "id": "v43",
+      "t": "v",
+      "de": "schlafen",
+      "en": "to sleep",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Hast du gut geschlafen?",
+        "Did you sleep well?",
+        "geschlafen"
+      ]
+    },
+    {
+      "id": "v44",
+      "t": "v",
+      "de": "fahren",
+      "en": "to drive, to go (by vehicle)",
+      "lv": "A1",
+      "tp": "Unterwegs",
+      "s": [
+        "Er fährt jeden Tag mit dem Rad zur Arbeit.",
+        "He cycles to work every day.",
+        "fährt"
+      ]
+    },
+    {
+      "id": "v45",
+      "t": "v",
+      "de": "laufen",
+      "en": "to run; to walk",
+      "lv": "A1",
+      "tp": "Unterwegs",
+      "s": [
+        "Ich laufe jeden Morgen fünf Kilometer.",
+        "I run five kilometres every morning.",
+        "laufe"
+      ]
+    },
+    {
+      "id": "v46",
+      "t": "v",
+      "de": "lernen",
+      "en": "to learn, to study",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich lerne jeden Tag zehn neue Wörter.",
+        "I learn ten new words every day.",
+        "lerne"
+      ]
+    },
+    {
+      "id": "v47",
+      "t": "v",
+      "de": "spielen",
+      "en": "to play",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Spielst du ein Instrument?",
+        "Do you play an instrument?",
+        "Spielst"
+      ]
+    },
+    {
+      "id": "v48",
+      "t": "v",
+      "de": "arbeiten",
+      "en": "to work",
+      "lv": "A1",
+      "tp": "Arbeit",
+      "s": [
+        "Wo arbeitest du?",
+        "Where do you work?",
+        "arbeitest"
+      ]
+    },
+    {
+      "id": "v49",
+      "t": "v",
+      "de": "kaufen",
+      "en": "to buy",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich kaufe noch schnell Brot.",
+        "I'm just quickly buying some bread.",
+        "kaufe"
+      ]
+    },
+    {
+      "id": "v50",
+      "t": "v",
+      "de": "bezahlen",
+      "en": "to pay",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Kann ich mit Karte bezahlen?",
+        "Can I pay by card?",
+        "bezahlen"
+      ]
+    },
+    {
+      "id": "v51",
+      "t": "v",
+      "de": "kosten",
+      "en": "to cost",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Was kostet die Fahrkarte?",
+        "How much is the ticket?",
+        "kostet"
+      ]
+    },
+    {
+      "id": "v52",
+      "t": "v",
+      "de": "suchen",
+      "en": "to look for",
+      "lv": "A1",
+      "tp": "Arbeit",
+      "s": [
+        "Ich suche eine neue Stelle.",
+        "I'm looking for a new job.",
+        "suche"
+      ]
+    },
+    {
+      "id": "v53",
+      "t": "v",
+      "de": "zeigen",
+      "en": "to show",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Kannst du mir das zeigen?",
+        "Can you show me that?",
+        "zeigen"
+      ]
+    },
+    {
+      "id": "v54",
+      "t": "v",
+      "de": "fragen",
+      "en": "to ask",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Darf ich dich etwas fragen?",
+        "Can I ask you something?",
+        "fragen"
+      ]
+    },
+    {
+      "id": "v55",
+      "t": "v",
+      "de": "antworten",
+      "en": "to answer, to reply",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Er antwortet nie auf meine E-Mails.",
+        "He never replies to my emails.",
+        "antwortet"
+      ]
+    },
+    {
+      "id": "v56",
+      "t": "v",
+      "de": "helfen",
+      "en": "to help (+ dative)",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Kann ich Ihnen helfen?",
+        "Can I help you?",
+        "helfen"
+      ]
+    },
+    {
+      "id": "v57",
+      "t": "v",
+      "de": "warten",
+      "en": "to wait",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich warte seit zehn Minuten.",
+        "I've been waiting for ten minutes.",
+        "warte"
+      ]
+    },
+    {
+      "id": "v58",
+      "t": "v",
+      "de": "treffen",
+      "en": "to meet",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Wir treffen uns um acht.",
+        "We're meeting at eight.",
+        "treffen"
+      ]
+    },
+    {
+      "id": "v59",
+      "t": "v",
+      "de": "versuchen",
+      "en": "to try",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Ich versuche es noch einmal.",
+        "I'll try again.",
+        "versuche"
+      ]
+    },
+    {
+      "id": "v60",
+      "t": "v",
+      "de": "vergessen",
+      "en": "to forget",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Ich habe meinen Schlüssel vergessen.",
+        "I've forgotten my key.",
+        "vergessen"
+      ]
+    },
+    {
+      "id": "v61",
+      "t": "v",
+      "de": "gefallen",
+      "en": "to please (how German says 'like')",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Die Stadt gefällt mir sehr.",
+        "I really like the city.",
+        "gefällt"
+      ]
+    },
+    {
+      "id": "v62",
+      "t": "v",
+      "de": "gehören",
+      "en": "to belong to",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Wem gehört die Jacke?",
+        "Whose jacket is this?",
+        "gehört"
+      ]
+    },
+    {
+      "id": "v63",
+      "t": "v",
+      "de": "schmecken",
+      "en": "to taste (good)",
+      "lv": "A1",
+      "tp": "Essen",
+      "s": [
+        "Schmeckt es dir?",
+        "Do you like it? (food)",
+        "Schmeckt"
+      ]
+    },
+    {
+      "id": "v64",
+      "t": "v",
+      "de": "passieren",
+      "en": "to happen",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Was ist passiert?",
+        "What happened?",
+        "passiert"
+      ]
+    },
+    {
+      "id": "v65",
+      "t": "v",
+      "de": "aufstehen",
+      "en": "to get up",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich stehe um sechs Uhr auf.",
+        "I get up at six o'clock.",
+        "auf"
+      ]
+    },
+    {
+      "id": "v66",
+      "t": "v",
+      "de": "einkaufen",
+      "en": "to go shopping",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Am Samstag kaufe ich ein.",
+        "On Saturday I do the shopping.",
+        "ein"
+      ]
+    },
+    {
+      "id": "v67",
+      "t": "v",
+      "de": "anrufen",
+      "en": "to call (on the phone)",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich rufe dich später an.",
+        "I'll call you later.",
+        "an"
+      ]
+    },
+    {
+      "id": "v68",
+      "t": "v",
+      "de": "mitkommen",
+      "en": "to come along",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Kommst du mit?",
+        "Are you coming along?",
+        "mit"
+      ]
+    },
+    {
+      "id": "v69",
+      "t": "v",
+      "de": "sich vorbereiten",
+      "en": "to prepare (yourself)",
+      "lv": "B1",
+      "tp": "Arbeit",
+      "s": [
+        "Ich bereite mich auf das Gespräch vor.",
+        "I'm preparing for the meeting.",
+        "vor"
+      ]
+    },
+    {
+      "id": "v70",
+      "t": "v",
+      "de": "aussehen",
+      "en": "to look (appearance)",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Du siehst müde aus.",
+        "You look tired.",
+        "aus"
+      ]
+    },
+    {
+      "id": "v71",
+      "t": "v",
+      "de": "sich erinnern",
+      "en": "to remember",
+      "lv": "B1",
+      "tp": "Alltag",
+      "s": [
+        "Erinnerst du dich an mich?",
+        "Do you remember me?",
+        "Erinnerst"
+      ]
+    },
+    {
+      "id": "v72",
+      "t": "v",
+      "de": "sich entscheiden",
+      "en": "to decide",
+      "lv": "B1",
+      "tp": "Alltag",
+      "s": [
+        "Ich kann mich nicht entscheiden.",
+        "I can't decide.",
+        "entscheiden"
+      ]
+    },
+    {
+      "id": "v73",
+      "t": "v",
+      "de": "bekommen",
+      "en": "to get, to receive (not 'become'!)",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Ich habe eine Antwort bekommen.",
+        "I got an answer.",
+        "bekommen"
+      ]
+    },
+    {
+      "id": "v74",
+      "t": "v",
+      "de": "werden",
+      "en": "to become",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Ich will Ingenieur werden.",
+        "I want to become an engineer.",
+        "werden"
+      ]
+    },
+    {
+      "id": "v75",
+      "t": "v",
+      "de": "öffnen",
+      "en": "to open",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Der Laden öffnet um neun.",
+        "The shop opens at nine.",
+        "öffnet"
+      ]
+    },
+    {
+      "id": "v76",
+      "t": "v",
+      "de": "benutzen",
+      "en": "to use",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Darf ich dein Handy benutzen?",
+        "Can I use your phone?",
+        "benutzen"
+      ]
+    },
+    {
+      "id": "v77",
+      "t": "v",
+      "de": "reparieren",
+      "en": "to repair",
+      "lv": "A2",
+      "tp": "Technik",
+      "s": [
+        "Kannst du das reparieren?",
+        "Can you repair that?",
+        "reparieren"
+      ]
+    },
+    {
+      "id": "v78",
+      "t": "v",
+      "de": "üben",
+      "en": "to practise",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich übe jeden Tag Klavier.",
+        "I practise the piano every day.",
+        "übe"
+      ]
+    },
+    {
+      "id": "v79",
+      "t": "v",
+      "de": "verbessern",
+      "en": "to improve",
+      "lv": "B1",
+      "tp": "Alltag",
+      "s": [
+        "Ich will mein Deutsch verbessern.",
+        "I want to improve my German.",
+        "verbessern"
+      ]
+    },
+    {
+      "id": "v80",
+      "t": "v",
+      "de": "erzählen",
+      "en": "to tell (a story, news)",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Erzähl mal, wie war der Urlaub?",
+        "Tell me, how was the holiday?",
+        "Erzähl"
+      ]
+    },
+    {
+      "id": "v81",
+      "t": "v",
+      "de": "stimmen",
+      "en": "to be right, to be true",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Das stimmt nicht.",
+        "That's not true.",
+        "stimmt"
+      ]
+    },
+    {
+      "id": "v82",
+      "t": "v",
+      "de": "klappen",
+      "en": "to work out (casual)",
+      "lv": "B1",
+      "tp": "Alltag",
+      "s": [
+        "Hat alles geklappt?",
+        "Did everything work out?",
+        "geklappt"
+      ]
+    },
+    {
+      "id": "v83",
+      "t": "v",
+      "de": "schaffen",
+      "en": "to manage, to pull off",
+      "lv": "B1",
+      "tp": "Alltag",
+      "s": [
+        "Das schaffst du!",
+        "You can do it!",
+        "schaffst"
+      ]
+    },
+    {
+      "id": "v84",
+      "t": "v",
+      "de": "sich beeilen",
+      "en": "to hurry",
+      "lv": "B1",
+      "tp": "Alltag",
+      "s": [
+        "Ich muss mich beeilen.",
+        "I have to hurry.",
+        "beeilen"
+      ]
+    },
+    {
+      "id": "v85",
+      "t": "v",
+      "de": "verpassen",
+      "en": "to miss (a bus, a chance)",
+      "lv": "A2",
+      "tp": "Unterwegs",
+      "s": [
+        "Ich habe den Bus verpasst.",
+        "I missed the bus.",
+        "verpasst"
+      ]
+    },
+    {
+      "id": "v86",
+      "t": "v",
+      "de": "vermissen",
+      "en": "to miss (a person)",
+      "lv": "A2",
+      "tp": "Menschen",
+      "s": [
+        "Ich vermisse dich.",
+        "I miss you.",
+        "vermisse"
+      ]
+    },
+    {
+      "id": "a11",
+      "t": "a",
+      "de": "gut",
+      "en": "good",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Das Essen ist richtig gut.",
+        "The food is really good.",
+        "gut"
+      ]
+    },
+    {
+      "id": "a12",
+      "t": "a",
+      "de": "schlecht",
+      "en": "bad",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Mir geht es heute schlecht.",
+        "I'm not feeling well today.",
+        "schlecht"
+      ]
+    },
+    {
+      "id": "a13",
+      "t": "a",
+      "de": "groß",
+      "en": "big, tall",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Die Wohnung ist groß und hell.",
+        "The flat is big and bright.",
+        "groß"
+      ]
+    },
+    {
+      "id": "a14",
+      "t": "a",
+      "de": "klein",
+      "en": "small",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Das Zimmer ist leider sehr klein.",
+        "Unfortunately the room is very small.",
+        "klein"
+      ]
+    },
+    {
+      "id": "a15",
+      "t": "a",
+      "de": "neu",
+      "en": "new",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ist das Handy neu?",
+        "Is that phone new?",
+        "neu"
+      ]
+    },
+    {
+      "id": "a16",
+      "t": "a",
+      "de": "alt",
+      "en": "old",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Das Haus ist über hundert Jahre alt.",
+        "The house is over a hundred years old.",
+        "alt"
+      ]
+    },
+    {
+      "id": "a17",
+      "t": "a",
+      "de": "teuer",
+      "en": "expensive",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Das ist mir zu teuer.",
+        "That's too expensive for me.",
+        "teuer"
+      ]
+    },
+    {
+      "id": "a18",
+      "t": "a",
+      "de": "müde",
+      "en": "tired",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich bin total müde.",
+        "I'm completely tired.",
+        "müde"
+      ]
+    },
+    {
+      "id": "a19",
+      "t": "a",
+      "de": "krank",
+      "en": "ill, sick",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ich bin heute krank.",
+        "I'm ill today.",
+        "krank"
+      ]
+    },
+    {
+      "id": "a20",
+      "t": "a",
+      "de": "früh",
+      "en": "early",
+      "lv": "A1",
+      "tp": "Zeit",
+      "s": [
+        "Es ist noch zu früh.",
+        "It's still too early.",
+        "früh"
+      ]
+    },
+    {
+      "id": "a21",
+      "t": "a",
+      "de": "spät",
+      "en": "late",
+      "lv": "A1",
+      "tp": "Zeit",
+      "s": [
+        "Ist es schon zu spät?",
+        "Is it too late already?",
+        "spät"
+      ]
+    },
+    {
+      "id": "a22",
+      "t": "a",
+      "de": "schnell",
+      "en": "fast, quick",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Du sprichst zu schnell für mich.",
+        "You're speaking too fast for me.",
+        "schnell"
+      ]
+    },
+    {
+      "id": "a23",
+      "t": "a",
+      "de": "langsam",
+      "en": "slow",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Kannst du bitte langsam sprechen?",
+        "Can you speak slowly, please?",
+        "langsam"
+      ]
+    },
+    {
+      "id": "a24",
+      "t": "a",
+      "de": "laut",
+      "en": "loud",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Die Musik ist zu laut.",
+        "The music is too loud.",
+        "laut"
+      ]
+    },
+    {
+      "id": "a25",
+      "t": "a",
+      "de": "leise",
+      "en": "quiet (sound)",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Sei bitte leise, das Baby schläft.",
+        "Please be quiet, the baby's asleep.",
+        "leise"
+      ]
+    },
+    {
+      "id": "a26",
+      "t": "a",
+      "de": "voll",
+      "en": "full",
+      "lv": "A2",
+      "tp": "Unterwegs",
+      "s": [
+        "Der Zug ist total voll.",
+        "The train is completely full.",
+        "voll"
+      ]
+    },
+    {
+      "id": "a27",
+      "t": "a",
+      "de": "leer",
+      "en": "empty",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Die Flasche ist leer.",
+        "The bottle is empty.",
+        "leer"
+      ]
+    },
+    {
+      "id": "a28",
+      "t": "a",
+      "de": "nett",
+      "en": "nice, kind",
+      "lv": "A1",
+      "tp": "Menschen",
+      "s": [
+        "Deine Kollegen sind echt nett.",
+        "Your colleagues are really nice.",
+        "nett"
+      ]
+    },
+    {
+      "id": "a29",
+      "t": "a",
+      "de": "ruhig",
+      "en": "calm, quiet",
+      "lv": "A2",
+      "tp": "Zuhause",
+      "s": [
+        "Die Gegend ist sehr ruhig.",
+        "The area is very quiet.",
+        "ruhig"
+      ]
+    },
+    {
+      "id": "a30",
+      "t": "a",
+      "de": "sicher",
+      "en": "sure; safe",
+      "lv": "A2",
+      "tp": "Alltag",
+      "s": [
+        "Bist du sicher?",
+        "Are you sure?",
+        "sicher"
+      ]
+    },
+    {
+      "id": "a31",
+      "t": "a",
+      "de": "bereit",
+      "en": "ready",
+      "lv": "B1",
+      "tp": "Alltag",
+      "s": [
+        "Bist du bereit?",
+        "Are you ready?",
+        "bereit"
+      ]
+    },
+    {
+      "id": "a32",
+      "t": "a",
+      "de": "anstrengend",
+      "en": "tiring, exhausting",
+      "lv": "B1",
+      "tp": "Alltag",
+      "s": [
+        "Der Tag war echt anstrengend.",
+        "The day was really exhausting.",
+        "anstrengend"
+      ]
+    },
+    {
+      "id": "a33",
+      "t": "a",
+      "de": "spannend",
+      "en": "exciting, gripping",
+      "lv": "B1",
+      "tp": "Alltag",
+      "s": [
+        "Das Buch ist total spannend.",
+        "The book is really gripping.",
+        "spannend"
+      ]
+    },
+    {
+      "id": "a34",
+      "t": "a",
+      "de": "lecker",
+      "en": "tasty",
+      "lv": "A1",
+      "tp": "Essen",
+      "s": [
+        "Der Kuchen ist lecker!",
+        "The cake is tasty!",
+        "lecker"
+      ]
+    },
+    {
+      "id": "a35",
+      "t": "a",
+      "de": "satt",
+      "en": "full (after eating)",
+      "lv": "A2",
+      "tp": "Essen",
+      "s": [
+        "Danke, ich bin satt.",
+        "Thanks, I'm full.",
+        "satt"
+      ]
+    },
+    {
+      "id": "a36",
+      "t": "a",
+      "de": "pünktlich",
+      "en": "on time",
+      "lv": "A2",
+      "tp": "Unterwegs",
+      "s": [
+        "Der Zug ist heute pünktlich.",
+        "The train is on time today.",
+        "pünktlich"
+      ]
+    },
+    {
+      "id": "a37",
+      "t": "a",
+      "de": "kaputt",
+      "en": "broken",
+      "lv": "A1",
+      "tp": "Zuhause",
+      "s": [
+        "Die Waschmaschine ist kaputt.",
+        "The washing machine is broken.",
+        "kaputt"
+      ]
+    },
+    {
+      "id": "a38",
+      "t": "a",
+      "de": "gesund",
+      "en": "healthy",
+      "lv": "A2",
+      "tp": "Essen",
+      "s": [
+        "Gemüse ist gesund.",
+        "Vegetables are healthy.",
+        "gesund"
+      ]
+    },
+    {
+      "id": "a39",
+      "t": "a",
+      "de": "glücklich",
+      "en": "happy",
+      "lv": "A1",
+      "tp": "Menschen",
+      "s": [
+        "Ich bin sehr glücklich hier.",
+        "I'm very happy here.",
+        "glücklich"
+      ]
+    },
+    {
+      "id": "a40",
+      "t": "a",
+      "de": "schön",
+      "en": "beautiful, nice",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Das Wetter ist heute schön.",
+        "The weather is nice today.",
+        "schön"
+      ]
+    },
+    {
+      "id": "a41",
+      "t": "a",
+      "de": "kalt",
+      "en": "cold",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Im Winter ist es hier sehr kalt.",
+        "It's very cold here in winter.",
+        "kalt"
+      ]
+    },
+    {
+      "id": "a42",
+      "t": "a",
+      "de": "warm",
+      "en": "warm",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ist es draußen warm?",
+        "Is it warm outside?",
+        "warm"
+      ]
+    },
+    {
+      "id": "a43",
+      "t": "a",
+      "de": "frei",
+      "en": "free; available",
+      "lv": "A1",
+      "tp": "Alltag",
+      "s": [
+        "Ist der Platz noch frei?",
+        "Is this seat free?",
+        "frei"
+      ]
+    },
+    {
+      "id": "d01",
+      "t": "d",
+      "de": "schon",
+      "en": "already",
+      "lv": "A1",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Bist du schon wach?",
+        "Are you awake already?",
+        "schon"
+      ]
+    },
+    {
+      "id": "d02",
+      "t": "d",
+      "de": "noch",
+      "en": "still; yet",
+      "lv": "A1",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Ich bin noch nicht fertig.",
+        "I'm not finished yet.",
+        "noch"
+      ]
+    },
+    {
+      "id": "d03",
+      "t": "d",
+      "de": "gerade",
+      "en": "right now; just",
+      "lv": "A2",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Ich bin gerade in der Bahn.",
+        "I'm on the train right now.",
+        "gerade"
+      ]
+    },
+    {
+      "id": "d04",
+      "t": "d",
+      "de": "eigentlich",
+      "en": "actually, really",
+      "lv": "A2",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Eigentlich habe ich keine Zeit.",
+        "Actually, I don't have time.",
+        "Eigentlich"
+      ]
+    },
+    {
+      "id": "d05",
+      "t": "d",
+      "de": "vielleicht",
+      "en": "maybe, perhaps",
+      "lv": "A1",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Vielleicht komme ich später.",
+        "Maybe I'll come later.",
+        "Vielleicht"
+      ]
+    },
+    {
+      "id": "d06",
+      "t": "d",
+      "de": "leider",
+      "en": "unfortunately",
+      "lv": "A1",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Leider kann ich nicht kommen.",
+        "Unfortunately I can't come.",
+        "Leider"
+      ]
+    },
+    {
+      "id": "d07",
+      "t": "d",
+      "de": "wirklich",
+      "en": "really",
+      "lv": "A1",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Das ist wirklich schön.",
+        "That's really nice.",
+        "wirklich"
+      ]
+    },
+    {
+      "id": "d08",
+      "t": "d",
+      "de": "ziemlich",
+      "en": "quite, fairly",
+      "lv": "A2",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Das ist ziemlich teuer.",
+        "That's quite expensive.",
+        "ziemlich"
+      ]
+    },
+    {
+      "id": "d09",
+      "t": "d",
+      "de": "fast",
+      "en": "almost (not 'fast'!)",
+      "lv": "A2",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Ich bin fast da.",
+        "I'm almost there.",
+        "fast"
+      ]
+    },
+    {
+      "id": "d10",
+      "t": "d",
+      "de": "sofort",
+      "en": "immediately",
+      "lv": "A2",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Ich komme sofort.",
+        "I'm coming right away.",
+        "sofort"
+      ]
+    },
+    {
+      "id": "d11",
+      "t": "d",
+      "de": "bald",
+      "en": "soon",
+      "lv": "A1",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Bis bald!",
+        "See you soon!",
+        "bald"
+      ]
+    },
+    {
+      "id": "d12",
+      "t": "d",
+      "de": "immer",
+      "en": "always",
+      "lv": "A1",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Er kommt immer zu spät.",
+        "He's always late.",
+        "immer"
+      ]
+    },
+    {
+      "id": "d13",
+      "t": "d",
+      "de": "nie",
+      "en": "never",
+      "lv": "A1",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Ich trinke abends nie Kaffee.",
+        "I never drink coffee in the evening.",
+        "nie"
+      ]
+    },
+    {
+      "id": "d14",
+      "t": "d",
+      "de": "oft",
+      "en": "often",
+      "lv": "A1",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Wie oft gehst du ins Fitnessstudio?",
+        "How often do you go to the gym?",
+        "oft"
+      ]
+    },
+    {
+      "id": "d15",
+      "t": "d",
+      "de": "manchmal",
+      "en": "sometimes",
+      "lv": "A1",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Manchmal koche ich am Wochenende.",
+        "Sometimes I cook at the weekend.",
+        "Manchmal"
+      ]
+    },
+    {
+      "id": "d16",
+      "t": "d",
+      "de": "zusammen",
+      "en": "together",
+      "lv": "A1",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Wollen wir zusammen essen?",
+        "Shall we eat together?",
+        "zusammen"
+      ]
+    },
+    {
+      "id": "d17",
+      "t": "d",
+      "de": "endlich",
+      "en": "finally, at last",
+      "lv": "A2",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Endlich ist Wochenende!",
+        "Finally it's the weekend!",
+        "Endlich"
+      ]
+    },
+    {
+      "id": "d18",
+      "t": "d",
+      "de": "sonst",
+      "en": "otherwise",
+      "lv": "B1",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Beeil dich, sonst verpassen wir den Zug.",
+        "Hurry up, otherwise we'll miss the train.",
+        "sonst"
+      ]
+    },
+    {
+      "id": "d19",
+      "t": "d",
+      "de": "unterwegs",
+      "en": "on the way, out and about",
+      "lv": "A2",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Ich bin unterwegs nach Hause.",
+        "I'm on my way home.",
+        "unterwegs"
+      ]
+    },
+    {
+      "id": "d20",
+      "t": "d",
+      "de": "genug",
+      "en": "enough",
+      "lv": "A2",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Ich habe genug gegessen.",
+        "I've eaten enough.",
+        "genug"
+      ]
+    },
+    {
+      "id": "d21",
+      "t": "d",
+      "de": "überhaupt",
+      "en": "at all",
+      "lv": "B1",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Das ist überhaupt nicht schlimm.",
+        "That's not bad at all.",
+        "überhaupt"
+      ]
+    },
+    {
+      "id": "d22",
+      "t": "d",
+      "de": "übrigens",
+      "en": "by the way",
+      "lv": "B1",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Übrigens, morgen ist Feiertag.",
+        "By the way, tomorrow is a public holiday.",
+        "Übrigens"
+      ]
+    },
+    {
+      "id": "d23",
+      "t": "d",
+      "de": "halt",
+      "en": "just (that's how it is)",
+      "lv": "B1",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Das ist halt so.",
+        "That's just the way it is.",
+        "halt"
+      ]
+    },
+    {
+      "id": "d24",
+      "t": "d",
+      "de": "mal",
+      "en": "just (makes a request softer)",
+      "lv": "A2",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Schau mal!",
+        "Have a look!",
+        "mal"
+      ]
+    },
+    {
+      "id": "d25",
+      "t": "d",
+      "de": "doch",
+      "en": "why don't you… (friendly push)",
+      "lv": "A2",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Komm doch mit!",
+        "Why don't you come along!",
+        "doch"
+      ]
+    },
+    {
+      "id": "d26",
+      "t": "d",
+      "de": "gern",
+      "en": "gladly (with a verb = like doing)",
+      "lv": "A1",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Ich koche gern.",
+        "I like cooking.",
+        "gern"
+      ]
+    },
+    {
+      "id": "d27",
+      "t": "d",
+      "de": "draußen",
+      "en": "outside",
+      "lv": "A2",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Lass uns draußen sitzen.",
+        "Let's sit outside.",
+        "draußen"
+      ]
+    },
+    {
+      "id": "d28",
+      "t": "d",
+      "de": "später",
+      "en": "later",
+      "lv": "A1",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Bis später!",
+        "See you later!",
+        "später"
+      ]
+    },
+    {
+      "id": "d29",
+      "t": "d",
+      "de": "zuerst",
+      "en": "first (of all)",
+      "lv": "A2",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Zuerst trinke ich einen Kaffee.",
+        "First I'll have a coffee.",
+        "Zuerst"
+      ]
+    },
+    {
+      "id": "d30",
+      "t": "d",
+      "de": "danach",
+      "en": "afterwards",
+      "lv": "A2",
+      "tp": "Kleine Wörter",
+      "s": [
+        "Danach gehe ich ins Bett.",
+        "After that I'm going to bed.",
+        "Danach"
+      ]
+    },
+    {
+      "id": "k10",
+      "t": "k",
+      "de": "dass",
+      "en": "that (verb goes last)",
+      "lv": "A2",
+      "tp": "Struktur",
+      "s": [
+        "Ich hoffe, dass es klappt.",
+        "I hope that it works out.",
+        "dass"
+      ]
+    },
+    {
+      "id": "k11",
+      "t": "k",
+      "de": "wenn",
+      "en": "if, whenever (verb goes last)",
+      "lv": "A2",
+      "tp": "Struktur",
+      "s": [
+        "Wenn ich Zeit habe, rufe ich dich an.",
+        "If I have time, I'll call you.",
+        "Wenn"
+      ]
+    },
+    {
+      "id": "k12",
+      "t": "k",
+      "de": "ob",
+      "en": "whether, if (verb goes last)",
+      "lv": "B1",
+      "tp": "Struktur",
+      "s": [
+        "Weißt du, ob er kommt?",
+        "Do you know if he's coming?",
+        "ob"
+      ]
+    },
+    {
+      "id": "k13",
+      "t": "k",
+      "de": "als",
+      "en": "when (once, in the past; verb goes last)",
+      "lv": "B1",
+      "tp": "Struktur",
+      "s": [
+        "Als ich klein war, hatte ich einen Hund.",
+        "When I was little, I had a dog.",
+        "Als"
+      ]
+    },
+    {
+      "id": "k14",
+      "t": "k",
+      "de": "denn",
+      "en": "because (normal word order)",
+      "lv": "A2",
+      "tp": "Struktur",
+      "s": [
+        "Ich nehme einen Schirm mit, denn es regnet.",
+        "I'm taking an umbrella, because it's raining.",
+        "denn"
+      ]
+    },
+    {
+      "id": "k15",
+      "t": "k",
+      "de": "aber",
+      "en": "but",
+      "lv": "A1",
+      "tp": "Struktur",
+      "s": [
+        "Ich bin müde, aber glücklich.",
+        "I'm tired but happy.",
+        "aber"
+      ]
+    },
+    {
+      "id": "k16",
+      "t": "k",
+      "de": "sondern",
+      "en": "but rather (after nicht or kein)",
+      "lv": "B1",
+      "tp": "Struktur",
+      "s": [
+        "Das ist nicht rot, sondern blau.",
+        "That's not red, it's blue.",
+        "sondern"
+      ]
+    },
+    {
+      "id": "k17",
+      "t": "k",
+      "de": "dann",
+      "en": "then (verb comes next)",
+      "lv": "A1",
+      "tp": "Struktur",
+      "s": [
+        "Erst essen wir, dann gehen wir spazieren.",
+        "First we eat, then we go for a walk.",
+        "dann"
+      ]
+    },
+    {
+      "id": "k18",
+      "t": "k",
+      "de": "oder",
+      "en": "or",
+      "lv": "A1",
+      "tp": "Struktur",
+      "s": [
+        "Kaffee oder Tee?",
+        "Coffee or tea?",
+        "oder"
+      ]
+    },
+    {
+      "id": "p16",
+      "t": "p",
+      "de": "Wie geht's dir?",
+      "en": "How are you? (casual)",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p17",
+      "t": "p",
+      "de": "Alles klar.",
+      "en": "All right. / Got it.",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p18",
+      "t": "p",
+      "de": "Das macht nichts.",
+      "en": "Never mind. / It doesn't matter.",
+      "lv": "A2",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p19",
+      "t": "p",
+      "de": "Na ja, es geht.",
+      "en": "Well… it's OK.",
+      "lv": "A2",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p20",
+      "t": "p",
+      "de": "Genau!",
+      "en": "Exactly!",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p21",
+      "t": "p",
+      "de": "Schade!",
+      "en": "What a shame!",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p22",
+      "t": "p",
+      "de": "Wie bitte?",
+      "en": "Sorry? (I didn't catch that)",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p23",
+      "t": "p",
+      "de": "Kein Problem.",
+      "en": "No problem.",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p24",
+      "t": "p",
+      "de": "Viel Glück!",
+      "en": "Good luck!",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p25",
+      "t": "p",
+      "de": "Gute Besserung!",
+      "en": "Get well soon!",
+      "lv": "A2",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p26",
+      "t": "p",
+      "de": "Ich bin dabei.",
+      "en": "Count me in.",
+      "lv": "A2",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p27",
+      "t": "p",
+      "de": "Das ist mir egal.",
+      "en": "I don't mind. / I don't care.",
+      "lv": "A2",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p28",
+      "t": "p",
+      "de": "Mach's gut!",
+      "en": "Take care! (saying bye)",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p29",
+      "t": "p",
+      "de": "Doch, das stimmt!",
+      "en": "Yes, it is! (answering a 'no')",
+      "lv": "A2",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p30",
+      "t": "p",
+      "de": "Ich hab's eilig.",
+      "en": "I'm in a hurry.",
+      "lv": "B1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p31",
+      "t": "p",
+      "de": "Halb so schlimm.",
+      "en": "It's not that bad.",
+      "lv": "B1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p32",
+      "t": "p",
+      "de": "Wie sagt man das auf Deutsch?",
+      "en": "How do you say that in German?",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p33",
+      "t": "p",
+      "de": "Das klingt gut.",
+      "en": "That sounds good.",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p34",
+      "t": "p",
+      "de": "Ich habe mich verlaufen.",
+      "en": "I'm lost (on foot).",
+      "lv": "A2",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p35",
+      "t": "p",
+      "de": "Auf keinen Fall!",
+      "en": "No way!",
+      "lv": "B1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p36",
+      "t": "p",
+      "de": "Ich drücke dir die Daumen.",
+      "en": "I'll keep my fingers crossed for you.",
+      "lv": "B1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p37",
+      "t": "p",
+      "de": "Das ist nicht mein Bier.",
+      "en": "That's not my problem. (idiom: not my beer)",
+      "lv": "B1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p38",
+      "t": "p",
+      "de": "Hast du Tomaten auf den Augen?",
+      "en": "Are you blind?! (idiom: tomatoes on your eyes)",
+      "lv": "B1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p39",
+      "t": "p",
+      "de": "Lass uns morgen telefonieren.",
+      "en": "Let's talk on the phone tomorrow.",
+      "lv": "A2",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "p40",
+      "t": "p",
+      "de": "Ich bin gleich wieder da.",
+      "en": "I'll be right back.",
+      "lv": "A1",
+      "tp": "Sprechen"
+    },
+    {
+      "id": "o01",
+      "t": "o",
+      "de": "Heute | *habe | ich | keine Zeit.",
+      "en": "I don't have time today.",
+      "lv": "A1",
+      "tp": "Satzbau",
+      "why": "Verb second. 'Heute' takes the first spot, so the verb comes next. Then 'ich'.",
+      "fix": 1
+    },
+    {
+      "id": "o02",
+      "t": "o",
+      "de": "Morgen | *fahre | ich | mit dem Zug | nach Berlin.",
+      "en": "Tomorrow I'm taking the train to Berlin.",
+      "lv": "A1",
+      "tp": "Satzbau",
+      "why": "Verb second, then the person. After that: how (mit dem Zug), then where to (nach Berlin).",
+      "fix": 1
+    },
+    {
+      "id": "o03",
+      "t": "o",
+      "de": "Ich | *fahre | morgen | mit dem Zug | nach Berlin.",
+      "en": "I'm going to Berlin by train tomorrow.",
+      "lv": "A2",
+      "tp": "Satzbau",
+      "why": "Order after the verb: when, then how, then where. Morgen, then mit dem Zug, then nach Berlin.",
+      "fix": 2
+    },
+    {
+      "id": "o04",
+      "t": "o",
+      "de": "*Kommst | du | heute Abend?",
+      "en": "Are you coming tonight?",
+      "lv": "A1",
+      "tp": "Satzbau",
+      "why": "Yes/no question: the verb goes first."
+    },
+    {
+      "id": "o05",
+      "t": "o",
+      "de": "Wann | *beginnt | die Besprechung | morgen?",
+      "en": "When does the meeting start tomorrow?",
+      "lv": "A1",
+      "tp": "Satzbau",
+      "why": "W-question: the question word first, the verb second.",
+      "alt": [
+        "Wann | *beginnt | morgen | die Besprechung?"
+      ]
+    },
+    {
+      "id": "o06",
+      "t": "o",
+      "de": "Ich | *muss | heute | länger | *arbeiten.",
+      "en": "I have to work late today.",
+      "lv": "A1",
+      "tp": "Satzbau",
+      "why": "The modal verb (muss) goes in position 2. The other verb goes to the very end.",
+      "alt": [
+        "Heute | *muss | ich | länger | *arbeiten."
+      ]
+    },
+    {
+      "id": "o07",
+      "t": "o",
+      "de": "*Kannst | du | mir | bitte | *helfen?",
+      "en": "Can you help me, please?",
+      "lv": "A1",
+      "tp": "Satzbau",
+      "why": "Question with a modal verb: the modal goes first, the main verb goes last."
+    },
+    {
+      "id": "o08",
+      "t": "o",
+      "de": "Wir | *wollen | im Sommer | nach München | *ziehen.",
+      "en": "We want to move to Munich in the summer.",
+      "lv": "A2",
+      "tp": "Satzbau",
+      "why": "wollen goes in position 2. ziehen goes to the end.",
+      "alt": [
+        "Im Sommer | *wollen | wir | nach München | *ziehen."
+      ]
+    },
+    {
+      "id": "o09",
+      "t": "o",
+      "de": "Ich | *habe | gestern | den Antrag | *gestellt.",
+      "en": "I submitted the application yesterday.",
+      "lv": "A2",
+      "tp": "Satzbau",
+      "why": "Past (Perfekt): haben goes in position 2. The past form (gestellt) goes at the end.",
+      "alt": [
+        "Gestern | *habe | ich | den Antrag | *gestellt."
+      ]
+    },
+    {
+      "id": "o10",
+      "t": "o",
+      "de": "Wir | *sind | am Wochenende | nach Hamburg | *gefahren.",
+      "en": "We went to Hamburg at the weekend.",
+      "lv": "A2",
+      "tp": "Satzbau",
+      "why": "Movement verbs use sein. sein goes in position 2. gefahren goes at the end.",
+      "alt": [
+        "Am Wochenende | *sind | wir | nach Hamburg | *gefahren."
+      ]
+    },
+    {
+      "id": "o11",
+      "t": "o",
+      "de": "Der Zug | *kommt | um acht Uhr | *an.",
+      "en": "The train arrives at eight o'clock.",
+      "lv": "A1",
+      "tp": "Satzbau",
+      "why": "ankommen is a separable verb. The 'an' breaks off and goes to the end.",
+      "alt": [
+        "Um acht Uhr | *kommt | der Zug | *an."
+      ]
+    },
+    {
+      "id": "o12",
+      "t": "o",
+      "de": "Ich | *rufe | dich | morgen | *an.",
+      "en": "I'll call you tomorrow.",
+      "lv": "A1",
+      "tp": "Satzbau",
+      "why": "anrufen splits. rufe goes in position 2. an goes to the end. A short word like dich comes early.",
+      "alt": [
+        "Morgen | *rufe | ich | dich | *an."
+      ]
+    },
+    {
+      "id": "o13",
+      "t": "o",
+      "de": "*Mach | bitte | das Fenster | *zu.",
+      "en": "Close the window, please.",
+      "lv": "A1",
+      "tp": "Satzbau",
+      "why": "A command starts with the verb. zumachen splits, so zu goes to the end.",
+      "alt": [
+        "*Mach | das Fenster | bitte | *zu."
+      ]
+    },
+    {
+      "id": "o14",
+      "t": "o",
+      "de": "Ich | *lerne | Deutsch, | weil | ich | bald | nach Deutschland | *ziehe.",
+      "en": "I'm learning German because I'm moving to Germany soon.",
+      "lv": "A2",
+      "tp": "Satzbau",
+      "why": "weil sends the verb to the very end of its part of the sentence.",
+      "fix": 4
+    },
+    {
+      "id": "o15",
+      "t": "o",
+      "de": "Ich | *bleibe | heute | zu Hause, | weil | ich | krank | *bin.",
+      "en": "I'm staying at home today because I'm ill.",
+      "lv": "A2",
+      "tp": "Satzbau",
+      "why": "After weil, the verb (bin) goes last.",
+      "fix": 5
+    },
+    {
+      "id": "o16",
+      "t": "o",
+      "de": "Ich | *glaube, | dass | der Sensor | kaputt | *ist.",
+      "en": "I think the sensor is broken.",
+      "lv": "A2",
+      "tp": "Satzbau",
+      "why": "dass sends the verb to the end.",
+      "fix": 3
+    },
+    {
+      "id": "o17",
+      "t": "o",
+      "de": "Ich | *weiß | nicht, | ob | er | heute | *kommt.",
+      "en": "I don't know whether he's coming today.",
+      "lv": "B1",
+      "tp": "Satzbau",
+      "why": "ob (whether) works like dass: the verb goes to the end.",
+      "fix": 4
+    },
+    {
+      "id": "o18",
+      "t": "o",
+      "de": "Wenn | ich | Zeit | *habe, | *komme | ich | *mit.",
+      "en": "If I have time, I'll come along.",
+      "lv": "A2",
+      "tp": "Satzbau",
+      "why": "The wenn part ends with its verb (habe). Then the main part starts with its verb (komme).",
+      "fix": 1
+    },
+    {
+      "id": "o19",
+      "t": "o",
+      "de": "Obwohl | es | *regnet, | *gehen | wir | *spazieren.",
+      "en": "Although it's raining, we're going for a walk.",
+      "lv": "B1",
+      "tp": "Satzbau",
+      "why": "The verb goes last in the obwohl part. That whole part counts as position 1, so the next verb (gehen) comes straight after the comma.",
+      "fix": 1
+    },
+    {
+      "id": "o20",
+      "t": "o",
+      "de": "Ich | *bin | müde, | aber | ich | *muss | noch | *lernen.",
+      "en": "I'm tired, but I still have to study.",
+      "lv": "A2",
+      "tp": "Satzbau",
+      "why": "aber does not change the word order. After aber it's a normal sentence: verb second.",
+      "fix": 4
+    },
+    {
+      "id": "o21",
+      "t": "o",
+      "de": "Es | *regnet, | deshalb | *bleiben | wir | zu Hause.",
+      "en": "It's raining, so we're staying at home.",
+      "lv": "A2",
+      "tp": "Satzbau",
+      "why": "deshalb takes position 1, so the verb comes straight after it. aber doesn't do this, deshalb does.",
+      "fix": 3
+    },
+    {
+      "id": "o22",
+      "t": "o",
+      "de": "Ich | *war | müde, | trotzdem | *habe | ich | noch eine Stunde | *gelernt.",
+      "en": "I was tired, but I still studied for another hour.",
+      "lv": "B1",
+      "tp": "Satzbau",
+      "why": "trotzdem takes position 1, so the verb comes next. Past (Perfekt): gelernt goes at the end.",
+      "fix": 4
+    },
+    {
+      "id": "o23",
+      "t": "o",
+      "de": "Ich | *komme | heute | nicht.",
+      "en": "I'm not coming today.",
+      "lv": "A1",
+      "tp": "Satzbau",
+      "why": "With one simple verb, nicht usually goes near the end. It comes after time words like heute.",
+      "alt": [
+        "Heute | *komme | ich | nicht."
+      ]
+    },
+    {
+      "id": "o24",
+      "t": "o",
+      "de": "Ich | *habe | das | nicht | *verstanden.",
+      "en": "I didn't understand that.",
+      "lv": "A2",
+      "tp": "Satzbau",
+      "why": "nicht goes just before the past form at the end (verstanden).",
+      "alt": [
+        "Das | *habe | ich | nicht | *verstanden."
+      ]
+    },
+    {
+      "id": "o25",
+      "t": "o",
+      "de": "Ich | *gebe | dem Kollegen | das Werkzeug.",
+      "en": "I'm giving the colleague the tool.",
+      "lv": "B1",
+      "tp": "Satzbau",
+      "why": "Two nouns: the person who gets it (dative) comes before the thing (accusative).",
+      "fix": 2
+    },
+    {
+      "id": "o26",
+      "t": "o",
+      "de": "Ich | *gebe | es | ihm.",
+      "en": "I'm giving it to him.",
+      "lv": "B1",
+      "tp": "Satzbau",
+      "why": "Two pronouns: the thing (es) comes before the person (ihm). That's the opposite of nouns!",
+      "fix": 2
+    },
+    {
+      "id": "o27",
+      "t": "o",
+      "de": "Ich | *gebe | ihm | das Werkzeug.",
+      "en": "I'm giving him the tool.",
+      "lv": "B1",
+      "tp": "Satzbau",
+      "why": "A pronoun comes before a noun. So ihm comes before das Werkzeug.",
+      "fix": 2
+    },
+    {
+      "id": "o28",
+      "t": "o",
+      "de": "Ich | *freue | mich | sehr | auf das Wochenende.",
+      "en": "I'm really looking forward to the weekend.",
+      "lv": "A2",
+      "tp": "Satzbau",
+      "why": "The reflexive word (mich) comes straight after the verb.",
+      "alt": [
+        "Auf das Wochenende | *freue | ich | mich | sehr."
+      ]
+    },
+    {
+      "id": "o29",
+      "t": "o",
+      "de": "Ich | *werde | dich | morgen | *anrufen.",
+      "en": "I'll call you tomorrow.",
+      "lv": "A2",
+      "tp": "Satzbau",
+      "why": "Future: werden goes in position 2, the other verb at the end. Here anrufen stays in one piece.",
+      "alt": [
+        "Morgen | *werde | ich | dich | *anrufen."
+      ]
+    },
+    {
+      "id": "o30",
+      "t": "o",
+      "de": "Das | *ist | der Kollege, | der | mir | immer | *hilft.",
+      "en": "That's the colleague who always helps me.",
+      "lv": "B1",
+      "tp": "Satzbau",
+      "why": "In a 'who/which' part (der = who), the verb goes to the end.",
+      "fix": 4
+    },
+    {
+      "id": "o31",
+      "t": "o",
+      "de": "Es | *ist | wichtig, | jeden Tag | ein bisschen | *zu üben.",
+      "en": "It's important to practise a little every day.",
+      "lv": "B1",
+      "tp": "Satzbau",
+      "why": "zu + verb goes at the very end.",
+      "fix": 3,
+      "alt": [
+        "Es | *ist | wichtig, | ein bisschen | jeden Tag | *zu üben."
+      ]
+    },
+    {
+      "id": "o32",
+      "t": "o",
+      "de": "Ich | *lerne | Deutsch, | um | in Deutschland | *zu arbeiten.",
+      "en": "I'm learning German so that I can work in Germany.",
+      "lv": "B1",
+      "tp": "Satzbau",
+      "why": "um … zu means 'in order to'. um starts that part. zu + verb ends it.",
+      "fix": 3
+    },
+    {
+      "id": "o33",
+      "t": "o",
+      "de": "*Weißt | du, | wann | der Zug | *kommt?",
+      "en": "Do you know when the train is coming?",
+      "lv": "B1",
+      "tp": "Satzbau",
+      "why": "Hidden question: after wann, the verb (kommt) goes to the end."
+    },
+    {
+      "id": "o34",
+      "t": "o",
+      "de": "Ich | *kann | heute | leider | nicht | *kommen.",
+      "en": "Unfortunately I can't come today.",
+      "lv": "A2",
+      "tp": "Satzbau",
+      "why": "kann goes in position 2, kommen at the end. nicht goes just before kommen.",
+      "alt": [
+        "Heute | *kann | ich | leider | nicht | *kommen.",
+        "Leider | *kann | ich | heute | nicht | *kommen.",
+        "Ich | *kann | leider | heute | nicht | *kommen."
+      ]
+    },
+    {
+      "id": "o35",
+      "t": "o",
+      "de": "Ich | *stehe | jeden Tag | um sieben | *auf.",
+      "en": "I get up at seven every day.",
+      "lv": "A1",
+      "tp": "Satzbau",
+      "why": "aufstehen splits. stehe goes in position 2. auf goes to the end.",
+      "alt": [
+        "Jeden Tag | *stehe | ich | um sieben | *auf.",
+        "Um sieben | *stehe | ich | jeden Tag | *auf."
+      ]
+    },
+    {
+      "id": "o36",
+      "t": "o",
+      "de": "Ich | *weiß, | dass | ich | früh | *aufstehen | *muss.",
+      "en": "I know that I have to get up early.",
+      "lv": "B1",
+      "tp": "Satzbau",
+      "why": "In a dass part, the modal (muss) goes last, after the other verb. And aufstehen joins back into one word.",
+      "fix": 3
+    },
+    {
+      "id": "o37",
+      "t": "o",
+      "de": "Er | *sagt, | dass | er | den Bericht | schon | *geschickt | *hat.",
+      "en": "He says that he has already sent the report.",
+      "lv": "B1",
+      "tp": "Satzbau",
+      "why": "Past after dass: the past form (geschickt) comes first, then hat at the very end.",
+      "fix": 3,
+      "alt": [
+        "Er | *sagt, | dass | er | schon | den Bericht | *geschickt | *hat."
+      ]
+    },
+    {
+      "id": "o38",
+      "t": "o",
+      "de": "*Haben | Sie | morgen | Zeit?",
+      "en": "Do you have time tomorrow? (polite)",
+      "lv": "A1",
+      "tp": "Satzbau",
+      "why": "Yes/no question: the verb first. Sie (polite 'you') comes right after."
+    },
+    {
+      "id": "o39",
+      "t": "o",
+      "de": "Seit drei Monaten | *lerne | ich | Deutsch.",
+      "en": "I've been learning German for three months.",
+      "lv": "A2",
+      "tp": "Satzbau",
+      "why": "Even a long time phrase counts as position 1. The verb comes next.",
+      "fix": 1
+    },
+    {
+      "id": "o40",
+      "t": "o",
+      "de": "Als | ich | ein Kind | *war, | *wollte | ich | Ingenieur | *werden.",
+      "en": "When I was a child, I wanted to be an engineer.",
+      "lv": "B1",
+      "tp": "Satzbau",
+      "why": "als (when, in the past) sends war to the end. Then the main part starts with its verb (wollte).",
+      "fix": 1
+    },
+    {
+      "id": "o41",
+      "t": "o",
+      "de": "Ich | *finde | das Buch | nicht.",
+      "en": "I can't find the book.",
+      "lv": "A1",
+      "tp": "Satzbau",
+      "why": "With one simple verb, nicht often goes right at the end.",
+      "alt": [
+        "Das Buch | *finde | ich | nicht."
+      ]
+    },
+    {
+      "id": "o42",
+      "t": "o",
+      "de": "Am Montag | *fange | ich | bei der neuen Firma | *an.",
+      "en": "On Monday I start at the new company.",
+      "lv": "A2",
+      "tp": "Satzbau",
+      "why": "Verb second after 'Am Montag'. anfangen splits, so an goes to the end.",
+      "fix": 1
+    },
+    {
+      "id": "o43",
+      "t": "o",
+      "de": "Ich | *gehe | früh | ins Bett, | denn | ich | *bin | müde.",
+      "en": "I'm going to bed early, because I'm tired.",
+      "lv": "A2",
+      "tp": "Satzbau",
+      "why": "denn also means 'because', but it does NOT move the verb. Compare weil, which sends it to the end.",
+      "fix": 5
+    },
+    {
+      "id": "c01",
+      "t": "c",
+      "de": "Ich sehe ___ Bus.",
+      "en": "I can see the bus.",
+      "lv": "A1",
+      "tp": "Fälle",
+      "opts": [
+        "der",
+        "den",
+        "dem",
+        "des"
+      ],
+      "ans": "den",
+      "why": "sehen takes the accusative. Only masculine words change: der becomes den."
+    },
+    {
+      "id": "c02",
+      "t": "c",
+      "de": "___ Bus kommt gleich.",
+      "en": "The bus is coming soon.",
+      "lv": "A1",
+      "tp": "Fälle",
+      "opts": [
+        "Der",
+        "Den",
+        "Dem",
+        "Des"
+      ],
+      "ans": "Der",
+      "why": "The bus is doing the action, so it's nominative: der."
+    },
+    {
+      "id": "c03",
+      "t": "c",
+      "de": "Ich habe ___ Termin beim Arzt.",
+      "en": "I have an appointment at the doctor's.",
+      "lv": "A1",
+      "tp": "Fälle",
+      "opts": [
+        "ein",
+        "einen",
+        "einem",
+        "eine"
+      ],
+      "ans": "einen",
+      "why": "haben takes the accusative. der Termin becomes einen Termin."
+    },
+    {
+      "id": "c04",
+      "t": "c",
+      "de": "Wir suchen ___ Wohnung.",
+      "en": "We're looking for a flat.",
+      "lv": "A1",
+      "tp": "Fälle",
+      "opts": [
+        "ein",
+        "eine",
+        "einen",
+        "einer"
+      ],
+      "ans": "eine",
+      "why": "die Wohnung is feminine. In the accusative it stays eine."
+    },
+    {
+      "id": "c05",
+      "t": "c",
+      "de": "Ich habe ___ Hunger.",
+      "en": "I'm not hungry.",
+      "lv": "A1",
+      "tp": "Fälle",
+      "opts": [
+        "kein",
+        "keinen",
+        "keine",
+        "keinem"
+      ],
+      "ans": "keinen",
+      "why": "der Hunger, accusative: keinen. kein works just like ein."
+    },
+    {
+      "id": "c06",
+      "t": "c",
+      "de": "Ich suche ___ Schlüssel.",
+      "en": "I'm looking for my key.",
+      "lv": "A1",
+      "tp": "Fälle",
+      "opts": [
+        "mein",
+        "meinen",
+        "meinem",
+        "meine"
+      ],
+      "ans": "meinen",
+      "why": "der Schlüssel, accusative: meinen. mein has the same endings as ein."
+    },
+    {
+      "id": "c07",
+      "t": "c",
+      "de": "Ich fahre mit ___ Fahrrad zur Arbeit.",
+      "en": "I cycle to work.",
+      "lv": "A1",
+      "tp": "Fälle",
+      "opts": [
+        "das",
+        "dem",
+        "den",
+        "der"
+      ],
+      "ans": "dem",
+      "why": "mit always takes the dative. das Fahrrad becomes dem Fahrrad."
+    },
+    {
+      "id": "c08",
+      "t": "c",
+      "de": "Nach ___ Arbeit gehe ich ins Fitnessstudio.",
+      "en": "After work I go to the gym.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "die",
+        "der",
+        "den",
+        "dem"
+      ],
+      "ans": "der",
+      "why": "nach always takes the dative. die Arbeit becomes der Arbeit."
+    },
+    {
+      "id": "c09",
+      "t": "c",
+      "de": "Wir kennen uns seit ___ Jahr.",
+      "en": "We've known each other for a year.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "ein",
+        "einem",
+        "einen",
+        "eines"
+      ],
+      "ans": "einem",
+      "why": "seit always takes the dative. ein Jahr becomes einem Jahr."
+    },
+    {
+      "id": "c10",
+      "t": "c",
+      "de": "Ich bekomme eine E-Mail von ___ Chefin.",
+      "en": "I'm getting an email from the boss (she).",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "die",
+        "der",
+        "den",
+        "dem"
+      ],
+      "ans": "der",
+      "why": "von always takes the dative. die Chefin becomes der Chefin."
+    },
+    {
+      "id": "c11",
+      "t": "c",
+      "de": "Das Geschenk ist für ___ Chef.",
+      "en": "The present is for the boss.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "der",
+        "den",
+        "dem",
+        "des"
+      ],
+      "ans": "den",
+      "why": "für always takes the accusative. der Chef becomes den Chef."
+    },
+    {
+      "id": "c12",
+      "t": "c",
+      "de": "Ohne ___ Ausweis geht es nicht.",
+      "en": "It won't work without my ID.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "mein",
+        "meinen",
+        "meinem",
+        "meiner"
+      ],
+      "ans": "meinen",
+      "why": "ohne always takes the accusative. der Ausweis becomes meinen Ausweis."
+    },
+    {
+      "id": "c13",
+      "t": "c",
+      "de": "Wir gehen durch ___ Park.",
+      "en": "We're walking through the park.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "der",
+        "den",
+        "dem",
+        "des"
+      ],
+      "ans": "den",
+      "why": "durch always takes the accusative. der Park becomes den Park."
+    },
+    {
+      "id": "c14",
+      "t": "c",
+      "de": "Ich stelle die Lampe neben ___ Fernseher.",
+      "en": "I'm putting the lamp next to the TV.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "der",
+        "den",
+        "dem",
+        "des"
+      ],
+      "ans": "den",
+      "why": "stellen means you move it somewhere (wohin?). Movement takes the accusative: den."
+    },
+    {
+      "id": "c15",
+      "t": "c",
+      "de": "Die Lampe steht neben ___ Fernseher.",
+      "en": "The lamp is next to the TV.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "der",
+        "den",
+        "dem",
+        "des"
+      ],
+      "ans": "dem",
+      "why": "stehen means it's already there (wo?). No movement takes the dative: dem."
+    },
+    {
+      "id": "c16",
+      "t": "c",
+      "de": "Ich hänge das Bild an ___ Wand.",
+      "en": "I'm hanging the picture on the wall.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "die",
+        "der",
+        "den",
+        "dem"
+      ],
+      "ans": "die",
+      "why": "Movement (wohin?) takes the accusative. die Wand stays die."
+    },
+    {
+      "id": "c17",
+      "t": "c",
+      "de": "Das Bild hängt an ___ Wand.",
+      "en": "The picture is hanging on the wall.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "die",
+        "der",
+        "den",
+        "dem"
+      ],
+      "ans": "der",
+      "why": "No movement (wo?) takes the dative. die Wand becomes der Wand."
+    },
+    {
+      "id": "c18",
+      "t": "c",
+      "de": "Ich gehe heute ___ Kino.",
+      "en": "I'm going to the cinema today.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "im",
+        "ins",
+        "in den",
+        "in der"
+      ],
+      "ans": "ins",
+      "why": "Going into somewhere takes the accusative. in + das = ins."
+    },
+    {
+      "id": "c19",
+      "t": "c",
+      "de": "Wir treffen uns ___ Kino.",
+      "en": "We're meeting at the cinema.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "im",
+        "ins",
+        "in den",
+        "in der"
+      ],
+      "ans": "im",
+      "why": "Being somewhere (wo?) takes the dative. in + dem = im."
+    },
+    {
+      "id": "c20",
+      "t": "c",
+      "de": "Ich gehe ___ Bahnhof.",
+      "en": "I'm going to the station.",
+      "lv": "A1",
+      "tp": "Fälle",
+      "opts": [
+        "zum",
+        "zur",
+        "zu den",
+        "zu der"
+      ],
+      "ans": "zum",
+      "why": "zu takes the dative. der Bahnhof becomes dem Bahnhof. zu + dem = zum."
+    },
+    {
+      "id": "c21",
+      "t": "c",
+      "de": "Ich muss noch ___ Post.",
+      "en": "I still have to go to the post office.",
+      "lv": "A1",
+      "tp": "Fälle",
+      "opts": [
+        "zum",
+        "zur",
+        "zu die",
+        "zu das"
+      ],
+      "ans": "zur",
+      "why": "zu takes the dative. die Post becomes der Post. zu + der = zur."
+    },
+    {
+      "id": "c22",
+      "t": "c",
+      "de": "Ich war gestern ___ Arzt.",
+      "en": "I was at the doctor's yesterday.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "beim",
+        "bei der",
+        "zum",
+        "im"
+      ],
+      "ans": "beim",
+      "why": "bei means at someone's place. bei + dem = beim. You go zum Arzt, but you are beim Arzt."
+    },
+    {
+      "id": "c23",
+      "t": "c",
+      "de": "Kannst du ___ morgen anrufen?",
+      "en": "Can you call me tomorrow?",
+      "lv": "A1",
+      "tp": "Fälle",
+      "opts": [
+        "ich",
+        "mich",
+        "mir",
+        "mein"
+      ],
+      "ans": "mich",
+      "why": "anrufen takes the accusative: mich."
+    },
+    {
+      "id": "c24",
+      "t": "c",
+      "de": "Kannst du ___ das Salz geben?",
+      "en": "Can you pass me the salt?",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "ich",
+        "mich",
+        "mir",
+        "meine"
+      ],
+      "ans": "mir",
+      "why": "The person who gets something is dative: mir."
+    },
+    {
+      "id": "c25",
+      "t": "c",
+      "de": "Die Wohnung gefällt ___ sehr.",
+      "en": "We really like the flat.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "wir",
+        "uns",
+        "unser",
+        "unsere"
+      ],
+      "ans": "uns",
+      "why": "gefallen takes the dative. German says 'the flat pleases us'."
+    },
+    {
+      "id": "c26",
+      "t": "c",
+      "de": "Gehört das Handy ___?",
+      "en": "Is this phone yours?",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "du",
+        "dich",
+        "dir",
+        "dein"
+      ],
+      "ans": "dir",
+      "why": "gehören takes the dative: dir."
+    },
+    {
+      "id": "c27",
+      "t": "c",
+      "de": "Ich kenne ___ nicht.",
+      "en": "I don't know him.",
+      "lv": "A1",
+      "tp": "Fälle",
+      "opts": [
+        "er",
+        "ihn",
+        "ihm",
+        "sein"
+      ],
+      "ans": "ihn",
+      "why": "kennen takes the accusative. er becomes ihn."
+    },
+    {
+      "id": "c28",
+      "t": "c",
+      "de": "Ich antworte ___ morgen.",
+      "en": "I'll reply to her tomorrow.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "sie",
+        "ihr",
+        "ihre",
+        "ihn"
+      ],
+      "ans": "ihr",
+      "why": "antworten takes the dative. sie (her) becomes ihr."
+    },
+    {
+      "id": "c29",
+      "t": "c",
+      "de": "Das Essen schmeckt ___ nicht.",
+      "en": "He doesn't like the food.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "er",
+        "ihn",
+        "ihm",
+        "sein"
+      ],
+      "ans": "ihm",
+      "why": "schmecken takes the dative: ihm."
+    },
+    {
+      "id": "c30",
+      "t": "c",
+      "de": "Das ist das Auto ___ Nachbarn.",
+      "en": "That's the neighbour's car.",
+      "lv": "B1",
+      "tp": "Fälle",
+      "opts": [
+        "der",
+        "den",
+        "dem",
+        "des"
+      ],
+      "ans": "des",
+      "why": "The genitive shows who owns it: des. der Nachbar becomes des Nachbarn."
+    },
+    {
+      "id": "c31",
+      "t": "c",
+      "de": "Wegen ___ Wetters bleiben wir zu Hause.",
+      "en": "Because of the weather, we're staying at home.",
+      "lv": "B1",
+      "tp": "Fälle",
+      "opts": [
+        "das",
+        "des",
+        "der"
+      ],
+      "ans": "des",
+      "why": "wegen takes the genitive. das Wetter becomes des Wetters (with an extra -s)."
+    },
+    {
+      "id": "c32",
+      "t": "c",
+      "de": "Während ___ Woche arbeite ich viel.",
+      "en": "During the week I work a lot.",
+      "lv": "B1",
+      "tp": "Fälle",
+      "opts": [
+        "die",
+        "der",
+        "den",
+        "des"
+      ],
+      "ans": "der",
+      "why": "während takes the genitive. die Woche becomes der Woche."
+    },
+    {
+      "id": "c33",
+      "t": "c",
+      "de": "Ich spiele mit den ___.",
+      "en": "I'm playing with the children.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "Kinder",
+        "Kindern",
+        "Kindes"
+      ],
+      "ans": "Kindern",
+      "why": "Dative plural: the noun gets an extra -n. die Kinder becomes den Kindern."
+    },
+    {
+      "id": "c34",
+      "t": "c",
+      "de": "Ich helfe ___ Nachbarin.",
+      "en": "I'm helping the neighbour.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "die",
+        "der",
+        "den",
+        "dem"
+      ],
+      "ans": "der",
+      "why": "helfen takes the dative. die Nachbarin becomes der Nachbarin."
+    },
+    {
+      "id": "c35",
+      "t": "c",
+      "de": "Wie geht es ___?",
+      "en": "How are you?",
+      "lv": "A1",
+      "tp": "Fälle",
+      "opts": [
+        "du",
+        "dich",
+        "dir",
+        "dein"
+      ],
+      "ans": "dir",
+      "why": "es geht takes the dative. Wie geht es dir?"
+    },
+    {
+      "id": "c36",
+      "t": "c",
+      "de": "Ich wasche ___ die Hände.",
+      "en": "I'm washing my hands.",
+      "lv": "B1",
+      "tp": "Fälle",
+      "opts": [
+        "ich",
+        "mich",
+        "mir"
+      ],
+      "ans": "mir",
+      "why": "There's already a thing being washed (die Hände). So the 'myself' word becomes dative: mir."
+    },
+    {
+      "id": "c37",
+      "t": "c",
+      "de": "Der Arzt gibt ___ Patienten ein Rezept.",
+      "en": "The doctor gives the patient a prescription.",
+      "lv": "B1",
+      "tp": "Fälle",
+      "opts": [
+        "der",
+        "den",
+        "dem",
+        "des"
+      ],
+      "ans": "dem",
+      "why": "The patient gets something, so it's dative. der Patient becomes dem Patienten."
+    },
+    {
+      "id": "c38",
+      "t": "c",
+      "de": "Ich freue mich auf ___ Urlaub.",
+      "en": "I'm looking forward to the holiday.",
+      "lv": "A2",
+      "tp": "Fälle",
+      "opts": [
+        "der",
+        "den",
+        "dem",
+        "des"
+      ],
+      "ans": "den",
+      "why": "sich freuen auf takes the accusative. der Urlaub becomes den Urlaub."
+    },
+    {
+      "id": "e01",
+      "t": "c",
+      "de": "Der ___ Kollege ist sehr nett.",
+      "en": "The new colleague is very nice.",
+      "lv": "A2",
+      "tp": "Endungen",
+      "opts": [
+        "neue",
+        "neuen",
+        "neuer",
+        "neues"
+      ],
+      "ans": "neue",
+      "why": "After der, die or das (nominative), the adjective ends in -e."
+    },
+    {
+      "id": "e02",
+      "t": "c",
+      "de": "Ich kenne den ___ Kollegen noch nicht.",
+      "en": "I don't know the new colleague yet.",
+      "lv": "A2",
+      "tp": "Endungen",
+      "opts": [
+        "neue",
+        "neuen",
+        "neuer",
+        "neues"
+      ],
+      "ans": "neuen",
+      "why": "After den (accusative), the ending is -en."
+    },
+    {
+      "id": "e03",
+      "t": "c",
+      "de": "Das ist ein ___ Plan.",
+      "en": "That's a good plan.",
+      "lv": "A2",
+      "tp": "Endungen",
+      "opts": [
+        "gut",
+        "gute",
+        "guter",
+        "guten"
+      ],
+      "ans": "guter",
+      "why": "ein doesn't show the gender, so the adjective does. der Plan, so -er."
+    },
+    {
+      "id": "e04",
+      "t": "c",
+      "de": "Das ist ein ___ Problem.",
+      "en": "That's a big problem.",
+      "lv": "A2",
+      "tp": "Endungen",
+      "opts": [
+        "groß",
+        "große",
+        "großer",
+        "großes"
+      ],
+      "ans": "großes",
+      "why": "ein doesn't show the gender, so the adjective does. das Problem, so -es."
+    },
+    {
+      "id": "e05",
+      "t": "c",
+      "de": "Wir haben eine ___ Wohnung.",
+      "en": "We have a small flat.",
+      "lv": "A2",
+      "tp": "Endungen",
+      "opts": [
+        "klein",
+        "kleine",
+        "kleinen",
+        "kleiner"
+      ],
+      "ans": "kleine",
+      "why": "eine + a feminine word: -e."
+    },
+    {
+      "id": "e06",
+      "t": "c",
+      "de": "Ich suche einen ___ Job.",
+      "en": "I'm looking for a good job.",
+      "lv": "A2",
+      "tp": "Endungen",
+      "opts": [
+        "gut",
+        "gute",
+        "guten",
+        "guter"
+      ],
+      "ans": "guten",
+      "why": "einen (accusative, masculine): -en."
+    },
+    {
+      "id": "e07",
+      "t": "c",
+      "de": "Ich fahre mit dem ___ Auto.",
+      "en": "I'm driving the new car.",
+      "lv": "B1",
+      "tp": "Endungen",
+      "opts": [
+        "neue",
+        "neuen",
+        "neues",
+        "neuem"
+      ],
+      "ans": "neuen",
+      "why": "In the dative, after dem, der or einem, the ending is always -en."
+    },
+    {
+      "id": "e08",
+      "t": "c",
+      "de": "Sie wohnt in einer ___ Stadt.",
+      "en": "She lives in a small town.",
+      "lv": "B1",
+      "tp": "Endungen",
+      "opts": [
+        "kleine",
+        "kleinen",
+        "kleiner",
+        "kleines"
+      ],
+      "ans": "kleinen",
+      "why": "Dative (einer): the ending is -en."
+    },
+    {
+      "id": "e09",
+      "t": "c",
+      "de": "Die ___ Kollegen sind nett.",
+      "en": "The new colleagues are nice.",
+      "lv": "A2",
+      "tp": "Endungen",
+      "opts": [
+        "neue",
+        "neuen",
+        "neuer",
+        "neues"
+      ],
+      "ans": "neuen",
+      "why": "Plural with die: -en."
+    },
+    {
+      "id": "e10",
+      "t": "c",
+      "de": "Ich trinke gern ___ Kaffee.",
+      "en": "I like drinking black coffee.",
+      "lv": "B1",
+      "tp": "Endungen",
+      "opts": [
+        "schwarz",
+        "schwarze",
+        "schwarzen",
+        "schwarzer"
+      ],
+      "ans": "schwarzen",
+      "why": "No article, so the adjective takes the ending den would have: -en."
+    },
+    {
+      "id": "e11",
+      "t": "c",
+      "de": "___ Wasser ist gesund.",
+      "en": "Cold water is healthy.",
+      "lv": "B1",
+      "tp": "Endungen",
+      "opts": [
+        "Kalt",
+        "Kalte",
+        "Kalter",
+        "Kaltes"
+      ],
+      "ans": "Kaltes",
+      "why": "No article, so the adjective takes the ending das would have: -es."
+    },
+    {
+      "id": "e12",
+      "t": "c",
+      "de": "Ich esse gern ___ Brot.",
+      "en": "I like eating fresh bread.",
+      "lv": "B1",
+      "tp": "Endungen",
+      "opts": [
+        "frisch",
+        "frische",
+        "frisches",
+        "frischen"
+      ],
+      "ans": "frisches",
+      "why": "No article. das Brot, so the adjective ends in -es."
+    },
+    {
+      "id": "e13",
+      "t": "c",
+      "de": "Das ist eine ___ Idee.",
+      "en": "That's a good idea.",
+      "lv": "A2",
+      "tp": "Endungen",
+      "opts": [
+        "gut",
+        "gute",
+        "guten",
+        "guter"
+      ],
+      "ans": "gute",
+      "why": "eine + a feminine word: -e."
+    },
+    {
+      "id": "e14",
+      "t": "c",
+      "de": "Mit ___ Grüßen",
+      "en": "Kind regards (end of a formal email)",
+      "lv": "B1",
+      "tp": "Endungen",
+      "opts": [
+        "freundlich",
+        "freundliche",
+        "freundlichen",
+        "freundlicher"
+      ],
+      "ans": "freundlichen",
+      "why": "mit takes the dative. Plural, no article: -en. You'll write this at the end of every formal email."
+    },
+    {
+      "id": "e15",
+      "t": "c",
+      "de": "Ich habe ___ Kollegen.",
+      "en": "I have nice colleagues.",
+      "lv": "A2",
+      "tp": "Endungen",
+      "opts": [
+        "nett",
+        "nette",
+        "netten",
+        "netter"
+      ],
+      "ans": "nette",
+      "why": "Plural with no article: -e."
+    },
+    {
+      "id": "e16",
+      "t": "c",
+      "de": "Mein ___ Bruder wohnt in Köln.",
+      "en": "My older brother lives in Cologne.",
+      "lv": "A2",
+      "tp": "Endungen",
+      "opts": [
+        "ältere",
+        "älteren",
+        "älterer",
+        "älteres"
+      ],
+      "ans": "älterer",
+      "why": "mein works like ein. der Bruder, nominative: -er."
     }
   ]
 }
